@@ -1,0 +1,28 @@
+# The checkpoint series for the teacher-forcing study, on one GPU (the published series ran on an H100 NVL): arm A
+# (synchronous) for 40 steps, a snapshot after every step, so bench.stale_kv can compare checkpoints k = 1..32 steps
+# apart.
+regime: A
+task: gsm8k
+model: Qwen/Qwen3-0.6B-Base
+B: 16
+G: 8
+M: 16
+K: 0
+S: 1
+max_tokens: 512
+max_model_len: 2048
+budget_s: null
+max_steps: 40
+snapshot_every_steps: 1
+timeout_s: 900.0
+train:
+  lr: 1.0e-6
+  micro_tokens: 16384
+  device: cuda
+launch:
+  engine: vllm
+  engine_gpu: "0"
+  trainer_gpu: "0"
+  weight_backend: ipc
+  gpu_memory_utilization: 0.35
+  port: 8101

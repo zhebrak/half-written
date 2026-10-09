@@ -1,0 +1,26 @@
+# The MATH tier's settings, written by hand on 2026-10-03 from the synchronous curve
+# (data/two_gpu-2026-10-03/math/.../A-*-sync-curve-s0): not bench.amend's output, since there is no pilot and no W0.
+# The tier is analysed as intervals only (bench.stats --tag math-base --amendment this file).
+task: math
+tag: math-base
+written: "2026-10-03"
+reason: >
+  The W0 rule found no headroom on MATH: the synchronous curve from the base model reaches 0.520 on dev at step 40
+  and plateaus at 0.505 (fitted), while answer lengths settle only at step 80, where accuracy is 0.500. A grid from
+  that W0 measures noise. The tier starts every arm at the base model and runs through the climb instead.
+from_curve: {step_0: 0.282, step_20: 0.422, step_40: 0.520, step_80: 0.500, step_200: 0.508, plateau: 0.505,
+             a_steps_per_minute: 2.28, mean_tokens_step_0: 615, mean_tokens_step_40: 987}
+T_s: 600.0
+snapshot_every_s: 37.5   # T/16, GSM8K's spacing
+snapshots: 16
+seeds: {A: 3, B: 3, D: 3, E: 3}
+delta: 0.03
+equivalence: "D-E"
+h4: auto           # the exposure decides: with 600-1,000-token answers D's stale-KV share should clear the floor
+min_exposure: 0.05
+intervals_only: true   # exploratory: every contrast as an interval, no verdict
+best_async: null
+harness_limits: {max_host_cpu: 0.8233, max_loop_lag_p99_s: 0.1, max_fence_p50_s: 0.1}  # GSM8K's, at the tag
+harness_limit_rule: "GSM8K's limits as fixed at prereg-v1 (configs/amendments/gsm8k.yaml)"
+planned_rows: 12
+estimated_hours: 4.5

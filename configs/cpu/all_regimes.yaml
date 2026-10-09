@@ -1,0 +1,19 @@
+# Every regime in virtual time: python -m halfwritten sim configs/cpu/all_regimes.yaml --regimes A,B,C1,C2,D,E,F,B+lora,D+lora,E+lora
+# A small, long-tailed setting (lognormal answers, mean 250 tokens, sigma 1.0) so syncs land mid-answer.
+regime: D
+task: sim
+model: fake
+B: 8
+G: 8
+M: 8
+K: 4
+S: 1
+max_tokens: 1024
+budget_s: 60.0
+sim:
+  prompt_len: 64
+  length_mean: 250.0
+  length_sigma: 1.0
+  max_num_seqs: 256
+  train_s_fixed: 0.2
+  train_s_per_token: 3.0e-5

@@ -1,0 +1,233 @@
+{
+ "vllm": "0.30.0",
+ "model": "Qwen/Qwen3-0.6B-Base",
+ "prompt_tokens": 7,
+ "weight_info_initial": {
+  "weight_version": "default"
+ },
+ "metric_names": [
+  "vllm:cache_config_info",
+  "vllm:engine_sleep_state",
+  "vllm:estimated_flops_per_gpu_created",
+  "vllm:estimated_flops_per_gpu_total",
+  "vllm:estimated_read_bytes_per_gpu_created",
+  "vllm:estimated_read_bytes_per_gpu_total",
+  "vllm:estimated_write_bytes_per_gpu_created",
+  "vllm:estimated_write_bytes_per_gpu_total",
+  "vllm:external_prefix_cache_hits_created",
+  "vllm:external_prefix_cache_hits_total",
+  "vllm:external_prefix_cache_queries_created",
+  "vllm:external_prefix_cache_queries_total",
+  "vllm:generation_tokens_created",
+  "vllm:generation_tokens_total",
+  "vllm:inter_token_latency_seconds_bucket",
+  "vllm:inter_token_latency_seconds_count",
+  "vllm:inter_token_latency_seconds_created",
+  "vllm:inter_token_latency_seconds_sum",
+  "vllm:iteration_tokens_total_bucket",
+  "vllm:iteration_tokens_total_count",
+  "vllm:iteration_tokens_total_created",
+  "vllm:iteration_tokens_total_sum",
+  "vllm:kv_cache_usage_perc",
+  "vllm:mm_cache_hits_created",
+  "vllm:mm_cache_hits_total",
+  "vllm:mm_cache_queries_created",
+  "vllm:mm_cache_queries_total",
+  "vllm:num_preemptions_created",
+  "vllm:num_preemptions_total",
+  "vllm:num_requests_running",
+  "vllm:num_requests_waiting",
+  "vllm:num_requests_waiting_by_reason",
+  "vllm:prefix_cache_hits_created",
+  "vllm:prefix_cache_hits_total",
+  "vllm:prefix_cache_queries_created",
+  "vllm:prefix_cache_queries_total",
+  "vllm:prompt_tokens_by_source_created",
+  "vllm:prompt_tokens_by_source_total",
+  "vllm:prompt_tokens_cached_created",
+  "vllm:prompt_tokens_cached_total",
+  "vllm:prompt_tokens_created",
+  "vllm:prompt_tokens_total",
+  "vllm:request_decode_time_seconds_bucket",
+  "vllm:request_decode_time_seconds_count",
+  "vllm:request_decode_time_seconds_created",
+  "vllm:request_decode_time_seconds_sum",
+  "vllm:request_generation_tokens_bucket",
+  "vllm:request_generation_tokens_count",
+  "vllm:request_generation_tokens_created",
+  "vllm:request_generation_tokens_sum",
+  "vllm:request_inference_time_seconds_bucket",
+  "vllm:request_inference_time_seconds_count",
+  "vllm:request_inference_time_seconds_created",
+  "vllm:request_inference_time_seconds_sum",
+  "vllm:request_max_num_generation_tokens_bucket",
+  "vllm:request_max_num_generation_tokens_count",
+  "vllm:request_max_num_generation_tokens_created",
+  "vllm:request_max_num_generation_tokens_sum",
+  "vllm:request_num_preemptions_bucket",
+  "vllm:request_num_preemptions_count",
+  "vllm:request_num_preemptions_created",
+  "vllm:request_num_preemptions_sum",
+  "vllm:request_params_max_tokens_bucket",
+  "vllm:request_params_max_tokens_count",
+  "vllm:request_params_max_tokens_created",
+  "vllm:request_params_max_tokens_sum",
+  "vllm:request_params_n_bucket",
+  "vllm:request_params_n_count",
+  "vllm:request_params_n_created",
+  "vllm:request_params_n_sum",
+  "vllm:request_prefill_kv_computed_tokens_bucket",
+  "vllm:request_prefill_kv_computed_tokens_count",
+  "vllm:request_prefill_kv_computed_tokens_created",
+  "vllm:request_prefill_kv_computed_tokens_sum",
+  "vllm:request_prefill_time_seconds_bucket",
+  "vllm:request_prefill_time_seconds_count",
+  "vllm:request_prefill_time_seconds_created",
+  "vllm:request_prefill_time_seconds_sum",
+  "vllm:request_prompt_tokens_bucket",
+  "vllm:request_prompt_tokens_count",
+  "vllm:request_prompt_tokens_created",
+  "vllm:request_prompt_tokens_sum",
+  "vllm:request_queue_time_seconds_bucket",
+  "vllm:request_queue_time_seconds_count",
+  "vllm:request_queue_time_seconds_created",
+  "vllm:request_queue_time_seconds_sum",
+  "vllm:request_success_created",
+  "vllm:request_success_total",
+  "vllm:request_time_per_output_token_seconds_bucket",
+  "vllm:request_time_per_output_token_seconds_count",
+  "vllm:request_time_per_output_token_seconds_created",
+  "vllm:request_time_per_output_token_seconds_sum",
+  "vllm:time_to_first_token_seconds_bucket",
+  "vllm:time_to_first_token_seconds_count",
+  "vllm:time_to_first_token_seconds_created",
+  "vllm:time_to_first_token_seconds_sum"
+ ],
+ "kv_tokens": 86960,
+ "stream": {
+  "tokens": 12,
+  "finish": "length",
+  "chunks": 3
+ },
+ "abort": {
+  "pause_s": 0.028199455000049056,
+  "tokens": 35,
+  "finish": "abort",
+  "last_chunk": "data: {\"id\":\"cmpl-abort#0\",\"object\":\"text_completion\",\"created\":1790849424,\"model\":\"Qwen/Qwen3-0.6B-Base\",\"choices\":[{\"index\":0,\"text\":\"\",\"logprobs\":{\"text_offset\":[],\"token_logprobs\":[],\"tokens\":[],\"top_logprobs\":[]},\"finish_reason\":\"abort\",\"stop_reason\":null,\"prompt_token_ids\":null,\"token_ids\":[]}],\"system_fingerprint\":\"vllm-0.30.0-e3d69149\"}"
+ },
+ "keep": {
+  "pause_s": 0.028271586000073512,
+  "tokens_at_ack": 36,
+  "tokens_1s_later": 36,
+  "is_paused": {
+   "is_paused": true
+  },
+  "total": 300,
+  "finish": "length"
+ },
+ "reset": {
+  "running": 4,
+  "before": 0.0,
+  "at_ack": 0.0,
+  "paused_0.5s": 0.0,
+  "resumed_0.5s": 4.0,
+  "end": 4.0,
+  "totals": [
+   400,
+   400,
+   400,
+   400
+  ]
+ },
+ "wait": {
+  "ack_after_s": 0.4746134600000005,
+  "finished_before_ack": true,
+  "tokens_at_ack": 200
+ },
+ "queued_keep": {
+  "tokens_while_paused": 0,
+  "total": 20,
+  "finish": "length"
+ },
+ "queued_abort": {
+  "tokens_while_paused": 0,
+  "total": 20,
+  "finish": "length"
+ },
+ "push": {
+  "seconds": 0.1429866990000619,
+  "bytes": 1192099840,
+  "weight_info": {
+   "weight_version": "1"
+  },
+  "same_greedy_output": true
+ },
+ "canary_D": {
+  "pre_old": 1.0,
+  "post_old": 0.12857142857142856,
+  "post_fresh": 0.7285714285714285,
+  "post_stale": 1.0,
+  "first_post": [
+   {
+    "i": 26,
+    "old": 0.0,
+    "fresh": 0.0,
+    "stale": 1.0
+   },
+   {
+    "i": 27,
+    "old": 0.0,
+    "fresh": 0.0,
+    "stale": 1.0
+   },
+   {
+    "i": 28,
+    "old": 0.0,
+    "fresh": 0.0,
+    "stale": 1.0
+   },
+   {
+    "i": 29,
+    "old": 0.0,
+    "fresh": 0.0,
+    "stale": 1.0
+   }
+  ],
+  "boundary": 26,
+  "total": 96
+ },
+ "canary_E": {
+  "pre_old": 1.0,
+  "post_old": 0.9558823529411765,
+  "post_fresh": 1.0,
+  "post_stale": 0.7205882352941176,
+  "first_post": [
+   {
+    "i": 28,
+    "old": 1.0,
+    "fresh": 1.0,
+    "stale": 0.0
+   },
+   {
+    "i": 29,
+    "old": 1.0,
+    "fresh": 1.0,
+    "stale": 0.0
+   },
+   {
+    "i": 30,
+    "old": 0.0,
+    "fresh": 1.0,
+    "stale": 0.0
+   },
+   {
+    "i": 31,
+    "old": 1.0,
+    "fresh": 1.0,
+    "stale": 0.0
+   }
+  ],
+  "boundary": 28,
+  "total": 96
+ }
+}

@@ -1,0 +1,29 @@
+# GSM8K, two GPUs (engine GPU0, trainer GPU1, NCCL). init_from and prompt_filter come from task prep (`halfwritten
+# fetch`); lr was set by the pilot before the grid, and the grid's T and snapshot spacing come from its settings file.
+regime: D
+task: gsm8k
+model: Qwen/Qwen3-0.6B-Base
+B: 32
+G: 8
+M: 32
+K: 4
+S: 1
+max_tokens: 1024
+max_model_len: 2048
+budget_s: 2700.0
+snapshot_every_s: 337.5
+timeout_s: 900.0
+init_from: prep/gsm8k/w0
+prompt_filter: prep/gsm8k/pass8.json
+train:
+  lr: 1.0e-6
+  micro_tokens: 16384  # what the no-checkpointing rows ran (x2d, x2f); 32768 without checkpointing is unmeasured
+  gradient_checkpointing: false  # with micro_tokens 16384: D +37% steps/h, +39% goodput on two H100s (x2d)
+launch:
+  engine: vllm
+  engine_gpu: "0"
+  trainer_gpu: "1"
+  weight_backend: nccl
+  gpu_memory_utilization: 0.9
+  head_fp32: true  # vLLM computes the LM head in fp32: about a fifth less engine-trainer mismatch
+  api_servers: 4  # one caps token-by-token streaming at ~8k tok/s (x2c), four reach 18k (x2d); LoRA arms need 1

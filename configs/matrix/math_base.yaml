@@ -1,0 +1,14 @@
+# MATH from the base model, exploratory, under configs/amendments/math_base.yaml: the warm-start rule found no
+# headroom on MATH (the synchronous curve plateaus at 0.505 by step 40 and the earliest settled snapshot, step 80,
+# reads 0.500), so the four arms start at the base model and run through the climb, where every swap is a large
+# policy change and the answers are long (600 to 1,000 tokens). T = 600 s: A reaches 80% of its gain near step 25,
+# about 11 minutes on the curve, the async arms in about half that. Three seeds an arm, the prompts unfiltered as
+# the synchronous curve ran, every snapshot scored on MATH-500, a snapshot every T/16 = 37.5 s (GSM8K's spacing),
+# so the climb (steps 10 to 25, about 100 to 250 s for the async arms) holds four snapshots.
+base: configs/two_gpu/math.yaml
+arms: [A, B, D, E]
+seeds: [0, 1, 2]
+set: ["init_from=null", "prompt_filter=null", "budget_s=600", "snapshot_every_s=37.5", "tag=math-base", "eval_split=test"]
+canary: true
+evaluate: true
+prune: true

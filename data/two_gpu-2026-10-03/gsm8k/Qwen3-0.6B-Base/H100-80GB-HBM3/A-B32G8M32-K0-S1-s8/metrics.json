@@ -1,0 +1,107 @@
+{
+ "regime": "A",
+ "valid": true,
+ "error": null,
+ "violations": [],
+ "wall_s": 300.0109999999404,
+ "steps": 69,
+ "groups_submitted": 2240,
+ "samples": {
+  "consumed": 17664,
+  "unconsumed": 0,
+  "cancelled": 256,
+  "attempts": 17920,
+  "discarded_attempts": 0
+ },
+ "tokens": {
+  "delivered": 2260469,
+  "consumed": 2251889,
+  "discarded": 0,
+  "reprefilled": 0
+ },
+ "late_old_tokens": 0,
+ "versions_skipped": 0,
+ "inflight_mean": 74.38051604764871,
+ "events": {
+  "queued_at_abort": 0,
+  "late_zero_token_aborts": 0,
+  "finishless_aborts": 0,
+  "reward_timeouts": 0,
+  "chunks_while_resuming": 0,
+  "reset_preemptions_without_tokens": 0,
+  "count_lagged_syncs": 0
+ },
+ "lanes": {
+  "engine": {
+   "idle": 0.4855648258543976,
+   "generating": 0.5144351741456025
+  },
+  "batcher": {
+   "wait_data": 0.548102900270715,
+   "training": 0.451897099729285
+  },
+  "trainer": {
+   "stage": 0.002184530066452729,
+   "idle": 0.5549629112137779,
+   "fwd_bwd": 0.44285255871976936
+  },
+  "sender": {
+   "idle": 0.9628964044619815,
+   "send": 0.03710359553801841
+  }
+ },
+ "engine": {
+  "running": 0,
+  "waiting": 0,
+  "preemptions_total": 0,
+  "generated_tokens_total": 2260942,
+  "prefill_tokens_total": 1253744,
+  "kv_usage": 0.0
+ },
+ "trainer": {
+  "steps": 69,
+  "pushed": 69
+ },
+ "host": {
+  "main_thread_cpu_frac": 0.2458048498544458,
+  "loop_lag_s": {
+   "p50": 2.79396769609086e-10,
+   "p90": 0.0009999999776482554,
+   "p99": 0.01438000013120483,
+   "p100": 0.31400000005960466
+  },
+  "worst_stall_at_s": 0.8819999997504056
+ },
+ "syncs": 69,
+ "sync_s": {
+  "p50": 0.13100000005215406,
+  "p90": 0.1432000000961125,
+  "p99": 0.15808000018820154,
+  "p100": 0.17100000008940697
+ },
+ "pause_s": {
+  "p50": 0.0,
+  "p90": 0.0001999999396503,
+  "p99": 0.0010000001639127731,
+  "p100": 0.0010000001639127731
+ },
+ "fence_s": {
+  "p50": 0.0,
+  "p90": 0.0,
+  "p99": 0.0,
+  "p100": 0.0
+ },
+ "ack_lag_s": {},
+ "undelivered": {
+  "syncs": 0,
+  "positive": 0,
+  "min": null,
+  "max": null
+ },
+ "steps_per_hour": 827.9696411133236,
+ "tokens_per_s": 7534.620397253598,
+ "goodput_tokens_per_s": 7506.021445881809,
+ "lag_mean": 0.0,
+ "lag_max": 0,
+ "depth_max": 0
+}

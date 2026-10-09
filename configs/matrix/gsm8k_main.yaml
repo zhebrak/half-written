@@ -1,0 +1,12 @@
+# The GSM8K grid: every arm from W0 on the pass@8 prompts, scored on test. T, the snapshot interval and the seeds
+# per arm come from configs/amendments/gsm8k.yaml (bench.amend's output from the pilot); without it the grid refuses
+# to plan. C1 is the consistency check against E (two seeds).
+base: configs/two_gpu/gsm8k.yaml
+arms: [A, B, C1, D, E]
+seeds: amendment
+amendment: configs/amendments/gsm8k.yaml
+requires_amendment: true
+canary: true
+evaluate: true
+prune: true
+set: ["eval_split=test"]  # the confirmatory grid: scored on test (everything before it reads dev)

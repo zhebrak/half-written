@@ -1,0 +1,12 @@
+# A MATH grid from a warm start (levels 3-5), scored on MATH-500. It never ran: no warm-start checkpoint had headroom
+# (see configs/matrix/math_base.yaml), and its settings file, configs/amendments/math.yaml, was never written, so
+# the grid refuses to plan. Kept because tests/test_queue.py plans every committed matrix.
+base: configs/two_gpu/math.yaml
+arms: [A, B, D, E]
+seeds: amendment
+amendment: configs/amendments/math.yaml
+requires_amendment: true
+canary: true
+evaluate: true
+prune: true
+set: ["eval_split=test"]  # the confirmatory grid: scored on test (everything before it reads dev)

@@ -1,0 +1,110 @@
+{
+ "regime": "B",
+ "valid": true,
+ "error": null,
+ "violations": [],
+ "wall_s": 600.0019999998622,
+ "steps": 63,
+ "groups_submitted": 1035,
+ "samples": {
+  "consumed": 8064,
+  "unconsumed": 182,
+  "cancelled": 34,
+  "attempts": 8280,
+  "discarded_attempts": 0
+ },
+ "tokens": {
+  "delivered": 6240157,
+  "consumed": 5978588,
+  "discarded": 0,
+  "reprefilled": 0
+ },
+ "late_old_tokens": 0,
+ "versions_skipped": 19,
+ "inflight_mean": 43.309855633944025,
+ "events": {
+  "queued_at_abort": 0,
+  "late_zero_token_aborts": 0,
+  "finishless_aborts": 0,
+  "reward_timeouts": 0,
+  "chunks_while_resuming": 0,
+  "reset_preemptions_without_tokens": 0,
+  "count_lagged_syncs": 0
+ },
+ "lanes": {
+  "engine": {
+   "idle": 5.1525229842462356e-05,
+   "generating": 0.3920870543700162,
+   "draining": 0.5960488459150332,
+   "receiving": 0.011810912380645158,
+   "paused": 1.6621044631037324e-06
+  },
+  "batcher": {
+   "wait_data": 0.43752732083572693,
+   "training": 0.562472679164273
+  },
+  "trainer": {
+   "stage": 0.0005645200886495513,
+   "idle": 0.44261013320385606,
+   "fwd_bwd": 0.5568253467074944
+  },
+  "sender": {
+   "idle": 0.9872581363513105,
+   "send": 0.012741863648689438
+  }
+ },
+ "engine": {
+  "running": 0,
+  "waiting": 0,
+  "preemptions_total": 0,
+  "generated_tokens_total": 6240186,
+  "prefill_tokens_total": 824088,
+  "kv_usage": 0.0
+ },
+ "trainer": {
+  "steps": 63,
+  "pushed": 62
+ },
+ "host": {
+  "main_thread_cpu_frac": 0.4050662480342133,
+  "loop_lag_s": {
+   "p50": 2.79396769609086e-10,
+   "p90": 0.0009999999776482554,
+   "p99": 0.0029999998398125144,
+   "p100": 0.3159999999217689
+  },
+  "worst_stall_at_s": 420.05899999989197
+ },
+ "syncs": 43,
+ "sync_s": {
+  "p50": 8.285000000149012,
+  "p90": 10.940600000135602,
+  "p99": 11.665440000146628,
+  "p100": 11.69400000013411
+ },
+ "pause_s": {
+  "p50": 8.112999999895692,
+  "p90": 10.755199999921025,
+  "p99": 11.488000000221655,
+  "p100": 11.53000000026077
+ },
+ "fence_s": {
+  "p50": 0.03700000001117587,
+  "p90": 0.03980000009760261,
+  "p99": 0.04358000015839934,
+  "p100": 0.04400000022724271
+ },
+ "ack_lag_s": {},
+ "undelivered": {
+  "syncs": 43,
+  "positive": 0,
+  "min": 0,
+  "max": 0
+ },
+ "steps_per_hour": 377.99874000428684,
+ "tokens_per_s": 10400.226999245726,
+ "goodput_tokens_per_s": 9964.280119068559,
+ "lag_mean": 1.5028198926201741,
+ "lag_max": 3,
+ "depth_max": 0
+}

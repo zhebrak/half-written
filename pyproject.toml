@@ -1,0 +1,23 @@
+[project]
+name = "halfwritten"
+version = "0.1.0"
+description = "What an async RL loop should do with half-written answers when new weights arrive: a matched comparison on one vLLM engine"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Alexander Zhebrak" }]
+[project.urls]
+Homepage = "https://zhebrak.io/posts/half-written-answers/"
+Repository = "https://github.com/zhebrak/half-written"
+
+# Dependencies live in the requirements files: requirements-cpu.txt (laptop, tests), requirements-cpu.lock (its
+# exact resolution, for CI) and requirements.txt (a GPU pod: vLLM 0.30.0, torch 2.13, transformers 5.17).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]  # a bare `pytest` must not collect copies of the tree elsewhere
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "E9", "E501", "I"]

@@ -1,0 +1,26 @@
+# The whole row on a laptop: the fake server stands in for vllm serve and a tiny random Qwen3 trains on CPU.
+#   python -m halfwritten run configs/cpu/smoke.yaml --out /tmp/rows
+regime: D
+task: sim
+model: fake
+B: 2
+G: 4
+M: 2
+K: 2
+max_tokens: 64
+budget_s: 10.0
+timeout_s: 120.0
+snapshot_every_s: 4.0
+sim:
+  prompt_len: 8
+train:
+  model: tiny-qwen3
+  device: cpu
+  lr: 1.0e-3
+  micro_tokens: 2048
+  staging_dtype: float32
+launch:
+  engine: fake
+  port: 8123
+  fake_lengths: lognormal:24,0.6
+  fake_vocab: 512

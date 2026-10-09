@@ -1,0 +1,418 @@
+{
+ "arms": {
+  "A": {
+   "accuracy_T": 0.602745566,
+   "auc": 0.526715979,
+   "final_steps": 16.0,
+   "iqm": 0.600046679,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "time_to_threshold": {
+    "median": 37.677907426,
+    "never": 2
+   }
+  },
+  "A2": {
+   "emulated": true,
+   "missing": {
+    "0": "no emulated.json (run bench.emulate on the A row)",
+    "1": "no emulated.json (run bench.emulate on the A row)",
+    "2": "no emulated.json (run bench.emulate on the A row)",
+    "3": "no emulated.json (run bench.emulate on the A row)",
+    "4": "no emulated.json (run bench.emulate on the A row)",
+    "5": "no emulated.json (run bench.emulate on the A row)"
+   }
+  },
+  "B": {
+   "accuracy_T": 0.601109312,
+   "auc": 0.52569332,
+   "final_steps": 16.0,
+   "iqm": 0.599222962,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "time_to_threshold": {
+    "median": 37.990192129,
+    "never": 2
+   }
+  },
+  "D": {
+   "accuracy_T": 0.663193908,
+   "auc": 0.564496193,
+   "final_steps": 24.0,
+   "iqm": 0.660430208,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "time_to_threshold": {
+    "median": 29.007181464,
+    "never": 0
+   }
+  },
+  "E": {
+   "accuracy_T": 0.661287175,
+   "auc": 0.563304484,
+   "final_steps": 24.0,
+   "iqm": 0.65881961,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "time_to_threshold": {
+    "median": 29.205333677,
+    "never": 0
+   }
+  }
+ },
+ "best": "D",
+ "delta": 0.02,
+ "equivalence": [
+  {
+   "ci90": [
+    0.000423288,
+    0.001960128
+   ],
+   "contrast": "D-E",
+   "d_stale_kv_share": 0.13,
+   "family": 1,
+   "result": "equivalent",
+   "verdict": "different but within delta"
+  },
+  {
+   "ci90": [
+    -0.004331152,
+    0.001058645
+   ],
+   "contrast": "B-A",
+   "family": 2,
+   "result": "equivalent",
+   "verdict": "equivalent"
+  },
+  {
+   "ci90": [
+    -0.033569679,
+    -0.020996242
+   ],
+   "contrast": "D-A",
+   "family": 2,
+   "result": "not shown equivalent",
+   "verdict": "inferior"
+  },
+  {
+   "contrast": "E-A",
+   "family": 2,
+   "result": "not tested: the sequence stopped earlier"
+  }
+ ],
+ "excluded": [],
+ "family": {
+  "D-A": {
+   "ci95": [
+    0.036063126,
+    0.039497302
+   ],
+   "diff": 0.037780214,
+   "p": 3.3e-08,
+   "p_holm": 9.8e-08,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sensitivity": {
+    "bca95": [
+     0.036780493,
+     0.039220077
+    ],
+    "sign_flip_p": 0.03125
+   },
+   "spec": "best-A",
+   "tost_descriptive": {
+    "ci90": [
+     0.036434209,
+     0.039126219
+    ],
+    "equivalent": false
+   },
+   "verdict": "superior"
+  },
+  "D-B": {
+   "ci95": [
+    0.037411121,
+    0.040194624
+   ],
+   "diff": 0.038802873,
+   "p": 1e-08,
+   "p_holm": 4e-08,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sensitivity": {
+    "bca95": [
+     0.037707719,
+     0.03965682
+    ],
+    "sign_flip_p": 0.03125
+   },
+   "spec": "D-B",
+   "tost_descriptive": {
+    "ci90": [
+     0.037711895,
+     0.03989385
+    ],
+    "equivalent": false
+   },
+   "verdict": "superior"
+  },
+  "D-E": {
+   "ci95": [
+    0.000211441,
+    0.002171976
+   ],
+   "diff": 0.001191708,
+   "p": 0.02610292,
+   "p_holm": 0.02610292,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sensitivity": {
+    "bca95": [
+     0.000419873,
+     0.001796087
+    ],
+    "sign_flip_p": 0.0625
+   },
+   "spec": "D-E",
+   "tost_descriptive": {
+    "ci90": [
+     0.000423288,
+     0.001960128
+    ],
+    "equivalent": true
+   },
+   "verdict": "superior"
+  },
+  "E-B": {
+   "ci95": [
+    0.035884669,
+    0.03933766
+   ],
+   "diff": 0.037611164,
+   "p": 3.4e-08,
+   "p_holm": 9.8e-08,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "sensitivity": {
+    "bca95": [
+     0.036113256,
+     0.038599888
+    ],
+    "sign_flip_p": 0.03125
+   },
+   "spec": "E-B",
+   "tost_descriptive": {
+    "ci90": [
+     0.036257785,
+     0.038964543
+    ],
+    "equivalent": false
+   },
+   "verdict": "superior"
+  }
+ },
+ "h2": {
+  "B-A": {
+   "ci90": [
+    -0.004331152,
+    0.001058645
+   ],
+   "ci95": [
+    -0.005074115,
+    0.001801607
+   ],
+   "diff": -0.001636254,
+   "equivalent": true,
+   "p": 0.275660168,
+   "steps": {
+    "0": 16.0,
+    "1": 16.0,
+    "2": 16.0,
+    "3": 16.0,
+    "4": 16.0,
+    "5": 16.0
+   }
+  },
+  "D-A": {
+   "ci90": [
+    -0.033569679,
+    -0.020996242
+   ],
+   "ci95": [
+    -0.035302879,
+    -0.019263042
+   ],
+   "diff": -0.02728296,
+   "equivalent": false,
+   "p": 0.000323995,
+   "steps": {
+    "0": 16.0,
+    "1": 16.0,
+    "2": 16.0,
+    "3": 16.0,
+    "4": 16.0,
+    "5": 16.0
+   }
+  },
+  "E-A": {
+   "ci90": [
+    -0.035379387,
+    -0.021728845
+   ],
+   "ci95": [
+    -0.037261062,
+    -0.01984717
+   ],
+   "diff": -0.028554116,
+   "equivalent": false,
+   "p": 0.000385291,
+   "steps": {
+    "0": 16.0,
+    "1": 16.0,
+    "2": 16.0,
+    "3": 16.0,
+    "4": 16.0,
+    "5": 16.0
+   }
+  }
+ },
+ "primary": "auc",
+ "steps_to_threshold": {
+  "B/A": {
+   "ci95": [
+    0.979322356,
+    1.029450836
+   ],
+   "never": {
+    "1": [
+     "B",
+     "A"
+    ],
+    "3": [
+     "B",
+     "A"
+    ]
+   },
+   "ratio": 1.004073811,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "D/A": {
+   "ci95": [
+    1.132149026,
+    1.205939605
+   ],
+   "never": {
+    "1": [
+     "A"
+    ],
+    "3": [
+     "A"
+    ]
+   },
+   "ratio": 1.168461959,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "D/E": {
+   "ci95": [
+    0.987468472,
+    0.998596595
+   ],
+   "never": {},
+   "ratio": 0.993016945,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  "E/A": {
+   "ci95": [
+    1.142437238,
+    1.217129698
+   ],
+   "never": {
+    "1": [
+     "A"
+    ],
+    "3": [
+     "A"
+    ]
+   },
+   "ratio": 1.179192219,
+   "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  }
+ },
+ "threshold": 0.592608287
+}

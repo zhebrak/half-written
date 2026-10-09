@@ -1,0 +1,31 @@
+# The synchronous learning curve on one GPU (colocated): arm A from the base model to about 1,000 steps, a snapshot
+# every 25, at the GSM8K grid's batch (B32 G8, 1,024 tokens, fp32 LM head). Its held-out curve chose the warm start
+# W0 (step 50) and bounds T. Arm A's accuracy against steps does not depend on layout or concurrency, only its
+# timing does.
+regime: A
+task: gsm8k
+model: Qwen/Qwen3-0.6B-Base
+B: 32
+G: 8
+M: 32
+K: 0
+S: 1
+max_tokens: 1024
+max_model_len: 2048
+budget_s: 10800.0
+max_steps: 1000
+snapshot_every_steps: 25
+timeout_s: 900.0
+tag: sync-curve  # not "s1": the row label already says S1 for the sync interval (the archived run is ...-S1-s1-s0)
+train:
+  lr: 1.0e-6
+  micro_tokens: 16384
+  device: cuda
+launch:
+  engine: vllm
+  engine_gpu: "0"
+  trainer_gpu: "0"
+  weight_backend: ipc
+  gpu_memory_utilization: 0.35
+  head_fp32: true
+  port: 8101

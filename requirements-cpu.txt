@@ -1,0 +1,19 @@
+# The laptop: CPU tests and the simulator. No vLLM; the torch tests skip without torch.
+# torch's CPU wheels as extra candidates (find-links), not an extra index: uv takes every package an extra
+# index carries from that index (certifi, numpy, ... are mirrored there at other versions), so an exact pin
+# missing from the mirror fails to resolve; plain pip and uv both read this form the same way.
+--find-links https://download.pytorch.org/whl/cpu/torch/
+torch==2.13.*
+numpy
+pyarrow
+pyyaml
+aiohttp  # the stream client, and the fake `vllm serve` in tests/test_vllm_http.py
+msgspec==0.22.*  # typed decoding of streamed chunks (a vLLM dependency on the pods)
+uvloop==0.23.*  # the real runs' event loop (a vLLM dependency on the pods)
+pytest
+transformers==5.17.*  # tiny-model trainer, Phase 1 and canary tests
+peft
+safetensors
+math-verify==0.9.0
+scipy==1.18.*  # bench/stats.py: t quantiles
+matplotlib==3.10.*  # bench/figures.py: the paper's figures

@@ -1,0 +1,126 @@
+{
+ "marks": [
+  {
+   "tag": "step0020",
+   "t": 226.43999999994412,
+   "staged": 20,
+   "engine": 19,
+   "steps": 20
+  },
+  {
+   "tag": "step0040",
+   "t": 577.844000000041,
+   "staged": 40,
+   "engine": 39,
+   "steps": 40
+  },
+  {
+   "tag": "step0060",
+   "t": 1010.5260000000708,
+   "staged": 60,
+   "engine": 59,
+   "steps": 60
+  },
+  {
+   "tag": "step0080",
+   "t": 1521.9640000001527,
+   "staged": 80,
+   "engine": 79,
+   "steps": 80
+  },
+  {
+   "tag": "step0100",
+   "t": 2051.5120000001043,
+   "staged": 100,
+   "engine": 99,
+   "steps": 100
+  },
+  {
+   "tag": "step0120",
+   "t": 2567.9449999998324,
+   "staged": 120,
+   "engine": 119,
+   "steps": 120
+  },
+  {
+   "tag": "step0140",
+   "t": 3109.898999999743,
+   "staged": 140,
+   "engine": 139,
+   "steps": 140
+  },
+  {
+   "tag": "step0160",
+   "t": 3634.563000000082,
+   "staged": 160,
+   "engine": 159,
+   "steps": 160
+  },
+  {
+   "tag": "step0180",
+   "t": 4129.688000000082,
+   "staged": 180,
+   "engine": 179,
+   "steps": 180
+  },
+  {
+   "tag": "step0200",
+   "t": 4620.108000000007,
+   "staged": 200,
+   "engine": 199,
+   "steps": 200
+  }
+ ],
+ "written": [
+  [
+   "step0020",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0020-v20",
+   1.0946527090854943
+  ],
+  [
+   "step0040",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0040-v40",
+   0.7506025992333889
+  ],
+  [
+   "step0060",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0060-v60",
+   0.55156607972458
+  ],
+  [
+   "step0080",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0080-v80",
+   0.5326980859972537
+  ],
+  [
+   "step0100",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0100-v100",
+   0.5825112913735211
+  ],
+  [
+   "step0120",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0120-v120",
+   0.5742902937345207
+  ],
+  [
+   "step0140",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0140-v140",
+   0.5617971010506153
+  ],
+  [
+   "step0160",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0160-v160",
+   0.552541472017765
+  ],
+  [
+   "step0180",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0180-v180",
+   0.5456530610099435
+  ],
+  [
+   "step0200",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0/work/step0200-v200",
+   0.5287556061521173
+  ]
+ ]
+}

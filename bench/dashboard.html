@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>halfwritten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: one reading column of evidence, summary first; tables and charts in panels that scroll on their own.
+   Colour follows the regime explainer: blue = old weights, amber = new weights. */
+:root {
+  --paper: #f2f4f6; --panel: #fbfcfd; --ink: #17212b; --muted: #5a6774; --rule: #d3dae1;
+  --old: #2f5d8c; --old-soft: #d6e2ee; --new: #c77700; --new-soft: #f6e3c4; --idle: #e3e8ed;
+  --good: #2e7d4f; --good-soft: #d9efe1; --warn: #a15c00; --warn-soft: #f6e6cc; --bad: #b0352b; --bad-soft: #f5dcd9;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #11171d; --panel: #161e26; --ink: #e6ebf0; --muted: #96a3b0; --rule: #2a3540;
+  --old: #6fa3d8; --old-soft: #20364d; --new: #f0a83a; --new-soft: #4a3412; --idle: #222c36;
+  --good: #5cc28a; --good-soft: #17352a; --warn: #e6a64a; --warn-soft: #3d2c12; --bad: #ef7d73; --bad-soft: #43201d;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #11171d; --panel: #161e26; --ink: #e6ebf0; --muted: #96a3b0; --rule: #2a3540;
+  --old: #6fa3d8; --old-soft: #20364d; --new: #f0a83a; --new-soft: #4a3412; --idle: #222c36;
+  --good: #5cc28a; --good-soft: #17352a; --warn: #e6a64a; --warn-soft: #3d2c12; --bad: #ef7d73; --bad-soft: #43201d;
+  color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 16px/1.55 var(--body); margin: 0; padding-inline: 16px; }
+main { max-width: 1080px; margin: 0 auto; padding-block: 28px 64px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.45rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.eyebrow { font: 600 0.72rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+section { display: grid; gap: 14px; min-width: 0; }
+.head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (max-width: 640px) { .meta .pill { white-space: normal; max-width: 100%; } }
+.links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--display); font-size: 0.95rem; }
+.links a { color: var(--old); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.links a:hover, .links a:focus-visible { border-bottom-color: var(--old); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.03em;
+  padding: 5px 9px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--muted);
+  white-space: nowrap; }
+.pill.good { background: var(--good-soft); border-color: transparent; color: var(--good); }
+.pill.warn { background: var(--warn-soft); border-color: transparent; color: var(--warn); }
+.pill.bad { background: var(--bad-soft); border-color: transparent; color: var(--bad); }
+.pill.old { background: var(--old-soft); border-color: transparent; color: var(--old); }
+.findings { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.finding { display: grid; grid-template-columns: 9.5rem 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.finding > div { min-width: 0; }
+.finding p { font-size: 0.97rem; }
+.finding b { font-family: var(--display); font-weight: 600; }
+@media (max-width: 640px) { .finding { grid-template-columns: 1fr; gap: 6px; } }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; font: 0.8rem/1.4 var(--mono); font-variant-numeric: tabular-nums; width: 100%; }
+th { text-align: right; font-weight: 600; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule);
+  white-space: nowrap; vertical-align: bottom; }
+td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+td.l, th.l { text-align: left; }
+tr:last-child td { border-bottom: 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.chart { display: grid; gap: 8px; min-width: 0; }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart .cap { font-size: 0.88rem; color: var(--muted); max-width: 60ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 0.72rem/1.2 var(--mono); color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 18px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.box { height: 10px; width: 12px; border-radius: 2px; }
+svg text { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
+svg .axis { stroke: var(--rule); stroke-width: 1; fill: none; }
+svg .grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; fill: none; opacity: 0.8; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 600 0.75rem/1 var(--mono); padding: 7px 11px; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--panel); color: var(--muted); cursor: pointer; }
+.tabs button[aria-selected="true"], .tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+button:focus-visible { outline: 2px solid var(--old); outline-offset: 2px; }
+.note { font-size: 0.88rem; color: var(--muted); max-width: 72ch; }
+[hidden] { display: none !important; }
+code { font: 0.85em var(--mono); }
+@media (prefers-reduced-motion: no-preference) { .tabs button { transition: background 120ms, color 120ms; } }
+section[id] { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 12px); }
+.lede { max-width: 66ch; color: var(--muted); }
+.lede b { color: var(--ink); font-weight: 600; }
+
+/* The regimes explainer: one lane per regime, a token strip over its KV strip over an engine bar, all driven by one
+   scrubber that sticks while the section is in view. Scoped to #answers so its names never meet the lab's. */
+#answers { --waste: #a7b1bb; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #answers { --waste: #56626e; } }
+:root[data-theme="dark"] #answers { --waste: #56626e; }
+#answers .v { color: var(--old); font-weight: 600; } #answers .n { color: var(--new); font-weight: 600; }
+#answers .controls { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 3; background: var(--paper); box-shadow: 0 8px 12px -10px rgba(0,0,0,0.25);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-block: 12px; border-bottom: 1px solid var(--rule); }
+#answers .controls button { font: 600 14px var(--display); color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 7px 14px; cursor: pointer; }
+input[type=range]:focus-visible { outline: 2px solid var(--old); outline-offset: 2px; }
+#answers .scrub { flex: 1 1 260px; display: grid; gap: 2px; min-width: 0; position: relative; }
+#answers .ticks span:first-child { transform: none; } #answers .ticks span:last-child { transform: translateX(-100%); }
+#answers .scrub input { width: 100%; accent-color: var(--old); }
+#answers .ticks { position: relative; height: 14px; font: 11px var(--mono); color: var(--muted); }
+#answers .ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+#answers .clock { font: 600 14px var(--mono); min-width: 9ch; font-variant-numeric: tabular-nums; }
+#answers .key { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 12px var(--mono); color: var(--muted); padding: 12px 0 16px; }
+#answers .key span { display: inline-flex; align-items: center; gap: 6px; }
+#answers .sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+#answers .lanes { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { #answers .lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { #answers .lanes { grid-template-columns: minmax(0, 1fr); } }
+#answers .lane { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 10px; container-type: inline-size;
+  display: grid; gap: 9px; min-width: 0; align-content: start; }  /* rows packed at the top: the strips line up across lanes */
+#answers .lane header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 4px; }
+#answers .lane h3 { font: 700 1rem var(--display); margin: 0; }
+#answers .lane h3 em { font-style: normal; color: var(--muted); font-weight: 500; margin-right: 6px; }
+#answers .call { font: 12px var(--mono); color: var(--muted); }
+#answers .strip { display: grid; grid-template-columns: 52px repeat(14, minmax(0, 1fr)); gap: 2px; align-items: center; }
+#answers .lab { font: 10px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }  /* token, kv and engine rows alike */
+#answers .tok { height: 18px; border-radius: 3px; border: 1px dashed var(--rule); display: grid; place-items: center;
+  font: 0/0 var(--mono); overflow: hidden; white-space: nowrap; color: transparent; transition: background-color .25s; }  /* the word is the tooltip */
+#answers .tok.v { background: var(--old-soft); border: 1px solid var(--old); color: var(--ink); font-weight: 400; }
+#answers .tok.n { background: var(--new-soft); border: 1px solid var(--new); color: var(--ink); font-weight: 400; }
+#answers .tok.mix { background: repeating-linear-gradient(135deg, var(--new-soft) 0 5px, var(--old-soft) 5px 9px);
+  border: 1px solid var(--new); color: var(--ink); }
+#answers .tok.waste { background: linear-gradient(135deg, transparent 42%, var(--waste) 42%, var(--waste) 58%, transparent 58%); border: 1px solid var(--waste); color: var(--waste); }
+#answers .kv { height: 10px; border-radius: 2px; background: none; border: 1px dashed var(--rule); transition: background-color .35s; }
+#answers .kv.v { background: var(--old); border-color: var(--old); }
+#answers .kv.n { background: var(--new); border-color: var(--new); }
+#answers .kv.flash { animation: flash .6s ease-out; }
+@keyframes flash { from { box-shadow: 0 0 0 3px var(--new-soft); } to { box-shadow: 0 0 0 0 transparent; } }
+#answers .barrow { display: grid; grid-template-columns: 52px 1fr; gap: 2px; align-items: center; }
+#answers .bar { position: relative; height: 14px; border-radius: 3px; overflow: hidden; background: var(--paper); }
+#answers .seg { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font: 0/0 var(--mono);  /* the phase is the tooltip and the readout */
+  color: var(--ink); white-space: nowrap; overflow: hidden; border-right: 1px solid var(--panel); }
+#answers .seg.gen { background: var(--old-soft); } #answers .seg.gen2 { background: var(--new-soft); }
+#answers .seg.drain { background: repeating-linear-gradient(90deg, var(--old-soft) 0 3px, var(--paper) 3px 6px); }
+#answers .seg.idle { background: var(--paper); color: var(--muted); }
+#answers .seg.push { background: var(--ink); color: var(--panel); }
+#answers .seg.rec { background: var(--new); color: var(--panel); }
+#answers .seg.train { background: var(--muted); opacity: 0.55; }
+#answers .seg.tidle { background: var(--paper); }
+#answers .seg.ready { background: repeating-linear-gradient(90deg, var(--new-soft) 0 3px, var(--paper) 3px 6px); }
+#answers .cursor { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); }
+#answers .readout { display: block; min-height: 3em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 12px var(--mono); color: var(--muted); margin-top: 6px;
+  margin-left: 54px; font-variant-numeric: tabular-nums; }
+#answers .readout b { color: var(--ink); font-weight: 600; }
+#answers .lane .note { margin-left: 54px; margin-top: 6px; font-size: 0.9rem; line-height: 1.5; }
+@container (max-width: 330px) { #answers .readout { white-space: normal; min-height: 6em; } #answers .lane .note { margin-left: 0; } }
+#answers .lane h3 a { display: none; }
+@media (max-width: 720px) {
+  #answers .tok { font-size: 0; height: 16px; }
+  #answers .seg { font-size: 0; }
+}
+@media (prefers-reduced-motion: reduce) { #answers .tok, #answers .kv { transition: none; } #answers .kv.flash { animation: none; } }
+
+/* A value's bar inside its table cell. */
+td.barcell { min-width: 11rem; }
+td.barcell span { display: inline-block; height: 8px; border-radius: 2px; background: var(--old); vertical-align: middle;
+  margin-right: 8px; }
+.tslider { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.tslider input { flex: 1 1 220px; min-width: 0; accent-color: var(--old); }
+.tslider output { font: 600 0.9rem var(--mono); min-width: 8ch; font-variant-numeric: tabular-nums; }
+.tslider button { font: 600 0.75rem/1 var(--mono); padding: 7px 11px; border-radius: 999px;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--muted); cursor: pointer; }
+</style>
+
+<main>
+  <header class="head">
+    <div class="eyebrow">Async RL weight-update regimes on vLLM 0.30 · Qwen3-0.6B-Base · GSM8K</div>
+    <h1>halfwritten</h1>
+    <p class="lede">When an RL trainer publishes new weights, some of the engine's answers are only half-written. This
+      page shows the ways to handle them and what the measurements say. Every number is rebuilt from
+      the result files with <code>python -m bench.dashboard</code>.</p>
+    <div class="meta" id="meta"></div>
+    <nav class="links" aria-label="On this page and in the repository">
+      <a href="#answers">The regimes</a>
+      <a href="#grid">The pre-registered run</a>
+      <a href="#standing">What we know</a>
+      <a href="#throughput">Throughput</a>
+      <a href="#pilot">The first pilot</a>
+      <a href="#mechanism">Stale KV</a>
+      <a href="../NOTEBOOK.md">Notebook</a>
+      <a href="../HYPOTHESES.md">Pre-registration</a>
+      <a href="../RUN.md">Reproduce</a>
+      <a href="../data/README.md">Archived evidence</a>
+    </nav>
+  </header>
+
+  <section id="answers">
+    <h2>Six ways to handle a half-written answer</h2>
+    <p class="lede">Time runs left to right on the same wall clock in every lane; nothing else is shared. Each lane
+      follows one answer, which started on weights <b class="v">v</b>, and the two processes behind it: the engine that
+      generates and the trainer that updates. The weight update, when <b class="n">v+1</b> is copied into the engine, is the black segment on
+      each lane's bars; it comes when the regime allows it: at once in the in-flight and abort regimes, after the running
+      answers finish in the drain, and only after the batch and the trainer's turn in the synchronous regime, where the
+      two take turns and the trainer has nothing to train on until the batch ends. Each token is coloured by the weights that sampled it, and the bar under it by the weights
+      that computed its cached keys and values (KV), which every later token reads. Hover a cell for its word; the
+      readout names the engine's phase at the cursor. A schematic of the mechanism; the measurements follow. The
+      seventh regime, versioned LoRA adapters (F), needs adapters and belongs to the LoRA tier.</p>
+    <div class="controls">
+      <button id="rx-play" type="button" aria-label="Play">Play</button>
+      <div class="scrub">
+        <input id="rx-t" type="range" min="0" max="24" step="1" value="11" aria-label="Engine step">
+      </div>
+    </div>
+    <div class="key">
+      <span><i class="sw" style="background:var(--old)"></i>weights v</span>
+      <span><i class="sw" style="background:var(--new)"></i>weights v+1</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(135deg,var(--new-soft) 0 4px,var(--old-soft) 4px 7px);border:1px solid var(--new)"></i>v+1 reading v's KV</span>
+      <span><i class="sw" style="border:1px solid var(--waste);background:linear-gradient(135deg,transparent 42%,var(--waste) 42%,var(--waste) 58%,transparent 58%)"></i>discarded</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(90deg,var(--old-soft) 0 3px,var(--paper) 3px 6px)"></i>draining</span>
+      <span><i class="sw" style="background:var(--ink)"></i>weight update</span>
+      <span><i class="sw" style="background:var(--muted);opacity:0.55"></i>training</span>
+      <span><i class="sw" style="background:var(--paper);border:1px dashed var(--rule)"></i>idle</span>
+    </div>
+    <div class="lanes" id="rx-lanes"></div>
+    <h3>What vLLM 0.30.0 actually did</h3>
+    <p class="note" id="rx-measured-note"></p>
+    <div class="panel scroll"><table id="rx-measured"></table></div>
+  </section>
+
+  <section id="grid">
+    <h2>The pre-registered run</h2>
+    <p class="note" id="grid-note"></p>
+    <div id="grid-panels" style="display:grid;gap:16px"></div>
+  </section>
+
+  <section id="standing">
+    <h2>What we know so far</h2>
+    <div class="findings" id="findings"></div>
+  </section>
+
+  <section id="throughput">
+    <h2>Other runs on this harness</h2>
+    <p class="note" id="tp-note"></p>
+    <div class="panel scroll"><table id="tp"></table></div>
+    <div class="grid2">
+      <div class="panel chart" id="tl-A"></div>
+      <div class="panel chart" id="tl-D"></div>
+    </div>
+  </section>
+
+  <section id="pilot">
+    <h2>The first pilot from W0</h2>
+    <p class="note">A, D and E from the shared warm start W0, one seed each, ten minutes on two H100s, every snapshot
+      scored on GSM8K test. Drag T: accuracy at T reads one point on each curve; the area (the primary endpoint) is the
+      curve's mean height over the shaded span.</p>
+    <div class="panel chart" id="pilot-panel"></div>
+  </section>
+
+  <section id="s1">
+    <h2>The synchronous learning curves</h2>
+    <p class="note">Arm A from the base model on each task, a snapshot every 20 to 25 steps scored greedily: where the
+      warm start W0 sits and how long the climb lasts. On GSM8K the curve placed W0 at step 50 with 300 steps of climb
+      left. On MATH it reached its plateau by step 40 with no settled snapshot left below it, which is why the
+      pre-registered MATH grid did not run and the climb tier starts every arm at the base model.</p>
+    <div class="grid2">
+      <div class="panel chart" id="ch-s1"></div>
+      <div class="panel chart" id="ch-s1len"></div>
+      <div class="panel chart" id="ch-s1-math"></div>
+    </div>
+  </section>
+
+  <section id="mechanism">
+    <h2>How wrong is a stale KV cache?</h2>
+    <p class="note">Phase 1 teacher-forces answers through checkpoints k optimiser steps apart and compares three
+      next-token distributions at each position after a swap. Drift is KL(OLD‖FRESH). R is how much of that drift a
+      stale cache keeps: KL(FRESH‖STALE) / KL(FRESH‖OLD), as a ratio of means. At R = 1 a stale cache is as wrong as
+      the old weights; at R = 0 it is harmless.</p>
+    <div class="grid2">
+      <div class="panel chart" id="ch-drift"></div>
+      <div class="panel chart" id="ch-R"></div>
+      <div class="panel chart" id="ch-decay"></div>
+      <div class="panel chart" id="ch-layers"></div>
+    </div>
+    <div class="tabs" role="tablist" id="p1tabs"></div>
+    <div class="panel scroll"><table id="p1table"></table></div>
+  </section>
+
+  <section id="noise">
+    <h2>The noise floor</h2>
+    <p class="note">The engine samples; the trainer recomputes the log-probability of every sampled token from the
+      very same weights. k3 estimates KL(engine‖trainer) per token. Swap conditions push identical weights mid-answer,
+      so any change is the swap's doing; they force answers to full length, so they compare with the forced row.</p>
+    <div class="panel scroll"><table id="floors"></table></div>
+  </section>
+</main>
+
+<script>
+const DATA = /*DATA*/;
+const $ = (id) => document.getElementById(id);
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (v, d = 3) => v === null || v === undefined || Number.isNaN(v) ? "" :
+  (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en") : (Math.abs(v) < 0.01 && v !== 0 ? v.toExponential(1) : (+v).toPrecision(d)));
+const pct = (v) => v === null || v === undefined ? "" : `${Math.round(100 * v)}%`;
+const pill = (text, kind) => `<span class="pill ${kind || ""}">${text}</span>`;
+
+// -- header and findings
+const rowsN = DATA.rows.length, valid = DATA.rows.filter(r => r.valid).length;
+$("meta").innerHTML = [
+  pill("2× H100 SXM · vLLM 0.30.0 · Qwen3-0.6B-Base · GSM8K", "old"),
+  DATA.canaries.length ? pill("canary under load: passing", "good") : pill("canary under load: not in this archive", "warn"),
+  pill(`${valid}/${rowsN} current rows valid`, valid === rowsN ? "good" : "bad"),
+  ...(DATA.rows.some(r => r.harness) ? [pill(`${DATA.rows.filter(r => r.harness).length} outside the harness rule`, "warn")] : []),
+  ...(DATA.status ? [pill(DATA.status, "warn")] : []),
+  pill(DATA.updated || "as of 2026-10-02"),
+].join("");
+
+// -- what the canary saw: the newest loaded D and E verdicts, judged on decisive positions
+(() => {
+  const latest = (reg) => DATA.canaries.filter(c => c.regime === reg && c.loaded && c.passed_now && c.decisive).pop();
+  const D = latest("D"), E = latest("E");
+  if (!D || !E) { $("rx-measured-note").textContent = "No loaded canary with decisive positions in the archive yet."; return; }
+  $("rx-measured-note").innerHTML = `On two H100s, under the runs' load (255 answers alongside), the canary pushed a
+    version-revealing update into a running engine mid-answer, then teacher-forced three hypotheses over what came out:
+    OLD weights, FRESH (new weights, recomputed KV) and STALE (new weights over the old KV). Shares are of the tokens
+    after the swap; a decisive position is one where STALE and FRESH each beat the other's token by more than 2 bf16
+    ulps, so no near-tie decides it.`;
+  $("rx-measured").innerHTML = `<tr><th>After the swap</th><th>Swap at token</th><th>Matches OLD</th><th>Matches STALE</th>
+    <th>Matches FRESH</th><th>Decisive positions</th><th class="l">Its own hypothesis there</th></tr>` +
+    [[D, "D: keep, cache kept"], [E, "E: keep, cache cleared"]].map(([c, name]) => `<tr><td>${name}</td>
+      <td>${c.boundary} of ${c.total}</td><td>${pct(c.old)}</td><td>${pct(c.stale)}</td><td>${pct(c.fresh)}</td>
+      <td>${c.decisive}</td><td class="l">${pill(`${c.want.toUpperCase()} ${pct(c.own_on_decisive)}`, "good")}</td></tr>`).join("");
+})();
+
+const p1 = (compute, gpu) => DATA.phase1.find(p => p.compute === compute && (!gpu || p.gpu === gpu));
+const fp32 = p1("fp32"), bf16 = p1("bf16", "H100 NVL");
+const at = (study, lag) => study ? study.table.find(t => t.lag === lag) : null;
+const span = (study, key, minLag = 1) => {  // "lo-hi%" over every lag >= minLag
+  const v = study ? study.table.filter(t => t.lag >= minLag && t[key] !== undefined && t[key] !== null).map(t => t[key]) : [];
+  return v.length ? `${Math.round(100 * Math.min(...v))}-${Math.round(100 * Math.max(...v))}%` : "";
+};
+const s1 = (DATA.curves || []).find(c => c.tag === "s1" && c.file === "evals.jsonl");
+const s1math = (DATA.curves || []).find(c => c.tag === "sync-curve" && c.task === "math" && c.file === "evals.jsonl");
+$("findings").innerHTML = DATA.findings.map(f =>
+  `<div class="finding"><div>${pill(f.state, f.kind)}</div><div><p><b>${f.title}</b> ${f.text}</p></div></div>`).join("");
+
+// -- throughput: one row per run on the current harness, grouped by regime
+const NAMES = { A: "A sync", B: "B drain", C1: "C1 abort, resume", D: "D stale KV", E: "E fresh KV", F: "F versioned LoRA" };
+const ORDER = ["A", "B", "C1", "D", "E", "F"];
+const tpKey = (r) => [r.task, r.regime, r.lora, r.tag, r.budget_s, r.from_w0, r.filtered, r.api_servers].join("|");
+const mean = (v) => v.length ? v.reduce((s, x) => s + x, 0) / v.length : null;
+// the rows no experiment panel covers (an analysis names its task and tag): certification, pilots, calibration
+const covered = new Set((DATA.analyses || []).map(a => `${a.task || "gsm8k"}|${a.tag || ""}`));
+const tpSource = DATA.rows.filter(r => !covered.has(`${r.task}|${r.tag || ""}`));
+const tpGroups = new Map();
+for (const r of tpSource) { const k = tpKey(r); if (!tpGroups.has(k)) tpGroups.set(k, []); tpGroups.get(k).push(r); }
+// rows of one kind (task, regime, tag, length, start, API servers) are pooled: a grid's seeds read as one line per arm
+const tpRows = [...tpGroups.values()].map(g => {
+  const m = (f) => mean(g.map(f).filter(x => x !== null && x !== undefined));
+  const recorded = g.every(r => r.cuts && r.cuts.recorded);
+  return { ...g[0], n: g.length, steps_per_hour: m(r => r.steps_per_hour), goodput: m(r => r.goodput), lag_mean: m(r => r.lag_mean),
+    stale_kv_share: m(r => r.stale_kv_share), fence_p50: m(r => r.fence_p50), host_cpu: m(r => r.host_cpu),
+    cuts: recorded ? { recorded: true, exact: g.reduce((s, r) => s + r.cuts.exact, 0), n: g.reduce((s, r) => s + r.cuts.n, 0) } : g[0].cuts,
+    harness: g.filter(r => r.harness).map(r => r.harness).join("; ") || null, flagged: g.filter(r => r.harness).length };
+}).sort((a, b) => (a.api_servers === 1) - (b.api_servers === 1) || (a.task > b.task) - (a.task < b.task) || (a.tag !== "") - (b.tag !== "") ||
+  ORDER.indexOf(a.regime) - ORDER.indexOf(b.regime) || a.lora - b.lora || (b.budget_s - a.budget_s) || (a.tag > b.tag) - (a.tag < b.tag));
+const maxRate = Math.max(...tpRows.map(r => r.steps_per_hour || 0));
+const run = (r) => `${r.tag ? r.tag : "the grid"}${r.n > 1 ? `, ${r.n} rows` : ""}: ${r.from_w0 ? "from W0" : "from base"}` +
+  `${r.filtered ? ", filtered prompts" : ""}, ${Math.round(r.budget_s / 60)} min${r.task !== "gsm8k" ? `, ${r.task}` : ""}`;
+const flagged = DATA.rows.filter(r => r.harness).length;
+$("tp-note").textContent = `${covered.size ? "The runs outside the grid panels above (certification, pilots, calibration), on" : "Every run on"} the current harness (two H100 SXM, vLLM 0.30.0, fp32 head), ` +
+  `${valid === rowsN ? "every invariant green" : `${rowsN - valid} with a failed invariant`}` +
+  `${flagged ? `; ${flagged} ran outside the pre-registered harness rule (decision 7: fence p50 or loop lag over its limit), ` +
+  "shown with the diagnostic: the analysis applies the rule, and its limit is reviewed on the data" : ""}. ` +
+  "Rows of one kind (task, regime, tag, length, start, API servers) are pooled into one line with their means, so a grid's seeds read as one line per arm. " +
+  "Cuts: how many syncs found every counted token delivered (the exact fence); a run without that record was cut by the older window fence. " +
+  "Runs differ in start and length, so compare within a kind of run; the LoRA factor's runs use one API server, which by itself costs D a third of its steps.";
+const cuts = (r) => !r.cuts ? "" : r.cuts.recorded ? `${r.cuts.exact}/${r.cuts.n}` : `<span class="muted" title="no fence record: the window fence">${r.cuts.n}, window</span>`;
+$("tp").innerHTML = `<tr><th class="l">Regime</th><th class="l">Run</th><th>API servers</th><th class="l">Optimiser steps / hour</th>
+  <th>Tokens/s</th><th>Mean lag</th><th>Stale-KV share</th><th>Cuts exact</th><th>Fence p50</th><th>Controller CPU</th></tr>` +
+  tpRows.map(r => `<tr><td class="l">${NAMES[r.regime] || r.regime}${r.lora && r.regime !== "F" ? " + in-place LoRA" : ""}</td>
+    <td class="l">${run(r)}${r.harness ? ` ${pill(`${r.flagged > 1 ? `${r.flagged} rows ` : ""}outside the harness rule`, "warn")} <span class="muted">${r.harness}</span>` : ""}</td>
+    <td>${r.api_servers ?? ""}</td><td class="l barcell"><span style="width:${(7 * (r.steps_per_hour || 0) / maxRate).toFixed(2)}rem"></span>${fmt(r.steps_per_hour)}</td>
+    <td>${fmt(r.goodput)}</td><td>${fmt(r.lag_mean, 2)}</td><td>${r.regime === "D" ? pct(r.stale_kv_share) : ""}</td><td>${cuts(r)}</td>
+    <td>${r.fence_p50 ? `${Math.round(1000 * r.fence_p50)} ms` : ""}</td><td>${pct(r.host_cpu)}</td></tr>`).join("");
+
+// -- the pre-registered run: one panel per experiment (a bench.stats file given with --analysis): its arms' mean
+//    curves over seeds (the band is the seeds' range), the arms table and the contrasts, all read from the analysis
+const armOf = (x) => x.regime + (x.lora && x.regime !== "F" ? "+lora" : "");
+function renderGrid() {
+  const host = $("grid-panels"), note = $("grid-note"), analyses = DATA.analyses || [];
+  if (!analyses.length) {
+    note.textContent = "The grid has not run yet: the first pilot below is the evidence so far, and HYPOTHESES.md says what the grid tests.";
+    host.innerHTML = ""; return;
+  }
+  note.textContent = "Each panel is one experiment under its pre-registration or recorded amendment (HYPOTHESES.md): its arms from one " +
+    "start (GSM8K's warm start W0; the base model for MATH's climb tier), the same prompts, seeds and wall-clock budget T on two H100s, " +
+    "every snapshot scored on the held-out test split. " +
+    "Lines are the mean over seeds at each snapshot and bands the seeds' range; the tables read the analysis file (bench.stats).";
+  const colors = { A: css("--muted"), B: css("--good"), C1: css("--warn"), D: css("--new"), E: css("--old"), F: css("--bad") };
+  const colorOf = (arm) => colors[arm.split("+")[0]] || css("--ink");
+  const ci = (c, d = 1) => c ? `[${(100 * c[0]).toFixed(d)}, ${(100 * c[1]).toFixed(d)}]` : "";
+  host.innerHTML = analyses.map((an, i) => {
+    const tag = an.tag || "", task = an.task || "gsm8k", title = `${task.toUpperCase()}${tag ? ` · ${tag}` : ""}`;
+    const rows = DATA.rows.filter(r => r.task === task && (r.tag || "") === tag);
+    const budget = rows.length ? Math.max(...rows.map(r => r.budget_s || 0)) : 0;
+    const rate = (arm) => mean(rows.filter(r => armOf(r) === arm).map(r => r.steps_per_hour).filter(Boolean));
+    const ttt = (a) => a.time_to_threshold && a.time_to_threshold.median != null ? `${(a.time_to_threshold.median / 60).toFixed(1)} min` +
+      (a.time_to_threshold.never ? ` (${a.time_to_threshold.never} never)` : "") : "";
+    const armsTable = `<table><tr><th class="l">Arm</th><th>Seeds</th><th>Steps / hour</th><th>Steps at T</th><th>Accuracy at T</th>
+      <th>IQM at T</th><th>Area to T</th><th>Time to ${pct(an.threshold)}</th></tr>` +
+      Object.entries(an.arms || {}).map(([arm, a]) => !("accuracy_T" in a)  // an emulated arm the analysis could not form
+        ? `<tr><td class="l">${NAMES[arm] || arm}</td><td colspan="7" class="l muted">not computed${a.missing ? ` (${typeof a.missing === "string" ? a.missing : [...new Set(Object.values(a.missing))].join("; ")})` : ""}</td></tr>`
+        : `<tr><td class="l"><i style="display:inline-block;width:12px;height:3px;background:${colorOf(arm)};vertical-align:middle;margin-right:6px"></i>${NAMES[arm] || arm}</td>
+        <td>${a.seeds.length}</td><td>${fmt(rate(arm))}</td><td>${fmt(a.final_steps)}</td><td>${(100 * a.accuracy_T).toFixed(1)}%</td>
+        <td>${(100 * a.iqm).toFixed(1)}%</td><td>${(100 * a.auc).toFixed(1)}%</td><td>${ttt(a)}</td></tr>`).join("") + "</table>";
+    const fam = Object.entries(an.family || {});
+    const famTable = fam.length ? `<table><tr><th class="l">Contrast (${an.primary === "auc" ? "area to T" : an.primary})</th><th>Seeds</th>
+      <th>Difference (points)</th><th>95% CI</th><th>Holm p</th><th class="l">Verdict</th></tr>` +
+      fam.map(([k, t]) => "diff" in t ? `<tr><td class="l">${k}</td><td>${t.seeds.length}</td><td>${(100 * t.diff).toFixed(1)}</td><td>${ci(t.ci95)}</td>
+          <td>${t.p_holm.toPrecision(2)}</td><td class="l">${t.verdict}</td></tr>`
+        : `<tr><td class="l">${k}</td><td></td><td colspan="4" class="l muted">not computed (${t.missing || ""})</td></tr>`).join("") + "</table>" : "";
+    const eq = an.equivalence || [];
+    const eqTable = eq.length ? `<table><tr><th class="l">Equivalence, delta ${(100 * an.delta).toFixed(0)} points</th><th class="l">Result</th><th>90% CI</th></tr>` +
+      eq.map(c => `<tr><td class="l">${c.contrast} <span class="muted">${c.family === 2 ? "at matched optimiser steps (H2)" : "area over wall clock (H4)"}</span></td><td class="l">${c.result}${c.verdict ? `, ${c.verdict}` : ""}</td><td>${ci(c.ci90)}</td></tr>`).join("") + "</table>" : "";
+    const excluded = an.excluded && an.excluded.length ? `${an.excluded.length} row(s) excluded: ${an.excluded.map(e => e.reason).join("; ")}.` : "No row excluded.";
+    // throughput by regime, the grid's rows: one line per arm with the seeds' spread, the sync's cost beside it
+    const sd = (v) => v.length > 1 ? Math.sqrt(v.reduce((s, x) => s + (x - mean(v)) ** 2, 0) / (v.length - 1)) : null;
+    const tpTable = `<table><tr><th class="l">Arm</th><th>Rows</th><th>Steps / hour</th><th>Tokens / s</th><th>Goodput tokens / s</th>
+      <th>Syncs per row</th><th>Sync p50</th><th>Pause p50</th></tr>` +
+      Object.keys(an.arms || {}).filter(arm => rows.some(r => armOf(r) === arm)).map(arm => {
+        const g = rows.filter(r => armOf(r) === arm), m = (f) => mean(g.map(f).filter(x => x !== null && x !== undefined));
+        const v = g.map(r => r.steps_per_hour).filter(Boolean), ms = (x) => x === null || x === undefined ? "" : `${Math.round(1000 * x)} ms`;
+        return `<tr><td class="l"><i style="display:inline-block;width:12px;height:3px;background:${colorOf(arm)};vertical-align:middle;margin-right:6px"></i>${NAMES[arm] || arm}</td>
+          <td>${g.length}</td><td>${fmt(mean(v))}${sd(v) !== null ? ` <span class="muted">± ${fmt(sd(v), 2)}</span>` : ""}</td><td>${fmt(m(r => r.tokens_per_s))}</td>
+          <td>${fmt(m(r => r.goodput))}</td><td>${fmt(m(r => r.syncs))}</td><td>${ms(m(r => r.sync_p50))}</td><td>${ms(m(r => r.pause_p50))}</td></tr>`;
+      }).join("") + "</table>";
+    return `<div class="grid2"><div class="panel chart" id="grid-chart-${i}"></div>
+      <div class="panel scroll"><h3>${title}: the arms at T = ${Math.round(budget / 60)} min</h3>${armsTable}
+      <p class="cap">${excluded}${an.best ? ` Best async arm by steps/hour (the systems map): ${an.best}.` : ""}</p></div></div>` +
+      (famTable || eqTable ? `<div class="grid2">${famTable ? `<div class="panel scroll">${famTable}</div>` : ""}${eqTable ? `<div class="panel scroll">${eqTable}</div>` : ""}</div>` : "") +
+      `<div class="grid2"><div class="panel chart" id="grid-tp-${i}"></div><div class="panel scroll"><h3>${title}: throughput by regime, the grid's rows</h3>${tpTable}
+      <p class="cap">Means over the grid's rows. A sync is the engine's pause to its resume, the push included (p50 over a row's syncs); the pause alone is the
+      fence's wait for every counted token (p50). Goodput counts the tokens the trainer consumed.</p></div></div>`;
+  }).join("");
+  analyses.forEach((an, i) => {
+    const tag = an.tag || "", task = an.task || "gsm8k", el = $(`grid-chart-${i}`);
+    const curves = (DATA.curves || []).filter(c => c.task === task && (c.tag || "") === tag && c.split === "test" && c.file === "evals.jsonl");
+    const series = Object.keys(an.arms || {}).filter(arm => "accuracy_T" in an.arms[arm]).map(arm => {
+      const cs = curves.filter(c => armOf(c) === arm), byT = new Map();
+      for (const c of cs) for (const p of c.points) if (p.t !== null && p.t !== undefined) {
+        const k = Math.round(p.t * 10) / 10; if (!byT.has(k)) byT.set(k, []); byT.get(k).push(p.acc); }
+      const points = [...byT.entries()].sort((a, b) => a[0] - b[0]).map(([t, v]) => ({ x: t / 60, y: mean(v), lo: Math.min(...v), hi: Math.max(...v) }));
+      return { name: `${NAMES[arm] || arm} (${cs.length} seed${cs.length === 1 ? "" : "s"})`, color: colorOf(arm), points };
+    }).filter(s => s.points.length);
+    stripChart($(`grid-tp-${i}`), an, DATA.rows.filter(r => r.task === task && (r.tag || "") === tag), colorOf, task, tag);
+    if (!series.length) { el.innerHTML = '<p class="cap">The curves are not in this archive.</p>'; return; }
+    const ys = series.flatMap(s => s.points.flatMap(p => [p.lo, p.hi])), xs = series.flatMap(s => s.points.map(p => p.x));
+    const y0 = Math.floor((Math.min(...ys) - 0.005) * 50) / 50, y1 = Math.ceil((Math.max(...ys) + 0.005) * 50) / 50, x1 = Math.max(...xs);
+    const yticks = []; for (let v = y0; v <= y1 + 1e-9; v += 0.02) yticks.push(Math.round(v * 1000) / 1000);
+    const xticks = []; for (let v = 0; v <= x1 + 1e-9; v += x1 > 12 ? 5 : 1) xticks.push(v);
+    lineChart(el, { title: `${task.toUpperCase()}${tag ? ` · ${tag}` : ""}: held-out accuracy by wall clock from W0, mean over seeds`,
+      xticks, yticks, xmin: 0, xmax: x1, ymin: y0, ymax: y1, yfmt: (v) => `${Math.round(100 * v)}%`,
+      xlabel: "minutes of training from W0", ylabel: "greedy accuracy on test", series,
+      caption: "One line per arm, the mean of its seeds at each snapshot; the band is the seeds' range. The endpoint comparisons are in the table beside it and in the findings." });
+  });
+}
+
+// -- the throughput strip: one column per arm, a dot per row (its seed), a bar at the mean
+function stripChart(el, an, rows, colorOf, task, tag) {
+  const arms = Object.keys(an.arms || {}).filter(arm => rows.some(r => armOf(r) === arm));
+  if (!arms.length) { el.innerHTML = '<p class="cap">The grid\'s rows are not in this archive.</p>'; return; }
+  const W = 520, H = 260, m = { l: 58, r: 14, t: 16, b: 40 }, step = (W - m.l - m.r) / arms.length;
+  const all = rows.map(r => r.steps_per_hour).filter(Boolean), y1 = Math.ceil(Math.max(...all) * 1.08 / 200) * 200;
+  const sy = (v) => H - m.b - (H - m.t - m.b) * v / y1;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Optimiser steps per hour by regime, one dot per row">`;
+  for (let v = 0; v <= y1; v += y1 > 1200 ? 400 : 200) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${v.toLocaleString("en")}</text>`;
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/>`;
+  svg += `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle">optimiser steps per hour</text>`;
+  arms.forEach((arm, i) => {
+    const g = rows.filter(r => armOf(r) === arm && r.steps_per_hour), x = m.l + step * (i + 0.5), c = colorOf(arm);
+    const mu = g.reduce((s, r) => s + r.steps_per_hour, 0) / g.length;
+    svg += `<text x="${x}" y="${H - m.b + 15}" text-anchor="middle">${NAMES[arm] || arm}</text>`;
+    svg += `<line x1="${x - step * 0.32}" x2="${x + step * 0.32}" y1="${sy(mu).toFixed(1)}" y2="${sy(mu).toFixed(1)}" stroke="${c}" stroke-width="3"/>`;
+    svg += `<text x="${x}" y="${(sy(mu) - 8).toFixed(1)}" text-anchor="middle" style="fill:${c}">${Math.round(mu).toLocaleString("en")}</text>`;
+    g.forEach((r, j) => { const jx = x + (g.length > 1 ? (j / (g.length - 1) - 0.5) * step * 0.5 : 0);
+      svg += `<circle cx="${jx.toFixed(1)}" cy="${sy(r.steps_per_hour).toFixed(1)}" r="3.2" fill="${c}" opacity="0.75"><title>${r.label}: ${Math.round(r.steps_per_hour)} steps/h</title></circle>`; });
+  });
+  svg += `</svg>`;
+  el.innerHTML = `<h3>${task.toUpperCase()}${tag ? ` · ${tag}` : ""}: optimiser steps per hour by regime</h3>${svg}
+    <p class="cap">One dot per grid row, the bar at the arm's mean. The same wall-clock budget T for every row: the async arms' extra steps are the engine never waiting for the trainer.</p>`;
+}
+
+// -- timelines
+function gantt(el, tl, title, caption) {
+  el.hidden = !tl || !tl.lanes;  // no empty panel
+  if (el.hidden) { el.innerHTML = ""; return; }
+  const lanes = ["engine", "trainer", "sender"], W = 520, lh = 26, top = 8, left = 64, H = top + lanes.length * (lh + 8) + 26;
+  const span = tl.window[1] - tl.window[0], sx = (t) => left + (W - left - 8) * t / span;
+  const colour = (lane, s) => lane === "engine" ? (s === "generating" ? css("--old") : (s === "idle" ? css("--idle") : css("--new"))) :
+    lane === "trainer" ? (s === "fwd_bwd" ? css("--ink") : (s === "stage" ? css("--new") : css("--idle"))) :
+    (s === "send" ? css("--new") : css("--idle"));
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">`;
+  lanes.forEach((lane, i) => {
+    const y = top + i * (lh + 8);
+    svg += `<text x="0" y="${y + lh / 2 + 4}">${lane}</text><rect x="${left}" y="${y}" width="${W - left - 8}" height="${lh}" fill="${css("--idle")}"/>`;
+    for (const [a, b, s] of tl.lanes[lane] || []) svg += `<rect x="${sx(a).toFixed(1)}" y="${y}" width="${Math.max(0.6, sx(b) - sx(a)).toFixed(1)}" height="${lh}" fill="${colour(lane, s)}"><title>${lane}: ${s} ${a.toFixed(1)}-${b.toFixed(1)} s</title></rect>`;
+  });
+  const yAxis = top + lanes.length * (lh + 8) + 4;
+  for (let t = 0; t <= span; t += 5) svg += `<text x="${sx(t)}" y="${yAxis + 12}" text-anchor="middle">${t + tl.window[0]}s</text>`;
+  svg += `</svg>`;
+  el.innerHTML = `<h3>${title}</h3>${svg}<div class="legend"><span><i class="box" style="background:${css("--old")}"></i>engine generating</span>
+    <span><i class="box" style="background:${css("--new")}"></i>pause, push, staging</span><span><i class="box" style="background:${css("--ink")}"></i>trainer forward/backward</span>
+    <span><i class="box" style="background:${css("--idle")}"></i>idle</span></div><p class="cap">${caption}</p>`;
+}
+
+// -- line charts
+function lineChart(el, opt) {
+  const W = 520, H = 300, m = { l: 58, r: 14, t: 12, b: 42 };
+  const pts = opt.series.flatMap(s => s.points.flatMap(p => [p, ...(p.lo !== undefined ? [{ x: p.x, y: p.lo }, { x: p.x, y: p.hi }] : [])]));
+  const tx = (v) => opt.xlog ? Math.log2(v) : v, ty = (v) => opt.ylog ? Math.log10(v) : v;
+  const xs = pts.map(p => tx(p.x)), ys = pts.filter(p => !opt.ylog || p.y > 0).map(p => ty(p.y));
+  const x0 = opt.xmin ?? Math.min(...xs), x1 = opt.xmax ?? Math.max(...xs);
+  const y0 = opt.ymin ?? Math.min(...ys), y1 = opt.ymax ?? Math.max(...ys);
+  const sx = (v) => m.l + (W - m.l - m.r) * (tx(v) - x0) / (x1 - x0 || 1);
+  const sy = (v) => H - m.b - (H - m.t - m.b) * (ty(v) - y0) / (y1 - y0 || 1);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.title}">`;
+  for (const v of opt.yticks) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${opt.yfmt ? opt.yfmt(v) : v}</text>`;
+  for (const v of opt.xticks) svg += `<text x="${sx(v)}" y="${H - m.b + 15}" text-anchor="middle">${opt.xfmt ? opt.xfmt(v) : v}</text>`;
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/>`;
+  svg += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">${opt.xlabel}</text>`;
+  svg += `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle">${opt.ylabel}</text>`;
+  const clip = `clip-${el.id}`;
+  svg += `<clipPath id="${clip}"><rect x="${m.l}" y="${m.t - 4}" width="${W - m.l - m.r}" height="${H - m.t - m.b + 8}"/></clipPath><g clip-path="url(#${clip})">`;
+  for (const s of opt.series) {
+    const P = s.points.filter(p => !opt.ylog || p.y > 0);
+    if (P.some(p => p.lo !== undefined)) {
+      const up = P.map((p, i) => `${i ? "L" : "M"}${sx(p.x).toFixed(1)},${sy(p.hi).toFixed(1)}`).join("");
+      const dn = P.slice().reverse().map(p => `L${sx(p.x).toFixed(1)},${sy(p.lo).toFixed(1)}`).join("");
+      svg += `<path d="${up}${dn}Z" fill="${s.color}" opacity="0.14"/>`;
+    }
+    svg += `<path d="${P.map((p, i) => `${i ? "L" : "M"}${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join("")}" fill="none" stroke="${s.color}" stroke-width="2" ${s.dash ? 'stroke-dasharray="5 4"' : ""}/>`;
+    for (const p of P) svg += `<circle cx="${sx(p.x).toFixed(1)}" cy="${sy(p.y).toFixed(1)}" r="2.8" fill="${s.color}"><title>${s.name}: ${p.x}, ${fmt(p.y)}</title></circle>`;
+  }
+  svg += `</g></svg>`;
+  el.innerHTML = `<h3>${opt.title}</h3>${svg}<div class="legend">${opt.series.map(s => `<span><i style="background:${s.dash ? `repeating-linear-gradient(90deg, ${s.color} 0 5px, transparent 5px 9px)` : s.color}"></i>${s.name}</span>`).join("")}</div>${opt.caption ? `<p class="cap">${opt.caption}</p>` : ""}`;
+}
+
+function render() {
+  renderGrid();
+  gantt($("tl-A"), DATA.timelines.A, "A, synchronous: 30 s of the pilot on two H100s", "Generation and training take turns: whichever side is not working waits.");
+  gantt($("tl-D"), DATA.timelines.D, "D, in-flight with stale KV: 30 s of the pilot on two H100s", "The engine keeps generating while the trainer steps; each sync is a short pause and a push over NCCL.");
+  if (s1) {
+    const sub = DATA.curves.find(c => c.row === s1.row && c.split === s1.split && c.file !== "evals.jsonl");
+    const band = (p) => 1.96 * Math.sqrt(p.acc * (1 - p.acc) / p.n);
+    lineChart($("ch-s1"), {
+      title: "Held-out accuracy by optimiser step (arm A, H100 NVL)", xticks: [0, 100, 200, 300, 400, 500],
+      yticks: [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8], ymin: 0.44, ymax: 0.8, xmin: 0, xmax: 500,
+      xlabel: "optimiser steps from the base model", ylabel: "greedy accuracy (95% interval)",
+      series: [{ name: `all ${s1.points[0].n} test items`, color: css("--old"),
+                 points: s1.points.map(p => ({ x: p.step, y: p.acc, lo: p.acc - band(p), hi: p.acc + band(p) })) },
+               ...(sub ? [{ name: `first ${sub.points[0].n} items`, color: css("--muted"), dash: true,
+                            points: sub.points.map(p => ({ x: p.step, y: p.acc })) }] : [])],
+      caption: "Half the gain from base to plateau comes by step 50, most of the rest by step 200. Snapshots evaluated on the same items differ by far less than the interval, which is for one policy alone.",
+    });
+    lineChart($("ch-s1len"), {
+      title: "Answer length by optimiser step", xticks: [0, 100, 200, 300, 400, 500], yticks: [100, 120, 140, 160, 180],
+      ymin: 100, ymax: 180, xmin: 0, xmax: 500, xlabel: "optimiser steps from the base model", ylabel: "mean answer tokens (greedy, test)",
+      series: [{ name: "all test items", color: css("--new"), points: s1.points.filter(p => p.tokens).map(p => ({ x: p.step, y: p.tokens })) }],
+      caption: "The answers shorten over the first 50 steps (format learning: the base model rambles past its answer), then lengthen again as reasoning improves. A warm start past step 50 skips the format phase.",
+    });
+  }
+  $("ch-s1").hidden = !s1; $("ch-s1len").hidden = !s1; $("ch-s1-math").hidden = !s1math;
+  if (s1math) {
+    const band = (p) => 1.96 * Math.sqrt(p.acc * (1 - p.acc) / p.n);
+    const pts = s1math.points.filter(p => p.step !== null && p.step !== undefined);
+    lineChart($("ch-s1-math"), {
+      title: `MATH: accuracy by optimiser step (arm A from the base model, ${s1math.split})`, xticks: [0, 50, 100, 150, 200],
+      yticks: [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55], ymin: 0.24, ymax: 0.56, xmin: 0, xmax: 200,
+      xlabel: "optimiser steps from the base model", ylabel: "greedy accuracy (95% interval)",
+      series: [{ name: `${pts[0].n} development problems`, color: css("--new"),
+                 points: pts.map(p => ({ x: p.step, y: p.acc, lo: p.acc - band(p), hi: p.acc + band(p) })) }],
+      caption: "The whole gain comes by step 40; the next 160 steps add answer length (615 to about 1,450 tokens) and no accuracy. The climb tier's ten minutes cover steps 0 to about 45 for the synchronous arm and 0 to about 70 for the others.",
+    });
+  }
+  const studies = DATA.phase1.map(p => ({ ...p, color: p.compute === "fp32" ? css("--new") : (p.gpu === "H100 NVL" ? css("--old") : css("--muted")),
+    label: `${p.compute} compute, ${p.gpu}` }));
+  if (studies.length) {  // the section is hidden without a study: nothing to draw
+  const lags = (st) => st.table.filter(t => t.lag > 0);
+  lineChart($("ch-drift"), {
+    title: "Drift between checkpoints k steps apart", xlog: true, ylog: true, xticks: [1, 2, 4, 8, 16, 32],
+    yticks: [1e-6, 1e-5, 1e-4, 1e-3, 1e-2], yfmt: (v) => v.toExponential(0), xlabel: "optimiser steps apart (k)", ylabel: "median KL(OLD‖FRESH), nats",
+    ymin: -6.6, ymax: -1.6,
+    series: studies.map(s => ({ name: s.label, color: s.color, points: lags(s).map(t => ({ x: t.lag, y: t.drift_median })) })),
+    caption: "In bf16 compute the median is flat near 1.6e-4 up to k = 4: the arithmetic's own noise. In fp32 compute it grows steadily from 4e-7.",
+  });
+  lineChart($("ch-R"), {
+    title: "How much of the drift a stale cache keeps", xlog: true, xticks: [1, 2, 4, 8, 16, 32], yticks: [0, 0.25, 0.5, 0.75, 1],
+    ymin: 0, ymax: 1.1, xlabel: "optimiser steps apart (k)", ylabel: "R (95% interval over prompts)",
+    series: studies.map(s => ({ name: s.label, color: s.color, points: lags(s).map(t => { const [lo, hi] = (t.R_ci95 || "").split("-").map(Number); return { x: t.lag, y: t.R, lo, hi }; }) })),
+    caption: `Over the 96 tokens after a swap, in fp32 compute a stale cache keeps ${span(fp32, "R")} of the old-versus-new divergence at every lag; bf16 compute is noise-dominated up to k = 2.`,
+  });
+  if (fp32) {
+    const lagColors = { 2: css("--muted"), 8: css("--old"), 32: css("--new") };
+    lineChart($("ch-decay"), {
+      title: "After the swap: R by tokens since the swap (fp32 compute)", xticks: [0, 16, 32, 48, 64, 80], yticks: [0, 0.25, 0.5, 0.75, 1],
+      ymin: 0, ymax: 1.1, xmin: 0, xmax: 88, xlabel: "tokens since the swap (8-token buckets)", ylabel: "R at those positions",
+      series: Object.entries(lagColors).map(([k, c]) => ({ name: `k = ${k}`, color: c, points: (fp32.decay[k] || []).map(([b, r]) => ({ x: b, y: r })) })),
+      caption: "The first tokens after a swap read mostly old context, so a stale cache stays close to the old policy; as the answer grows on new-weights KV, it converges.",
+    });
+    const L = [0, 1, 7, 14, 21, 27];
+    lineChart($("ch-layers"), {
+      title: "Recomputing the KV of the first l layers (fp32 compute)", xticks: L, yticks: [0, 0.25, 0.5, 0.75, 1], yfmt: (v) => `${v * 100}%`,
+      ymin: 0, ymax: 1.05, xmin: 0, xmax: 28, xlabel: "layers whose KV is recomputed (of 28)", ylabel: "share of KL(FRESH‖STALE) removed",
+      series: [2, 8, 32].map((k, i) => ({ name: `k = ${k}`, color: [css("--muted"), css("--old"), css("--new")][i],
+        points: L.map(l => ({ x: l, y: l === 0 ? 0 : Math.max(0, at(fp32, k)?.[`removed_l${l}`] ?? 0) })) })),
+      caption: `Fresh KV in the first 14 layers removes ${span(fp32, "removed_l14")}; the first 21 remove ${span(fp32, "removed_l21")}; layer 28's KV carries almost none.`,
+    });
+  }
+  }
+  // Phase 1 table with study tabs
+  const cols = [["lag", "k"], ["drift_mean", "drift mean"], ["drift_median", "drift median"], ["R", "R"], ["R_ci95", "R 95%"],
+    ["R_0_8", "R 0-7"], ["R_8_32", "R 8-31"], ["R_32_999", "R 32+"], ["alpha_median", "alpha"], ["resid_median", "resid"],
+    ["removed_l14", "14 layers"], ["removed_l21", "21 layers"]];
+  const show = (i) => {
+    const st = DATA.phase1[i];
+    $("p1tabs").querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-selected", String(i === j)));
+    $("p1table").innerHTML = `<tr>${cols.map(([, h], j) => `<th${j ? "" : ' class="l"'}>${h}</th>`).join("")}</tr>` +
+      st.table.map(t => `<tr>${cols.map(([k], j) => `<td${j ? "" : ' class="l"'}>${k === "R_ci95" ? (t[k] || "") : (k.startsWith("removed") ? pct(t[k]) : fmt(t[k], 3))}</td>`).join("")}</tr>`).join("");
+  };
+  $("p1tabs").innerHTML = DATA.phase1.map((p, i) => `<button type="button" role="tab" id="p1tab-${i}">${p.compute} compute · ${p.gpu}</button>`).join("");
+  $("p1tabs").querySelectorAll("button").forEach((b, i) => b.addEventListener("click", () => show(i)));
+  if (DATA.phase1.length) show(Math.max(0, DATA.phase1.findIndex(p => p.compute === "fp32")));
+
+  // floors
+  const names = { steady: "natural answers", steady_forced: "forced to full length", noop_keep: "after a no-op keep swap", noop_clear: "after a no-op clear swap" };
+  $("floors").innerHTML = `<tr><th>GPU</th><th class="l">vLLM head</th><th class="l">Trainer head</th><th class="l">Condition</th><th>Tokens</th>
+    <th>k3</th><th>|Δ log p| p50</th><th>p99</th><th>max</th></tr>` + DATA.floors.map(f => `<tr><td>${f.gpu}</td><td class="l">${f.engine_head}</td>
+    <td class="l">${f.trainer_head}</td><td class="l">${names[f.condition]}</td><td>${fmt(f.tokens)}</td><td>${fmt(f.k3, 2)}</td>
+    <td>${fmt(f.p50, 2)}</td><td>${fmt(f.p99, 2)}</td><td>${fmt(f.max, 2)}</td></tr>`).join("");
+
+}
+render();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+// -- a section with nothing to show in this archive stays out of the page, and out of the nav
+(() => {
+  const hide = (id, empty) => { const s = $(id); if (s) s.hidden = !!empty; };
+  hide("throughput", !tpSource.length || covered.size > 0);  // with a grid on the page, its figure is the throughput view
+  hide("pilot", !DATA.curves.some(c => c.tag === "pilot" && c.task === "gsm8k" && c.split === "test" && c.file === "evals.jsonl"));
+  hide("s1", !s1 && !s1math);
+  hide("mechanism", !DATA.phase1.length);
+  hide("noise", !DATA.floors.length);
+  document.querySelectorAll('nav.links a[href^="#"]').forEach(a => { const t = $(a.getAttribute("href").slice(1)); a.hidden = !!(t && t.hidden); });
+})();
+new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
+<script>
+// -- the regimes explainer (a schematic; one answer per regime, driven by one scrubber)
+(() => {
+  const L = 14, SWAP = 8, TMAX = 24;
+  const words = ["Natalia", " sold", " 48", " clips", " in", " April", ".", " In", " May", " she", " sold", " half",
+                 ",", " 24"];
+  const words2 = ["April", ":", " 48", ".", " May", ":", " 24", ".", " Total", ":", " 48", "+", "24", "<|endoftext|>"];
+  // Each regime: when each token is sampled (tick), by which weights, over which KV; engine bar segments.
+  const R = {
+    A: { name: "Synchronous", call: "no pause: generate the whole batch, then train, then push", lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map((x, i) => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 14, "gen", "generating on v"], [14, 20, "idle", "idle, the trainer trains"], [20, 21, "push", "weight update"],
+              [21, 24, "gen2", "next batch on v+1"]],
+        note: "The engine generates a whole batch, then stops. The trainer trains on it and updates the weights. Then the next batch starts." }; } },
+    B: { name: "Drain", call: 'pause(mode="wait")', lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map(x => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 8, "gen", "generating"], [8, 14, "drain", "draining, no new answers"], [14, 15, "push", "weight update"],
+              [15, 24, "gen2", "new answers on v+1"]],
+        note: "When new weights are ready, the engine stops taking new prompts and lets the running answers finish on the old weights. Then it updates and starts new answers." }; } },
+    C1: { name: "Abort and resume", call: 'pause(mode="abort"), then resubmit prompt + partial tokens', lane() {
+      // abort frees the answer's KV at the push; token 12 was never fed back on v. The re-prefill on v+1 rebuilds
+      // prompt + 12 tokens and, like any prefill, samples the next token in the same pass.
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "n" });
+      const kv = t.map((x, i) => i < SWAP - 1 ? [{ at: x.at + 1, ver: "v" }, { at: SWAP + 1, ver: "" }, { at: SWAP + 2, ver: "n" }]
+                             : i === SWAP - 1 ? [{ at: SWAP + 2, ver: "n" }] : [{ at: x.at + 1, ver: "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "abort, weight update"], [9, 10, "rec", "re-prefill on v+1"],
+                            [10, 24, "gen2", "generating on v+1"]],
+        note: "The engine aborts the running answers and updates. Each one is resent with the tokens it already had and continues from there on the new weights." }; } },
+    C2: { name: "Abort and discard", call: 'pause(mode="abort"), then resubmit the prompt only', lane(time) {
+      const restarted = time >= SWAP + 1;
+      const t = restarted ? words2.map((w, i) => ({ w, at: i + SWAP + 2, ver: "n" }))
+                          : words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      const kv = t.map(x => [{ at: x.at + 1, ver: restarted ? "n" : "v" }]);
+      return { t, kv, waste: restarted ? SWAP : 0,
+        bar: [[0, 8, "gen", "generating"], [8, 9, "push", "abort, weight update"], [9, 24, "gen2", "new answers on v+1"]],
+        note: "The engine aborts the running answers and updates. Each one starts over from its prompt on the new weights." }; } },
+    D: { name: "In flight, stale KV", call: 'pause(mode="keep", clear_cache=False)', lane() {
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "mix" });
+      // the KV of the last token delivered before the pause is computed after it, by the new weights
+      const kv = t.map((x, i) => [{ at: i === SWAP - 1 ? SWAP + 2 : x.at + 1, ver: i < SWAP - 1 ? "v" : "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "pause, weight update"], [9, 24, "gen2", "generating on v+1"]],
+        note: "The engine pauses, updates, and continues the running answers on the new weights. Their cache, built by the old weights, is kept as it is." }; } },
+    E: { name: "In flight, fresh KV", call: 'pause(mode="keep", clear_cache=True)', lane() {
+      // token 12's KV was never computed on v (the pause came first); the recompute builds prompt + 12 on v+1 and
+      // samples token 13 in the same pass.
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "n" });
+      const kv = t.map((x, i) => i < SWAP - 1 ? [{ at: x.at + 1, ver: "v" }, { at: SWAP + 2, ver: "n" }]
+                             : i === SWAP - 1 ? [{ at: SWAP + 2, ver: "n" }] : [{ at: x.at + 1, ver: "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "pause, weight update"], [9, 10, "rec", "recompute the cache on v+1"],
+                            [10, 24, "gen2", "generating on v+1"]],
+        note: "The engine pauses, updates, and continues the running answers on the new weights. Their cache is rebuilt by the new weights first." }; } },
+    F: { name: "Versioned LoRA", call: "no pause: load adapter v+1 under a new name", lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map(x => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 14, "gen", "this answer stays on adapter v"], [14, 24, "gen2", "new answers on adapter v+1"]],
+        note: "Both adapter versions stay loaded. An answer finishes on the adapter it started on, and nothing pauses." }; } },
+  };
+  // The final token is never fed back, so no step computes its KV.
+  for (const r of Object.values(R)) { const f = r.lane; r.lane = (time) => { const s = f(time); s.kv[s.kv.length - 1] = []; return s; }; }
+  // the trainer's schedule on the same clock: in the async regimes it trains on earlier answers throughout (in the
+  // drain it keeps training while the staged v+1 waits for the running answers: the traces put it at 97% busy on
+  // GSM8K, as D's); in the synchronous regime it waits for the batch, trains on it, and v+1 exists only after that
+  const ASYNC_TRAINER = [[0, 8, "train", "training on finished answers"], [8, 9, "push", "v+1 ready, weight update"], [9, 24, "train", "training on finished answers"]];
+  const TRAINER = {
+    A: [[0, 14, "tidle", "waiting for the batch"], [14, 20, "train", "training on this batch"], [20, 21, "push", "v+1 ready, weight update"], [21, 24, "tidle", "waiting for the next batch"]],
+    B: [[0, 8, "train", "training on finished answers"], [8, 14, "train", "training, v+1 staged"], [14, 15, "push", "weight update"], [15, 24, "train", "training on finished answers"]],
+    C1: ASYNC_TRAINER, C2: ASYNC_TRAINER, D: ASYNC_TRAINER, E: ASYNC_TRAINER, F: ASYNC_TRAINER,
+  };
+  const order = ["A", "B", "C2", "D", "E"];  // F (versioned LoRA) is the LoRA tier's
+  const lanes = document.getElementById("rx-lanes");
+  const els = {};
+  for (const key of order) {
+    const r = R[key];
+    const el = document.createElement("article");
+    el.className = "lane";
+    el.innerHTML = `<header><h3><em>${key === "C2" ? "C" : key}</em>${r.name}</h3></header>
+      <div class="strip"><span class="lab">token</span>${'<div class="tok"></div>'.repeat(L)}</div>
+      <div class="strip"><span class="lab">kv</span>${'<div class="kv"></div>'.repeat(L)}</div>
+      <div class="barrow"><span class="lab">engine</span><div class="bar"></div></div>
+      <div class="barrow"><span class="lab">trainer</span><div class="bar tbar"></div></div><div class="readout"></div><p class="note"></p>`;
+    lanes.appendChild(el);
+    els[key] = { toks: el.querySelectorAll(".tok"), kvs: el.querySelectorAll(".kv"), bar: el.querySelector(".bar:not(.tbar)"), tbar: el.querySelector(".tbar"),
+                 readout: el.querySelector(".readout"), note: el.querySelector(".note"), lastKv: [] };
+  }
+  const slider = document.getElementById("rx-t"), clock = document.getElementById("rx-clock");
+  function draw() {
+    const time = +slider.value;
+    if (clock) clock.textContent = `step ${time}`;
+    for (const key of order) {
+      const s = R[key].lane(time), e = els[key];
+      let nv = 0, nn = 0, nm = 0, stale = 0;
+      s.t.forEach((x, i) => {
+        const c = e.toks[i], on = x.at <= time;
+        c.className = "tok" + (on ? " " + (x.ver === "mix" ? "mix" : x.ver) : "");
+        c.textContent = on ? x.w : ""; c.title = on ? x.w : "";
+        if (on) { if (x.ver === "v") nv++; else if (x.ver === "n") nn++; else nm++; }
+      });
+      if (s.waste && time >= 13) {
+        for (let i = 0; i < L; i++) if (s.t[i].at > time && i < s.waste) {
+          e.toks[i].className = "tok waste"; e.toks[i].textContent = words[i]; e.toks[i].title = `${words[i]} (discarded)`;
+        }
+      }
+      s.kv.forEach((hist, i) => {
+        const cur = hist.filter(h => h.at <= time).pop();
+        const ver = cur ? cur.ver : "";
+        const k = e.kvs[i];
+        const rebuilt = ver === "n" && e.lastKv[i] !== "n" && hist.some(h => h.ver === "v" && h.at < cur.at);
+        k.className = "kv" + (ver ? " " + ver : "") + (rebuilt ? " flash" : "");
+        e.lastKv[i] = ver;
+        if (ver === "v" && s.t.some((x, j) => j > i && x.at <= time && x.ver !== "v")) stale++;
+      });
+      e.bar.innerHTML = s.bar.map(([a, b, kind, label]) =>
+        `<div class="seg ${kind}" style="left:${a / TMAX * 100}%;width:${(b - a) / TMAX * 100}%" title="${label}">${label}</div>`
+      ).join("") + `<div class="cursor" style="left:calc(${time / TMAX * 100}% - 1px)"></div>`;
+      const tr = TRAINER[key];
+      e.tbar.innerHTML = tr.map(([a, b, kind, label]) =>
+        `<div class="seg ${kind}" style="left:${a / TMAX * 100}%;width:${(b - a) / TMAX * 100}%" title="${label}"></div>`
+      ).join("") + `<div class="cursor" style="left:calc(${time / TMAX * 100}% - 1px)"></div>`;
+      const seg = s.bar.find(([a, b]) => time > a && time <= b) || s.bar[0];  // the step just taken, not the next
+      const tseg = tr.find(([a, b]) => time > a && time <= b) || tr[0];
+      e.readout.innerHTML = `engine: <b>${seg[3]}</b><br>trainer: <b>${tseg[3]}</b>`;
+      e.note.textContent = R[key].lane(time).note;
+    }
+  }
+  slider.addEventListener("input", draw);
+  let timer = null;
+  const play = document.getElementById("rx-play");
+  function stop() { clearInterval(timer); timer = null; play.textContent = "Play"; play.setAttribute("aria-label", "Play"); }
+  play.addEventListener("click", () => {
+    if (timer) return stop();
+    if (+slider.value >= TMAX) slider.value = 0;
+    play.textContent = "Pause"; play.setAttribute("aria-label", "Pause");
+    timer = setInterval(() => { slider.value = Math.min(TMAX, +slider.value + 1); draw(); if (+slider.value >= TMAX) stop(); }, 450);
+  });
+  draw();
+})();
+</script>
+<script>
+// -- the first pilot's curves, with a draggable T: accuracy at T against the area to T (the primary endpoint)
+(() => {
+  const el = $("pilot-panel");
+  // the first GSM8K pilot's test curves (DATA.curves holds the newest session's of each row and split)
+  const pilot = ["A", "D", "E"].map(arm => {
+    const c = (DATA.curves || []).find(c => c.regime === arm && c.tag === "pilot" && c.task === "gsm8k" && c.split === "test" && c.file === "evals.jsonl");
+    return c && { arm, pts: c.points.filter(p => p.t !== null && p.t !== undefined).map(p => ({ t: p.t / 60, acc: p.acc })).sort((a, b) => a.t - b.t),
+                  rate: (DATA.rows.find(r => r.label === c.row) || {}).steps_per_hour };
+  }).filter(Boolean);
+  if (!pilot.length) { el.innerHTML = '<p class="cap">The pilot\'s curves are not in this archive.</p>'; return; }
+  const accAt = (pts, T) => {
+    for (let i = 1; i < pts.length; i++) if (pts[i].t >= T) {
+      const a = pts[i - 1], b = pts[i]; return a.acc + (b.acc - a.acc) * (T - a.t) / (b.t - a.t || 1);
+    }
+    return pts[pts.length - 1].acc;
+  };
+  const areaTo = (pts, T) => {  // mean accuracy over [0, T], trapezoids on the snapshots
+    let s = 0;
+    for (let i = 1; i < pts.length && pts[i - 1].t < T; i++) {
+      const a = pts[i - 1], tb = Math.min(pts[i].t, T);
+      s += (tb - a.t) * (a.acc + accAt(pts, tb)) / 2;
+    }
+    return s / T;
+  };
+  el.innerHTML = `<h3>Held-out accuracy by wall clock from W0 (GSM8K test, one seed an arm)</h3><div class="pchart"></div>
+    <div class="tslider"><label for="pilot-T">T</label><input id="pilot-T" type="range" min="1" max="10" step="0.25" value="5">
+      <output id="pilot-T-out" for="pilot-T">5 min</output><button type="button" data-t="5">the study's T: 5 min</button>
+      <button type="button" data-t="10">10 min</button></div>
+    <div class="scroll"><table class="ptable"></table></div>
+    <p class="cap">Snapshots are linearly interpolated. One snapshot's binomial standard error is about 1.3 points, so
+      with one seed these gaps show how the two endpoints read the same curves rather than measure the arms.</p>`;
+  const input = el.querySelector("#pilot-T"), out = el.querySelector("#pilot-T-out");
+  function draw() {
+    const T = +input.value;
+    out.textContent = `${T.toFixed(2).replace(/\.?0+$/, "")} min`;
+    const colors = { A: css("--muted"), D: css("--new"), E: css("--old") };
+    const W = 520, H = 250, m = { l: 46, r: 12, t: 10, b: 38 }, x1 = 10, y0 = 0.56, y1 = 0.74;
+    const sx = (v) => m.l + (W - m.l - m.r) * v / x1, sy = (v) => H - m.b - (H - m.t - m.b) * (v - y0) / (y1 - y0);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="The first pilot's held-out accuracy against minutes, T at ${T} minutes">`;
+    svg += `<rect x="${m.l}" y="${m.t}" width="${(sx(T) - m.l).toFixed(1)}" height="${H - m.t - m.b}" fill="${css("--idle")}" opacity="0.7"/>`;
+    for (const v of [0.56, 0.6, 0.64, 0.68, 0.72]) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${Math.round(v * 100)}%</text>`;
+    for (let v = 0; v <= 10; v += 2) svg += `<text x="${sx(v)}" y="${H - m.b + 15}" text-anchor="middle">${v}</text>`;
+    svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/>`;
+    svg += `<text x="${(m.l + W - m.r) / 2}" y="${H - 5}" text-anchor="middle">minutes of training from W0</text>`;
+    for (const p of pilot) {
+      svg += `<path d="${p.pts.map((q, i) => `${i ? "L" : "M"}${sx(q.t).toFixed(1)},${sy(q.acc).toFixed(1)}`).join("")}" fill="none" stroke="${colors[p.arm]}" stroke-width="2"/>`;
+      svg += `<circle cx="${sx(T).toFixed(1)}" cy="${sy(accAt(p.pts, T)).toFixed(1)}" r="4" fill="${colors[p.arm]}"/>`;
+    }
+    svg += `<line x1="${sx(T)}" x2="${sx(T)}" y1="${m.t}" y2="${H - m.b}" stroke="${css("--ink")}" stroke-width="1.5"/>`;
+    svg += `<text x="${Math.min(sx(T) + 4, W - m.r - 40)}" y="${m.t + 12}" style="fill:${css("--ink")}">T = ${T} min</text></svg>`;
+    const A = pilot.find(p => p.arm === "A"), gap = (v) => `${v >= 0 ? "+" : "−"}${Math.abs(100 * v).toFixed(1)}`;
+    el.querySelector(".pchart").innerHTML = svg;
+    el.querySelector(".ptable").innerHTML = `<tr><th class="l">Arm</th><th>Steps/h</th><th>Accuracy at T</th><th>Area to T</th>
+      <th>vs A at T (points)</th><th>vs A in area (points)</th></tr>` + pilot.map(p => {
+        const at = accAt(p.pts, T), ar = areaTo(p.pts, T);
+        return `<tr><td class="l"><i style="display:inline-block;width:12px;height:3px;background:${colors[p.arm]};vertical-align:middle;margin-right:6px"></i>${p.arm}</td>
+          <td>${p.rate ? fmt(p.rate) : ""}</td><td>${(100 * at).toFixed(1)}%</td><td>${(100 * ar).toFixed(1)}%</td>
+          <td>${A && p !== A ? gap(at - accAt(A.pts, T)) : ""}</td><td>${A && p !== A ? gap(ar - areaTo(A.pts, T)) : ""}</td></tr>`;
+      }).join("");
+  }
+  input.addEventListener("input", draw);
+  el.querySelectorAll("button[data-t]").forEach(b => b.addEventListener("click", () => { input.value = b.dataset.t; draw(); }));
+  draw();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>

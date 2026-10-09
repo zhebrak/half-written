@@ -1,0 +1,85 @@
+{
+ "base": "Qwen/Qwen3-0.6B-Base",
+ "start": 4,
+ "snapshots": "results/gsm8k/Qwen3-0.6B-Base/H100-NVL/A-B16G8M16-K0-S1-s0/work",
+ "args": {
+  "base": "Qwen/Qwen3-0.6B-Base",
+  "snapshots": "results/gsm8k/Qwen3-0.6B-Base/H100-NVL/A-B16G8M16-K0-S1-s0/work",
+  "lags": "0,1,2,4,8,16,32",
+  "start": 4,
+  "prompts": 32,
+  "swap": "0.25,0.5,0.75",
+  "offsets": 96,
+  "max_new_tokens": 384,
+  "layers": "1,7,14,21,27",
+  "temperature": 1.0,
+  "dtype": "float32",
+  "out": "results/phase1/gsm8k-qwen3-0.6b-h100-fp32compute",
+  "seed": 0
+ },
+ "by_lag": [
+  {
+   "lag": 0,
+   "positions": 6007,
+   "alpha_median": null,
+   "R_median": null,
+   "resid_median": null,
+   "drift_median": 0.0,
+   "kl_fresh_stale_median": 0.0
+  },
+  {
+   "lag": 1,
+   "positions": 6007,
+   "alpha_median": 0.1625000238418579,
+   "R_median": 0.7356379628181458,
+   "resid_median": -0.12221132963895798,
+   "drift_median": 4.391768015921116e-07,
+   "kl_fresh_stale_median": 2.822271198965609e-07
+  },
+  {
+   "lag": 2,
+   "positions": 6007,
+   "alpha_median": 0.16750001907348633,
+   "R_median": 0.7508614659309387,
+   "resid_median": -0.03386899083852768,
+   "drift_median": 1.1469301171018742e-06,
+   "kl_fresh_stale_median": 6.949085218366235e-07
+  },
+  {
+   "lag": 4,
+   "positions": 6007,
+   "alpha_median": 0.18250001966953278,
+   "R_median": 0.7378026247024536,
+   "resid_median": 0.007999099791049957,
+   "drift_median": 9.915987902786583e-06,
+   "kl_fresh_stale_median": 5.808723472000565e-06
+  },
+  {
+   "lag": 8,
+   "positions": 6007,
+   "alpha_median": 0.2175000160932541,
+   "R_median": 0.670370876789093,
+   "resid_median": 0.01600024290382862,
+   "drift_median": 3.9704664231976494e-05,
+   "kl_fresh_stale_median": 2.0735198631882668e-05
+  },
+  {
+   "lag": 16,
+   "positions": 6007,
+   "alpha_median": 0.26750004291534424,
+   "R_median": 0.6032128930091858,
+   "resid_median": 0.02132369764149189,
+   "drift_median": 0.00022226088913157582,
+   "kl_fresh_stale_median": 0.00010750163346529007
+  },
+  {
+   "lag": 32,
+   "positions": 6007,
+   "alpha_median": 0.33000001311302185,
+   "R_median": 0.4924652576446533,
+   "resid_median": 0.022088076919317245,
+   "drift_median": 0.0013551851734519005,
+   "kl_fresh_stale_median": 0.0004838034510612488
+  }
+ ]
+}

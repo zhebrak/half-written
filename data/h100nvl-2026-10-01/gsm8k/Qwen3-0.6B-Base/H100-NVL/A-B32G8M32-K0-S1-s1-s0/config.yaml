@@ -1,0 +1,77 @@
+config:
+  regime: A
+  lora: false
+  task: gsm8k
+  model: Qwen/Qwen3-0.6B-Base
+  tag: s1
+  seed: 0
+  B: 32
+  G: 8
+  M: 32
+  K: 0
+  S: 1
+  max_tokens: 1024
+  max_model_len: 2048
+  lengths: null
+  temperature: 1.0
+  budget_s: 10800.0
+  max_steps: 1000
+  quiet_s: 0.05
+  fence_min_s: 0.0
+  timeout_s: 900.0
+  publication: staged
+  eps_max: 5.0
+  lora_rank: 1
+  reward_timeout_s: 30.0
+  reset_counts_as_preemption: true
+  snapshot_every_s: null
+  snapshot_every_steps: 25
+  init_from: null
+  prompt_filter: null
+  stop: []
+  sim:
+    prompt_len: 64
+    length_mean: 200.0
+    length_sigma: 0.8
+    empirical_lengths: null
+    max_num_seqs: 256
+    kv_tokens: 1048576
+    max_num_batched_tokens: 8192
+    delivery: immediate
+    submit_latency: 0.0
+    stats_lag: false
+    async_scheduling: false
+    cost: {}
+    train_s_fixed: 0.2
+    train_s_per_token: 3.0e-05
+    push_s: 0.05
+    adapter_push_s: 0.02
+    send_slowdown: 0.0
+    reward_p: 0.5
+    seed: 0
+  train:
+    lr: 1.0e-06
+    warmup_steps: 5
+    micro_tokens: 16384
+    gradient_checkpointing: true
+    staging_dtype: bfloat16
+    profile: false
+    device: cuda
+    model: null
+  launch:
+    engine: vllm
+    port: 8101
+    engine_gpu: '0'
+    trainer_gpu: '0'
+    weight_backend: ipc
+    master_port: 29555
+    gpu_memory_utilization: 0.35
+    async_scheduling: true
+    head_fp32: true
+    stream_interval: 1
+    api_servers: 1
+    fake_lengths: lognormal:200,0.8
+    fake_vocab: 151936
+    adapter_root: /dev/shm/halfwritten
+note: reconstructed from configs/gpu1/gsm8k_s1.yaml after the run was stopped by SIGTERM
+  near step 490 (2026-10-01 15:38 UTC); no metrics.json

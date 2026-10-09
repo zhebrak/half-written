@@ -1,0 +1,198 @@
+{
+ "marks": [
+  {
+   "tag": "t01",
+   "t": 37.5,
+   "staged": 3,
+   "engine": 3,
+   "steps": 3
+  },
+  {
+   "tag": "t02",
+   "t": 75.0,
+   "staged": 7,
+   "engine": 7,
+   "steps": 7
+  },
+  {
+   "tag": "t03",
+   "t": 112.5,
+   "staged": 11,
+   "engine": 11,
+   "steps": 11
+  },
+  {
+   "tag": "t04",
+   "t": 150.0,
+   "staged": 14,
+   "engine": 14,
+   "steps": 14
+  },
+  {
+   "tag": "t05",
+   "t": 187.5,
+   "staged": 17,
+   "engine": 17,
+   "steps": 17
+  },
+  {
+   "tag": "t06",
+   "t": 225.0,
+   "staged": 20,
+   "engine": 20,
+   "steps": 20
+  },
+  {
+   "tag": "t07",
+   "t": 262.5010000001639,
+   "staged": 22,
+   "engine": 22,
+   "steps": 22
+  },
+  {
+   "tag": "t08",
+   "t": 300.0,
+   "staged": 24,
+   "engine": 24,
+   "steps": 24
+  },
+  {
+   "tag": "t09",
+   "t": 337.5,
+   "staged": 26,
+   "engine": 26,
+   "steps": 26
+  },
+  {
+   "tag": "t10",
+   "t": 375.0010000001639,
+   "staged": 28,
+   "engine": 28,
+   "steps": 28
+  },
+  {
+   "tag": "t11",
+   "t": 412.5,
+   "staged": 30,
+   "engine": 30,
+   "steps": 30
+  },
+  {
+   "tag": "t12",
+   "t": 450.0,
+   "staged": 32,
+   "engine": 32,
+   "steps": 32
+  },
+  {
+   "tag": "t13",
+   "t": 487.5,
+   "staged": 34,
+   "engine": 34,
+   "steps": 34
+  },
+  {
+   "tag": "t14",
+   "t": 525.0010000001639,
+   "staged": 35,
+   "engine": 35,
+   "steps": 35
+  },
+  {
+   "tag": "t15",
+   "t": 562.5010000001639,
+   "staged": 37,
+   "engine": 37,
+   "steps": 37
+  },
+  {
+   "tag": "tend",
+   "t": 600.0,
+   "staged": 39,
+   "engine": 39,
+   "steps": 39
+  }
+ ],
+ "written": [
+  [
+   "t01",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t01-v3",
+   0.8100143680348992
+  ],
+  [
+   "t02",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t02-v7",
+   0.5409586331807077
+  ],
+  [
+   "t03",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t03-v11",
+   0.6121183671057224
+  ],
+  [
+   "t04",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t04-v14",
+   0.45708346972242
+  ],
+  [
+   "t05",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t05-v17",
+   0.45506453793495893
+  ],
+  [
+   "t06",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t06-v20",
+   0.4541969671845436
+  ],
+  [
+   "t07",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t07-v22",
+   0.5346243218518794
+  ],
+  [
+   "t08",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t08-v24",
+   0.5392466080375016
+  ],
+  [
+   "t09",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t09-v26",
+   0.6903860089369118
+  ],
+  [
+   "t10",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t10-v28",
+   0.6442894372157753
+  ],
+  [
+   "t11",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t11-v30",
+   0.5681052561849356
+  ],
+  [
+   "t12",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t12-v32",
+   0.5973167107440531
+  ],
+  [
+   "t13",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t13-v34",
+   0.5925238928757608
+  ],
+  [
+   "t14",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t14-v35",
+   0.7441667299717665
+  ],
+  [
+   "t15",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/t15-v37",
+   0.5789914256893098
+  ],
+  [
+   "tend",
+   "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1/work/tend-v39",
+   0.586679887957871
+  ]
+ ]
+}

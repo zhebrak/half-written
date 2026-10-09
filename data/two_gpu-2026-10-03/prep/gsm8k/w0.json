@@ -1,0 +1,10 @@
+{
+ "w0": "w0/model.safetensors",
+ "sha256": "568716f7029a4be7f0f4e582b91ed0f450274a1d7a1ad29e40b243ff9b168ea8",
+ "pass8.json": "e545bf1b00dd9ef7381b6971cf10e5e3a2b0b0302e0420e4241d05dc0050ed09",
+ "w0-lengths.parquet": "181b1dcd58d3ac55089c11ab9374e7c043ea160db59e4695cee1773d3f79dbd7",
+ "repo": "zhebrak/halfwritten-warm-starts",
+ "revision": "TODO-pin-after-upload",
+ "source": "local snapshot",
+ "verified": true
+}

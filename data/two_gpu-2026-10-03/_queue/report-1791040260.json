@@ -1,0 +1,666 @@
+[
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 0,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s0",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 352.42827959917486,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "C1",
+  "variant": null,
+  "seed": 0,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/C1-B32G8M32-K4-S1-s0",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=C1",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 355.8122411048971,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 0,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s0",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=0",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 356.7146164770238,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 0,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s0",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 351.2916931412183,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 0,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s0",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 350.79703399166465,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 1,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s1",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 354.4316386417486,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 1,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s1",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 348.34320084936917,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 1,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s1",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=1",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 360.3024454610422,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "C1",
+  "variant": null,
+  "seed": 1,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/C1-B32G8M32-K4-S1-s1",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=C1",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 348.80850479891524,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 1,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s1",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 352.29716713679954,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 2,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s2",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=2",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 352.98392337188125,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 2,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s2",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 350.5167696243152,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 2,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s2",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 350.99972051475197,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 2,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s2",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 354.7788792317733,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 3,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s3",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=3"
+  ],
+  "status": "valid",
+  "seconds": 354.3254494513385,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 3,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s3",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=3"
+  ],
+  "status": "valid",
+  "seconds": 360.00001637171954,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 3,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s3",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=3"
+  ],
+  "status": "valid",
+  "seconds": 354.6672548111528,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 3,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s3",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=3",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 346.64274246478453,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 4,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s4",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=4",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 344.620212177746,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 4,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s4",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=4"
+  ],
+  "status": "valid",
+  "seconds": 364.36548644816503,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 4,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s4",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=4"
+  ],
+  "status": "valid",
+  "seconds": 359.4464605571702,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 4,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s4",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=4"
+  ],
+  "status": "valid",
+  "seconds": 358.58889610879123,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 5,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s5",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=5",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 351.6344858640805,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 5,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s5",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=5"
+  ],
+  "status": "valid",
+  "seconds": 352.3887964510359,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 5,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s5",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=5"
+  ],
+  "status": "valid",
+  "seconds": 353.3883437709883,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 5,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s5",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=5"
+  ],
+  "status": "valid",
+  "seconds": 357.26678133010864,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 6,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s6",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=6"
+  ],
+  "status": "valid",
+  "seconds": 363.8012348921038,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 6,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s6",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=6"
+  ],
+  "status": "valid",
+  "seconds": 367.1596993152052,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 6,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s6",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=6"
+  ],
+  "status": "valid",
+  "seconds": 364.46147365588695,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 6,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s6",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=6",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 368.06323853414506,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 7,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s7",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=7"
+  ],
+  "status": "valid",
+  "seconds": 365.1387739959173,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 7,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s7",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=7",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 363.25135211693123,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 7,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s7",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=7"
+  ],
+  "status": "valid",
+  "seconds": 368.3378033749759,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 7,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s7",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=7"
+  ],
+  "status": "valid",
+  "seconds": 361.5392918330617,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 8,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-s8",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=A",
+   "seed=8",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 362.4092847062275,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 8,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-s8",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=B",
+   "seed=8"
+  ],
+  "status": "valid",
+  "seconds": 363.4519126857631,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 8,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-s8",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=E",
+   "seed=8"
+  ],
+  "status": "valid",
+  "seconds": 351.2102380930446,
+  "evaluated": true,
+  "pruned": 7
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 8,
+  "row": "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8",
+  "set": [
+   "eval_split=test",
+   "budget_s=300.0",
+   "snapshot_every_s=37.5",
+   "regime=D",
+   "seed=8"
+  ],
+  "status": "valid",
+  "seconds": 350.0835289740935,
+  "evaluated": true,
+  "pruned": 7
+ }
+]

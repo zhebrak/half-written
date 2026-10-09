@@ -1,0 +1,108 @@
+task: gsm8k
+written: '2026-10-03'
+from_rows:
+- results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B32G8M32-K0-S1-pilot-s100
+- results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-pilot-s100
+- results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-pilot-s101
+- results/sim/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B32G8M32-K4-S1-gsm8k-w0-s0
+- results/sim/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-gsm8k-w0-s0
+- results/sim/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B32G8M32-K4-S1-gsm8k-w0-s0
+commit: e16dcec
+warnings:
+- '0 one-GPU A rows under results/gsm8k: decision 6''s seed rule is not applied; the
+  seeds per arm come from the time cap alone, up to decision 13''s cap'
+- 'time cap 6.0 h fits 40 rows at T 300 s + 210 s each (reserve 2): 9 seeds an arm
+  (no seed rule: the one-GPU stage did not run); the verdicts stand at this n, fixed
+  before the tag'
+harness:
+  D-B32G8M32-K4-S1-pilot-s100:
+    main_thread_cpu_frac: 0.5386877399297517
+    loop_lag_p99_s: 0.020999999996274707
+    fence_p50_s: 0.03700000001117587
+    reward_timeouts: 0
+  D-B32G8M32-K4-S1-pilot-s101:
+    main_thread_cpu_frac: 0.5488779668895749
+    loop_lag_p99_s: 0.016000000108033416
+    fence_p50_s: 0.0359999998472631
+    reward_timeouts: 0
+  A-B32G8M32-K0-S1-pilot-s100:
+    main_thread_cpu_frac: 0.2983108458463864
+    loop_lag_p99_s: 0.01607000008691073
+    fence_p50_s: 0.0
+    reward_timeouts: 0
+  E-B32G8M32-K4-S1-pilot-s100:
+    main_thread_cpu_frac: 0.5377448309346055
+    loop_lag_p99_s: 0.024729999802074888
+    fence_p50_s: 0.03700000001117587
+    reward_timeouts: 0
+  B-B32G8M32-K4-S1-gsm8k-w0-s0:
+    main_thread_cpu_frac: 0.39432787331295055
+    loop_lag_p99_s: 0.02400000002235174
+    fence_p50_s: 0.03700000001117587
+    reward_timeouts: 0
+  D-B32G8M32-K4-S1-gsm8k-w0-s0:
+    main_thread_cpu_frac: 0.4240942143331621
+    loop_lag_p99_s: 0.02200000016018748
+    fence_p50_s: 0.03700000001117587
+    reward_timeouts: 0
+  E-B32G8M32-K4-S1-gsm8k-w0-s0:
+    main_thread_cpu_frac: 0.30974320726087695
+    loop_lag_p99_s: 0.020999999996274707
+    fence_p50_s: 0.03700000001117587
+    reward_timeouts: 0
+harness_limits:
+  max_host_cpu: 0.8233
+  max_loop_lag_p99_s: 0.1
+  max_fence_p50_s: 0.1
+harness_limit_rule: each limit = max(the code's limit, 1.5 x the highest pre-tag value
+  of any arm)
+fit:
+  start: 0.672
+  gain: 0.09546780949013689
+  plateau: 0.7674678094901369
+  tau_s: 151.22893626324839
+  t80_s: 243.3935834791521
+  rmse: 0.01523243494163666
+  points: 34
+T_s: 300.0
+snapshot_every_s: 37.5
+snapshots: 8
+time_cap:
+  hours: 6.0
+  row_overhead_s: 210.0
+  reserve_rows: 2
+  rows_that_fit: 40
+  seeds_by_rule: null
+  seeds_run: 9
+  tost_power_at_seeds_run: null
+a_steps_per_hour: 815.997280009254
+step_T: 67.9997733341045
+seed_snapshot_steps: []
+seeds:
+  A: 9
+  B: 9
+  D: 9
+  E: 9
+  C1: 2
+seed_count: null
+delta: 0.02
+n_test: 1319
+equivalence: D-E;B-A,D-A,E-A
+intervals_only: false
+h4: out
+d_stale_kv_share: 0.01136427290155352
+min_exposure: 0.05
+best_async: E
+map_steps_per_hour:
+  B: 1499.9950000158472
+  D: 1511.9697606045252
+  E: 1535.9948800162274
+planned_rows: 38
+estimated_hours: 5.383333333333334
+identity:
+  dev_sha256: a0f38b015c7eac27a2878a281fbcbc381480f5d7df627c64d22e56b5996f0bff
+  revisions:
+    model: da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+    openai/gsm8k: 740312add88f781978c0658806c59bc2815b9866
+  init_from_sha256: 568716f7029a4be7f0f4e582b91ed0f450274a1d7a1ad29e40b243ff9b168ea8
+  prompt_filter_sha256: e545bf1b00dd9ef7381b6971cf10e5e3a2b0b0302e0420e4241d05dc0050ed09

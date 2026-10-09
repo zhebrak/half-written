@@ -1,0 +1,16 @@
+{
+ "passed": true,
+ "report": "results/_queue/canary-1791020528-0",
+ "scope": "keep pauses, full weights",
+ "certifies": {
+  "model": "Qwen/Qwen3-0.6B-Base",
+  "max_model_len": 2048,
+  "max_tokens": 1024,
+  "launch.api_servers": 4,
+  "launch.stream_interval": 1,
+  "launch.async_scheduling": true,
+  "launch.head_fp32": true,
+  "M": 32,
+  "G": 8
+ }
+}

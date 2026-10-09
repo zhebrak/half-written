@@ -1,0 +1,523 @@
+<title>Half-written answers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: a reading column with interactive panels set wider than the text; the project's own palette (blue = old
+   weights, amber = new) and its three faces. Every chart is hand-drawn SVG from the inlined data; no library. */
+:root {
+  --paper: #f2f4f6; --panel: #fbfcfd; --ink: #17212b; --muted: #5a6774; --rule: #d3dae1;
+  --old: #2f5d8c; --old-soft: #d6e2ee; --new: #c77700; --new-soft: #f6e3c4; --idle: #e3e8ed;
+  --good: #2e7d4f; --good-soft: #d9efe1; --warn: #a15c00; --warn-soft: #f6e6cc; --bad: #b0352b; --bad-soft: #f5dcd9;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #11171d; --panel: #161e26; --ink: #e6ebf0; --muted: #96a3b0; --rule: #2a3540;
+  --old: #6fa3d8; --old-soft: #20364d; --new: #f0a83a; --new-soft: #4a3412; --idle: #222c36;
+  --good: #5cc28a; --good-soft: #17352a; --warn: #e6a64a; --warn-soft: #3d2c12; --bad: #ef7d73; --bad-soft: #43201d;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #11171d; --panel: #161e26; --ink: #e6ebf0; --muted: #96a3b0; --rule: #2a3540;
+  --old: #6fa3d8; --old-soft: #20364d; --new: #f0a83a; --new-soft: #4a3412; --idle: #222c36;
+  --good: #5cc28a; --good-soft: #17352a; --warn: #e6a64a; --warn-soft: #3d2c12; --bad: #ef7d73; --bad-soft: #43201d;
+  color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); margin: 0; padding-inline: 16px; }
+main { max-width: 760px; margin: 0 auto; padding-block: 36px 80px; min-width: 0; }
+header { display: grid; gap: 14px; padding-bottom: 28px; margin-bottom: 36px; border-bottom: 1px solid var(--rule); }
+.eyebrow { font: 600 0.72rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 700 clamp(2.1rem, 5vw, 3rem)/1.08 var(--display); letter-spacing: -0.015em; margin: 0; text-wrap: balance; }
+.standfirst { font-size: 1.15rem; line-height: 1.5; color: var(--muted); margin: 0; max-width: 60ch; }
+h2 { font: 700 1.5rem/1.2 var(--display); margin: 2.4em 0 0.7em; text-wrap: balance; }
+h3 { font: 600 1.05rem/1.3 var(--display); margin: 0 0 8px; }
+p { margin: 0 0 1.1em; max-width: 68ch; }
+ul { padding-left: 1.2em; margin: 0 0 1.2em; } li { margin-bottom: 0.55em; max-width: 66ch; } li::marker { color: var(--old); }
+strong { font-weight: 600; }
+code { font: 0.84em var(--mono); background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; padding: 0.05em 0.35em; }
+.scroll { overflow-x: auto; margin: 0 0 1.4em; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 16px; min-width: 0; margin: 0 0 16px; }
+.panel .scroll { margin: 0; }
+.wide { margin-inline: calc(50% - min(50vw - 16px, 540px)); }
+@media (max-width: 1120px) { .wide { margin-inline: 0; } }
+table { border-collapse: collapse; font: 0.8rem/1.45 var(--mono); font-variant-numeric: tabular-nums; width: 100%; min-width: 0; }
+th { text-align: right; font-weight: 600; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: normal; vertical-align: bottom; }
+td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; white-space: normal; min-width: 10ch; }
+td.l, th.l { text-align: left; }
+tr:last-child td { border-bottom: 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; margin: 0 0 16px; }
+.grid2 > .panel { margin: 0; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin: 0 0 16px; }
+.grid3 > .panel { margin: 0; }
+.chart { display: grid; gap: 8px; min-width: 0; align-content: start; }
+.chart svg { width: 100%; height: auto; display: block; }
+.cap { font-size: 0.86rem; line-height: 1.45; color: var(--muted); max-width: 68ch; margin: 0; }
+.note { font-size: 0.92rem; color: var(--muted); max-width: 72ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 0.72rem/1.2 var(--mono); color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+svg text { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
+svg .axis { stroke: var(--rule); stroke-width: 1; fill: none; }
+svg .grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; fill: none; opacity: 0.8; }
+.ptable th { white-space: nowrap; }
+.ptable { font-size: 0.8rem; } .ptable td, .ptable th { padding: 4px 10px; }
+.ptable small { color: var(--muted); font-size: 0.82em; white-space: nowrap; }
+.ptable td.l { white-space: nowrap; }
+.tslider { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font: 0.8rem var(--mono); color: var(--muted); }
+.tslider input { flex: 1 1 200px; min-width: 0; accent-color: var(--old); }
+.tslider output { font: 600 0.9rem var(--mono); color: var(--ink); min-width: 8ch; font-variant-numeric: tabular-nums; }
+.tslider button, .seg button { font: 600 0.75rem/1 var(--mono); padding: 7px 11px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+button:focus-visible, input[type=range]:focus-visible { outline: 2px solid var(--old); outline-offset: 2px; }
+.pill { display: inline-flex; align-items: center; font: 600 0.72rem/1 var(--mono); padding: 5px 9px; border-radius: 999px; border: 1px solid var(--rule); background: var(--panel); color: var(--muted); white-space: nowrap; }
+.pill.good { background: var(--good-soft); border-color: transparent; color: var(--good); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--rule); font: 0.85rem/1.5 var(--mono); color: var(--muted); }
+@media (max-width: 640px) { body { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+/* The regimes explainer: one lane per regime, a token strip over its KV strip over an engine bar, all driven by one
+   scrubber that sticks while the section is in view. Scoped to #answers so its names never meet the lab's. */
+#answers { --waste: #a7b1bb; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #answers { --waste: #56626e; } }
+:root[data-theme="dark"] #answers { --waste: #56626e; }
+#answers .v { color: var(--old); font-weight: 600; } #answers .n { color: var(--new); font-weight: 600; }
+#answers .controls { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 3; background: var(--paper); box-shadow: 0 8px 12px -10px rgba(0,0,0,0.25);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-block: 12px; border-bottom: 1px solid var(--rule); }
+#answers .controls button { font: 600 14px var(--display); color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 7px 14px; cursor: pointer; }
+input[type=range]:focus-visible { outline: 2px solid var(--old); outline-offset: 2px; }
+#answers .scrub { flex: 1 1 260px; display: grid; gap: 2px; min-width: 0; position: relative; }
+#answers .ticks span:first-child { transform: none; } #answers .ticks span:last-child { transform: translateX(-100%); }
+#answers .scrub input { width: 100%; accent-color: var(--old); }
+#answers .ticks { position: relative; height: 14px; font: 11px var(--mono); color: var(--muted); }
+#answers .ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+#answers .clock { font: 600 14px var(--mono); min-width: 9ch; font-variant-numeric: tabular-nums; }
+#answers .key { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 12px var(--mono); color: var(--muted); padding: 12px 0 16px; }
+#answers .key span { display: inline-flex; align-items: center; gap: 6px; }
+#answers .sw { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+#answers .lanes { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { #answers .lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { #answers .lanes { grid-template-columns: minmax(0, 1fr); } }
+#answers .lane { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 12px 10px; container-type: inline-size;
+  display: grid; gap: 9px; min-width: 0; align-content: start; }  /* rows packed at the top: the strips line up across lanes */
+#answers .lane header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 4px; }
+#answers .lane h3 { font: 700 1rem var(--display); margin: 0; }
+#answers .lane h3 em { font-style: normal; color: var(--muted); font-weight: 500; margin-right: 6px; }
+#answers .call { font: 12px var(--mono); color: var(--muted); }
+#answers .strip { display: grid; grid-template-columns: 52px repeat(14, minmax(0, 1fr)); gap: 2px; align-items: center; }
+#answers .lab { font: 10px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }  /* token, kv and engine rows alike */
+#answers .tok { height: 18px; border-radius: 3px; border: 1px dashed var(--rule); display: grid; place-items: center;
+  font: 0/0 var(--mono); overflow: hidden; white-space: nowrap; color: transparent; transition: background-color .25s; }  /* the word is the tooltip */
+#answers .tok.v { background: var(--old-soft); border: 1px solid var(--old); color: var(--ink); font-weight: 400; }
+#answers .tok.n { background: var(--new-soft); border: 1px solid var(--new); color: var(--ink); font-weight: 400; }
+#answers .tok.mix { background: repeating-linear-gradient(135deg, var(--new-soft) 0 5px, var(--old-soft) 5px 9px);
+  border: 1px solid var(--new); color: var(--ink); }
+#answers .tok.waste { background: linear-gradient(135deg, transparent 42%, var(--waste) 42%, var(--waste) 58%, transparent 58%); border: 1px solid var(--waste); color: var(--waste); }
+#answers .kv { height: 10px; border-radius: 2px; background: none; border: 1px dashed var(--rule); transition: background-color .35s; }
+#answers .kv.v { background: var(--old); border-color: var(--old); }
+#answers .kv.n { background: var(--new); border-color: var(--new); }
+#answers .kv.flash { animation: flash .6s ease-out; }
+@keyframes flash { from { box-shadow: 0 0 0 3px var(--new-soft); } to { box-shadow: 0 0 0 0 transparent; } }
+#answers .barrow { display: grid; grid-template-columns: 52px 1fr; gap: 2px; align-items: center; }
+#answers .bar { position: relative; height: 14px; border-radius: 3px; overflow: hidden; background: var(--paper); }
+#answers .seg { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font: 0/0 var(--mono);  /* the phase is the tooltip and the readout */
+  color: var(--ink); white-space: nowrap; overflow: hidden; border-right: 1px solid var(--panel); }
+#answers .seg.gen { background: var(--old-soft); } #answers .seg.gen2 { background: var(--new-soft); }
+#answers .seg.drain { background: repeating-linear-gradient(90deg, var(--old-soft) 0 3px, var(--paper) 3px 6px); }
+#answers .seg.idle { background: var(--paper); color: var(--muted); }
+#answers .seg.push { background: var(--ink); color: var(--panel); }
+#answers .seg.rec { background: var(--new); color: var(--panel); }
+#answers .seg.train { background: var(--muted); opacity: 0.55; }
+#answers .seg.tidle { background: var(--paper); }
+#answers .seg.ready { background: repeating-linear-gradient(90deg, var(--new-soft) 0 3px, var(--paper) 3px 6px); }
+#answers .cursor { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); }
+#answers .readout { display: block; min-height: 3em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 12px var(--mono); color: var(--muted); margin-top: 6px;
+  margin-left: 54px; font-variant-numeric: tabular-nums; }
+#answers .readout b { color: var(--ink); font-weight: 600; }
+#answers .lane .note { margin-left: 54px; margin-top: 6px; font-size: 0.9rem; line-height: 1.5; }
+@container (max-width: 330px) { #answers .readout { white-space: normal; min-height: 6em; } #answers .lane .note { margin-left: 0; } }
+#answers .lane h3 a { display: none; }
+@media (max-width: 720px) {
+  #answers .tok { font-size: 0; height: 16px; }
+  #answers .seg { font-size: 0; }
+}
+@media (prefers-reduced-motion: reduce) { #answers .tok, #answers .kv { transition: none; } #answers .kv.flash { animation: none; } }
+
+#answers .v { color: var(--old); font-weight: 600; } #answers .n { color: var(--new); font-weight: 600; }
+#answers { margin-block: 0 24px; }
+</style>
+<main>
+  <header>
+    <div class="eyebrow">Async RL on vLLM 0.30 · Qwen3-0.6B-Base · two H100 SXM, and one H100 NVL for the teacher-forcing study</div>
+    <h1>Half-written answers</h1>
+    <p class="standfirst">The regimes, and the charts behind the post.</p>
+  </header>
+<section id="answers" class="wide">    <div class="controls">
+      <button id="rx-play" type="button" aria-label="Play">Play</button>
+      <div class="scrub">
+        <input id="rx-t" type="range" min="0" max="24" step="1" value="11" aria-label="Engine step">
+      </div>
+    </div>
+    <div class="key">
+      <span><i class="sw" style="background:var(--old)"></i>weights v</span>
+      <span><i class="sw" style="background:var(--new)"></i>weights v+1</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(135deg,var(--new-soft) 0 4px,var(--old-soft) 4px 7px);border:1px solid var(--new)"></i>v+1 reading v's KV</span>
+      <span><i class="sw" style="border:1px solid var(--waste);background:linear-gradient(135deg,transparent 42%,var(--waste) 42%,var(--waste) 58%,transparent 58%)"></i>discarded</span>
+      <span><i class="sw" style="background:repeating-linear-gradient(90deg,var(--old-soft) 0 3px,var(--paper) 3px 6px)"></i>draining</span>
+      <span><i class="sw" style="background:var(--ink)"></i>weight update</span>
+      <span><i class="sw" style="background:var(--muted);opacity:0.55"></i>training</span>
+      <span><i class="sw" style="background:var(--paper);border:1px dashed var(--rule)"></i>idle</span>
+    </div>
+    <div class="lanes" id="rx-lanes"></div></section>
+
+<div class="panel chart" id="gsm8k-curves"></div>
+
+<div class="panel chart" id="math-curves"></div>
+
+<div class="grid2"><div class="panel chart" id="p1-fade"></div><div class="panel chart" id="p1-bands"></div></div>
+  <footer>Every number here comes from data/ and docs/analysis/: the GSM8K and MATH panels from the two_gpu-2026-10-03 grids (two H100 SXM) and their two analysis files, the teacher-forcing panels from the h100nvl-2026-10-01 study (one H100 NVL). Charts are drawn from the data inlined below.</footer>
+</main>
+
+<script>
+const DATA = {"experiments": {"gsm8k": {"label": "GSM8K", "task": "GSM8K", "T_s": 300, "start": "W0 (59.1%)", "start_acc": 0.591, "curves": {"A": {"n": 9, "points": [{"t": 0.0, "mean": 0.5906, "lo": 0.5906, "hi": 0.5906, "sd": 0.0}, {"t": 37.5, "mean": 0.5937, "lo": 0.5838, "hi": 0.602, "sd": 0.0057}, {"t": 75.0, "mean": 0.6015, "lo": 0.5891, "hi": 0.6103, "sd": 0.0074}, {"t": 112.5, "mean": 0.6124, "lo": 0.602, "hi": 0.6224, "sd": 0.0074}, {"t": 150.0, "mean": 0.629, "lo": 0.624, "hi": 0.6353, "sd": 0.0039}, {"t": 187.5, "mean": 0.6264, "lo": 0.6096, "hi": 0.6391, "sd": 0.0083}, {"t": 225.0, "mean": 0.6315, "lo": 0.6164, "hi": 0.6619, "sd": 0.0141}, {"t": 262.5, "mean": 0.6452, "lo": 0.624, "hi": 0.6581, "sd": 0.0118}, {"t": 300.0, "mean": 0.6475, "lo": 0.6247, "hi": 0.6657, "sd": 0.0121}], "steps_per_hour": [972, 924, 960, 912, 828, 852, 780, 804, 828], "steps": [81, 77, 80, 76, 69, 71, 65, 67, 69], "seeds": [{"seed": 0, "points": [[0.0, 0.5906], [37.5, 0.5982], [75.0, 0.6103], [112.5, 0.6224], [150.0, 0.6323], [187.5, 0.6391], [225.0, 0.6619], [262.5, 0.6558], [300.0, 0.6573]]}, {"seed": 1, "points": [[0.0, 0.5906], [37.5, 0.5989], [75.0, 0.6088], [112.5, 0.6027], [150.0, 0.6293], [187.5, 0.6232], [225.0, 0.627], [262.5, 0.6422], [300.0, 0.6247]]}, {"seed": 2, "points": [[0.0, 0.5906], [37.5, 0.602], [75.0, 0.6103], [112.5, 0.6171], [150.0, 0.6353], [187.5, 0.6096], [225.0, 0.6164], [262.5, 0.6422], [300.0, 0.652]]}, {"seed": 3, "points": [[0.0, 0.5906], [37.5, 0.5838], [75.0, 0.5944], [112.5, 0.6111], [150.0, 0.624], [187.5, 0.63], [225.0, 0.6399], [262.5, 0.6581], [300.0, 0.6657]]}, {"seed": 4, "points": [[0.0, 0.5906], [37.5, 0.5921], [75.0, 0.5891], [112.5, 0.6164], [150.0, 0.6315], [187.5, 0.6285], [225.0, 0.6187], [262.5, 0.6323], [300.0, 0.6444]]}, {"seed": 5, "points": [[0.0, 0.5906], [37.5, 0.5951], [75.0, 0.6005], [112.5, 0.6149], [150.0, 0.6277], [187.5, 0.6217], [225.0, 0.6194], [262.5, 0.624], [300.0, 0.6346]]}, {"seed": 6, "points": [[0.0, 0.5906], [37.5, 0.5876], [75.0, 0.6035], [112.5, 0.6058], [150.0, 0.624], [187.5, 0.6247], [225.0, 0.6368], [262.5, 0.6566], [300.0, 0.6467]]}, {"seed": 7, "points": [[0.0, 0.5906], [37.5, 0.5914], [75.0, 0.5974], [112.5, 0.602], [150.0, 0.6262], [187.5, 0.6277], [225.0, 0.6293], [262.5, 0.6422], [300.0, 0.6513]]}, {"seed": 8, "points": [[0.0, 0.5906], [37.5, 0.5944], [75.0, 0.5997], [112.5, 0.6194], [150.0, 0.6308], [187.5, 0.6331], [225.0, 0.6346], [262.5, 0.6535], [300.0, 0.6505]]}], "sync_p50": 0.116, "pause_p50": 0.0}, "B": {"n": 9, "points": [{"t": 0.0, "mean": 0.5906, "lo": 0.5906, "hi": 0.5906, "sd": 0.0}, {"t": 37.5, "mean": 0.5977, "lo": 0.5853, "hi": 0.6065, "sd": 0.0067}, {"t": 75.0, "mean": 0.6184, "lo": 0.6111, "hi": 0.624, "sd": 0.0046}, {"t": 112.5, "mean": 0.6277, "lo": 0.6065, "hi": 0.6399, "sd": 0.0101}, {"t": 150.0, "mean": 0.642, "lo": 0.6255, "hi": 0.655, "sd": 0.0109}, {"t": 187.5, "mean": 0.6604, "lo": 0.6467, "hi": 0.6717, "sd": 0.0082}, {"t": 225.0, "mean": 0.6676, "lo": 0.6429, "hi": 0.6846, "sd": 0.014}, {"t": 262.5, "mean": 0.6701, "lo": 0.6611, "hi": 0.6816, "sd": 0.0076}, {"t": 300.0, "mean": 0.6789, "lo": 0.6657, "hi": 0.6914, "sd": 0.0098}], "steps_per_hour": [1776, 1728, 1680, 1680, 1560, 1608, 1620, 1560, 1644], "steps": [148, 144, 140, 140, 130, 134, 135, 130, 137], "seeds": [{"seed": 0, "points": [[0.0, 0.5906], [37.5, 0.6065], [75.0, 0.6187], [112.5, 0.6315], [150.0, 0.649], [187.5, 0.6702], [225.0, 0.6755], [262.5, 0.6816], [300.0, 0.6914]]}, {"seed": 1, "points": [[0.0, 0.5906], [37.5, 0.5944], [75.0, 0.6202], [112.5, 0.6323], [150.0, 0.6338], [187.5, 0.6649], [225.0, 0.6672], [262.5, 0.6694], [300.0, 0.6657]]}, {"seed": 2, "points": [[0.0, 0.5906], [37.5, 0.5974], [75.0, 0.6111], [112.5, 0.6065], [150.0, 0.6277], [187.5, 0.6566], [225.0, 0.6429], [262.5, 0.6664], [300.0, 0.6687]]}, {"seed": 3, "points": [[0.0, 0.5906], [37.6, 0.6058], [75.0, 0.6133], [112.5, 0.6399], [150.0, 0.6513], [187.5, 0.655], [225.0, 0.6839], [262.5, 0.6755], [300.0, 0.6869]]}, {"seed": 4, "points": [[0.0, 0.5906], [37.5, 0.5951], [75.0, 0.6232], [112.5, 0.6187], [150.0, 0.6459], [187.5, 0.6566], [225.0, 0.6755], [262.5, 0.671], [300.0, 0.6861]]}, {"seed": 5, "points": [[0.0, 0.5906], [37.5, 0.5853], [75.0, 0.6164], [112.5, 0.627], [150.0, 0.6391], [187.5, 0.6717], [225.0, 0.6846], [262.5, 0.6801], [300.0, 0.6854]]}, {"seed": 6, "points": [[0.0, 0.5906], [37.5, 0.5929], [75.0, 0.624], [112.6, 0.6338], [150.0, 0.6255], [187.5, 0.6467], [225.0, 0.6581], [262.5, 0.6611], [300.0, 0.674]]}, {"seed": 7, "points": [[0.0, 0.5906], [37.5, 0.602], [75.0, 0.6156], [112.5, 0.6353], [150.0, 0.655], [187.5, 0.6657], [225.0, 0.6672], [262.5, 0.6649], [300.0, 0.6839]]}, {"seed": 8, "points": [[0.0, 0.5906], [37.5, 0.5997], [75.0, 0.6232], [112.5, 0.6247], [150.0, 0.6505], [187.5, 0.6566], [225.0, 0.6535], [262.5, 0.6611], [300.0, 0.6679]]}], "sync_p50": 0.993, "pause_p50": 0.833}, "D": {"n": 9, "points": [{"t": 0.0, "mean": 0.5906, "lo": 0.5906, "hi": 0.5906, "sd": 0.0}, {"t": 37.5, "mean": 0.5991, "lo": 0.5883, "hi": 0.6065, "sd": 0.0066}, {"t": 75.0, "mean": 0.6153, "lo": 0.6073, "hi": 0.6293, "sd": 0.007}, {"t": 112.5, "mean": 0.633, "lo": 0.6202, "hi": 0.6513, "sd": 0.0099}, {"t": 150.0, "mean": 0.6511, "lo": 0.6399, "hi": 0.6581, "sd": 0.0074}, {"t": 187.5, "mean": 0.6569, "lo": 0.6384, "hi": 0.677, "sd": 0.0112}, {"t": 225.0, "mean": 0.6714, "lo": 0.6566, "hi": 0.6854, "sd": 0.0106}, {"t": 262.5, "mean": 0.6742, "lo": 0.6543, "hi": 0.6876, "sd": 0.011}, {"t": 300.0, "mean": 0.6863, "lo": 0.6657, "hi": 0.696, "sd": 0.0089}], "steps_per_hour": [1776, 1739, 1752, 1680, 1728, 1692, 1656, 1692, 1752], "steps": [148, 145, 146, 140, 144, 141, 138, 141, 146], "seeds": [{"seed": 0, "points": [[0.0, 0.5906], [37.5, 0.5883], [75.0, 0.6141], [112.5, 0.6338], [150.0, 0.652], [187.5, 0.6611], [225.0, 0.6732], [262.5, 0.6816], [300.0, 0.696]]}, {"seed": 1, "points": [[0.0, 0.5906], [37.5, 0.6027], [75.0, 0.6073], [112.5, 0.627], [150.0, 0.6399], [187.5, 0.6535], [225.0, 0.6672], [262.5, 0.6876], [300.1, 0.6914]]}, {"seed": 2, "points": [[0.0, 0.5906], [37.5, 0.5936], [75.0, 0.6141], [112.5, 0.6202], [150.0, 0.6535], [187.5, 0.6437], [225.0, 0.6566], [262.5, 0.6801], [300.0, 0.6831]]}, {"seed": 3, "points": [[0.0, 0.5906], [37.5, 0.6065], [75.0, 0.6293], [112.5, 0.6513], [150.0, 0.6581], [187.5, 0.677], [225.0, 0.6854], [262.5, 0.6854], [300.0, 0.6937]]}, {"seed": 4, "points": [[0.0, 0.5906], [37.5, 0.602], [75.0, 0.6141], [112.5, 0.6429], [150.0, 0.6573], [187.5, 0.6558], [225.0, 0.6823], [262.5, 0.6543], [300.0, 0.6876]]}, {"seed": 5, "points": [[0.0, 0.5906], [37.5, 0.5929], [75.0, 0.6096], [112.5, 0.6361], [150.0, 0.6414], [187.5, 0.6596], [225.0, 0.6626], [262.5, 0.6732], [300.0, 0.6892]]}, {"seed": 6, "points": [[0.0, 0.5906], [37.5, 0.6065], [75.0, 0.6141], [112.5, 0.6255], [150.0, 0.6581], [187.5, 0.6384], [225.1, 0.6596], [262.5, 0.6619], [300.0, 0.6657]]}, {"seed": 7, "points": [[0.0, 0.5906], [37.5, 0.6035], [75.0, 0.624], [112.5, 0.6361], [150.0, 0.6558], [187.5, 0.6626], [225.0, 0.6823], [262.5, 0.6732], [300.0, 0.6876]]}, {"seed": 8, "points": [[0.0, 0.5906], [37.5, 0.5959], [75.0, 0.6111], [112.5, 0.624], [150.0, 0.6437], [187.6, 0.6603], [225.0, 0.6732], [262.5, 0.6702], [300.0, 0.6823]]}], "sync_p50": 0.182, "pause_p50": 0.028}, "E": {"n": 9, "points": [{"t": 0.0, "mean": 0.5906, "lo": 0.5906, "hi": 0.5906, "sd": 0.0}, {"t": 37.5, "mean": 0.6009, "lo": 0.5959, "hi": 0.6149, "sd": 0.0055}, {"t": 75.0, "mean": 0.6169, "lo": 0.608, "hi": 0.6232, "sd": 0.005}, {"t": 112.5, "mean": 0.6227, "lo": 0.6096, "hi": 0.6368, "sd": 0.0089}, {"t": 150.0, "mean": 0.641, "lo": 0.6232, "hi": 0.6664, "sd": 0.0133}, {"t": 187.5, "mean": 0.657, "lo": 0.6171, "hi": 0.6831, "sd": 0.019}, {"t": 225.0, "mean": 0.6611, "lo": 0.6187, "hi": 0.6755, "sd": 0.0181}, {"t": 262.5, "mean": 0.6738, "lo": 0.6459, "hi": 0.6937, "sd": 0.0136}, {"t": 300.0, "mean": 0.678, "lo": 0.6603, "hi": 0.6929, "sd": 0.0122}], "steps_per_hour": [1692, 1716, 1752, 1764, 1596, 1644, 1512, 1644, 1716], "steps": [141, 143, 146, 147, 133, 137, 126, 137, 143], "seeds": [{"seed": 0, "points": [[0.0, 0.5906], [37.5, 0.6012], [75.0, 0.6187], [112.5, 0.6368], [150.0, 0.6664], [187.5, 0.6831], [225.0, 0.6687], [262.5, 0.6793], [300.0, 0.6823]]}, {"seed": 1, "points": [[0.0, 0.5906], [37.5, 0.5989], [75.0, 0.6103], [112.5, 0.6194], [150.0, 0.6315], [187.5, 0.6619], [225.0, 0.674], [262.5, 0.6717], [300.0, 0.6892]]}, {"seed": 2, "points": [[0.0, 0.5906], [37.5, 0.6005], [75.0, 0.6187], [112.5, 0.6164], [150.0, 0.6452], [187.5, 0.6649], [225.0, 0.6725], [262.5, 0.6808], [300.0, 0.6922]]}, {"seed": 3, "points": [[0.0, 0.5906], [37.5, 0.5989], [75.0, 0.608], [112.5, 0.6285], [150.0, 0.6444], [187.5, 0.6687], [225.0, 0.6755], [262.5, 0.6846], [300.0, 0.6785]]}, {"seed": 4, "points": [[0.0, 0.5906], [37.5, 0.6012], [75.0, 0.6209], [112.5, 0.627], [150.0, 0.6338], [187.5, 0.6391], [225.0, 0.6187], [262.5, 0.6459], [300.0, 0.6603]]}, {"seed": 5, "points": [[0.0, 0.5906], [37.5, 0.5974], [75.0, 0.6232], [112.5, 0.6323], [150.0, 0.655], [187.5, 0.6596], [225.0, 0.6725], [262.5, 0.671], [300.0, 0.6664]]}, {"seed": 6, "points": [[0.0, 0.5906], [37.6, 0.5959], [75.0, 0.6187], [112.5, 0.6171], [150.0, 0.6232], [187.5, 0.6171], [225.0, 0.6528], [262.5, 0.674], [300.0, 0.6649]]}, {"seed": 7, "points": [[0.0, 0.5906], [37.5, 0.6149], [75.0, 0.6141], [112.5, 0.6096], [150.0, 0.6331], [187.5, 0.6649], [225.0, 0.6626], [262.5, 0.6937], [300.0, 0.6929]]}, {"seed": 8, "points": [[0.0, 0.5906], [37.5, 0.5989], [75.0, 0.6194], [112.5, 0.6171], [150.0, 0.6361], [187.5, 0.6535], [225.0, 0.6528], [262.5, 0.6634], [300.0, 0.6755]]}], "sync_p50": 0.188, "pause_p50": 0.032}}, "family": [{"contrast": "D-E", "diff": 0.003958273383307515, "ci95": [-0.001931176480269227, 0.009847723246884257], "p": 0.15977136086299173, "p_holm": 0.31954272172598347, "verdict": "not significant"}, {"contrast": "D-B", "diff": 0.0025788692331479104, "ci95": [-0.0006239816352308584, 0.005781720101526679], "p": 0.10043109201126366, "p_holm": 0.30129327603379097, "verdict": "not significant"}, {"contrast": "E-B", "diff": -0.0013794041501596047, "ci95": [-0.006806965660049836, 0.004048157359730626], "p": 0.5739894588640441, "p_holm": 0.5739894588640441, "verdict": "not significant"}, {"contrast": "E-A", "diff": 0.018600641479235864, "ci95": [0.01330062879964444, 0.02390065415882729], "p": 4.017730021638406e-05, "p_holm": 0.00016070920086553624, "verdict": "superior"}], "equivalence": [{"contrast": "D-E", "family": 1, "result": "uninformative: H4 at natural depth is out (D's stale-KV share 0.007, floor 0.05, h4=out)", "verdict": null, "ci90": null, "share": 0.007464846248111622}, {"contrast": "B-A", "family": 2, "result": "equivalent", "verdict": "equivalent", "ci90": [-0.007822018262510076, 0.008075331912860396], "share": null}, {"contrast": "D-A", "family": 2, "result": "equivalent", "verdict": "equivalent", "ci90": [-0.003035506927124044, 0.008365218480316945], "share": null}, {"contrast": "E-A", "family": 2, "result": "equivalent", "verdict": "equivalent", "ci90": [-0.014817368497312826, 0.00752976752762948], "share": null}], "arms": {"A": {"n": 9, "accuracy_T": 0.6474601971190296, "auc": 0.6198559906494862, "final_steps": 72.77777777777777, "ttt_median_s": 261.398029411472}, "B": {"n": 9, "accuracy_T": 0.6788813073877517, "auc": 0.6398360362788816, "final_steps": 137.55555555555554, "ttt_median_s": 144.27168055569456}, "D": {"n": 9, "accuracy_T": 0.6862943307219274, "auc": 0.6424149055120295, "final_steps": 143.22222222222223, "ttt_median_s": 131.25000000000006}, "E": {"n": 9, "accuracy_T": 0.6780389183725045, "auc": 0.638456632128722, "final_steps": 139.22222222222223, "ttt_median_s": 160.27176190472568}}, "delta": 0.02, "threshold": 0.6417740712661107, "intervals_only": false}, "math": {"label": "MATH", "task": "MATH", "T_s": 600, "start": "the base model (24.4%)", "start_acc": 0.244, "curves": {"A": {"n": 3, "points": [{"t": 0.0, "mean": 0.244, "lo": 0.244, "hi": 0.244, "sd": 0.0}, {"t": 37.5, "mean": 0.2553, "lo": 0.248, "hi": 0.262, "sd": 0.007}, {"t": 75.0, "mean": 0.2553, "lo": 0.254, "hi": 0.258, "sd": 0.0023}, {"t": 112.5, "mean": 0.2613, "lo": 0.252, "hi": 0.27, "sd": 0.009}, {"t": 150.0, "mean": 0.3073, "lo": 0.254, "hi": 0.364, "sd": 0.0551}, {"t": 187.5, "mean": 0.32, "lo": 0.252, "hi": 0.394, "sd": 0.0712}, {"t": 225.0, "mean": 0.3807, "lo": 0.276, "hi": 0.504, "sd": 0.1151}, {"t": 262.5, "mean": 0.382, "lo": 0.28, "hi": 0.486, "sd": 0.103}, {"t": 300.0, "mean": 0.4133, "lo": 0.322, "hi": 0.468, "sd": 0.0796}, {"t": 337.5, "mean": 0.438, "lo": 0.384, "hi": 0.476, "sd": 0.048}, {"t": 375.0, "mean": 0.4727, "lo": 0.466, "hi": 0.476, "sd": 0.0058}, {"t": 412.5, "mean": 0.476, "lo": 0.454, "hi": 0.504, "sd": 0.0255}, {"t": 450.0, "mean": 0.4733, "lo": 0.452, "hi": 0.502, "sd": 0.0258}, {"t": 487.5, "mean": 0.4773, "lo": 0.476, "hi": 0.48, "sd": 0.0023}, {"t": 525.0, "mean": 0.478, "lo": 0.466, "hi": 0.492, "sd": 0.0131}, {"t": 562.5, "mean": 0.4733, "lo": 0.464, "hi": 0.48, "sd": 0.0083}, {"t": 600.0, "mean": 0.4847, "lo": 0.474, "hi": 0.494, "sd": 0.0101}], "steps_per_hour": [270, 234, 258], "steps": [45, 39, 43], "seeds": [{"seed": 0, "points": [[0.0, 0.244], [37.5, 0.256], [75.0, 0.254], [112.5, 0.252], [150.0, 0.254], [187.5, 0.252], [225.0, 0.276], [262.5, 0.28], [300.0, 0.322], [337.5, 0.384], [375.0, 0.476], [412.5, 0.504], [450.0, 0.502], [487.5, 0.48], [525.0, 0.492], [562.5, 0.48], [600.0, 0.494]]}, {"seed": 1, "points": [[0.0, 0.244], [37.5, 0.262], [75.0, 0.254], [112.5, 0.27], [150.0, 0.364], [187.5, 0.394], [225.0, 0.504], [262.5, 0.486], [300.0, 0.468], [337.5, 0.476], [375.0, 0.476], [412.5, 0.454], [450.0, 0.452], [487.5, 0.476], [525.0, 0.466], [562.5, 0.464], [600.0, 0.474]]}, {"seed": 2, "points": [[0.0, 0.244], [37.5, 0.248], [75.0, 0.258], [112.5, 0.262], [150.0, 0.304], [187.5, 0.314], [225.0, 0.362], [262.5, 0.38], [300.0, 0.45], [337.5, 0.454], [375.0, 0.466], [412.5, 0.47], [450.0, 0.466], [487.5, 0.476], [525.0, 0.476], [562.5, 0.476], [600.0, 0.486]]}], "sync_p50": 0.104, "pause_p50": 0.0}, "B": {"n": 3, "points": [{"t": 0.0, "mean": 0.244, "lo": 0.244, "hi": 0.244, "sd": 0.0}, {"t": 37.5, "mean": 0.2647, "lo": 0.262, "hi": 0.268, "sd": 0.0031}, {"t": 75.0, "mean": 0.2793, "lo": 0.248, "hi": 0.328, "sd": 0.0427}, {"t": 112.5, "mean": 0.3273, "lo": 0.272, "hi": 0.438, "sd": 0.0958}, {"t": 150.0, "mean": 0.3493, "lo": 0.288, "hi": 0.466, "sd": 0.1011}, {"t": 187.5, "mean": 0.372, "lo": 0.306, "hi": 0.478, "sd": 0.0927}, {"t": 225.0, "mean": 0.4467, "lo": 0.422, "hi": 0.476, "sd": 0.0273}, {"t": 262.5, "mean": 0.4747, "lo": 0.464, "hi": 0.49, "sd": 0.0136}, {"t": 300.0, "mean": 0.476, "lo": 0.468, "hi": 0.488, "sd": 0.0106}, {"t": 337.5, "mean": 0.486, "lo": 0.468, "hi": 0.506, "sd": 0.0191}, {"t": 375.0, "mean": 0.4793, "lo": 0.462, "hi": 0.492, "sd": 0.0155}, {"t": 412.5, "mean": 0.4767, "lo": 0.466, "hi": 0.488, "sd": 0.011}, {"t": 450.0, "mean": 0.474, "lo": 0.46, "hi": 0.496, "sd": 0.0193}, {"t": 487.5, "mean": 0.4793, "lo": 0.464, "hi": 0.51, "sd": 0.0266}, {"t": 525.0, "mean": 0.464, "lo": 0.438, "hi": 0.484, "sd": 0.0236}, {"t": 562.5, "mean": 0.4673, "lo": 0.446, "hi": 0.494, "sd": 0.0244}, {"t": 600.0, "mean": 0.4767, "lo": 0.464, "hi": 0.492, "sd": 0.0142}], "steps_per_hour": [378, 414, 324], "steps": [63, 69, 54], "seeds": [{"seed": 0, "points": [[0.0, 0.244], [37.5, 0.268], [75.0, 0.248], [112.5, 0.272], [150.0, 0.288], [187.5, 0.332], [225.0, 0.442], [262.5, 0.49], [300.0, 0.488], [337.5, 0.506], [375.0, 0.492], [412.5, 0.488], [450.0, 0.466], [487.5, 0.464], [525.0, 0.47], [562.5, 0.462], [600.0, 0.474]]}, {"seed": 1, "points": [[0.0, 0.244], [37.5, 0.264], [75.0, 0.262], [112.5, 0.272], [150.0, 0.294], [187.5, 0.306], [225.0, 0.422], [262.5, 0.47], [300.0, 0.472], [337.5, 0.484], [375.0, 0.484], [412.5, 0.476], [450.0, 0.496], [487.5, 0.51], [525.0, 0.484], [562.5, 0.494], [600.0, 0.492]]}, {"seed": 2, "points": [[0.0, 0.244], [37.5, 0.262], [75.0, 0.328], [112.5, 0.438], [150.0, 0.466], [187.5, 0.478], [225.0, 0.476], [262.5, 0.464], [300.0, 0.468], [337.5, 0.468], [375.0, 0.462], [412.5, 0.466], [450.0, 0.46], [487.5, 0.464], [525.0, 0.438], [562.5, 0.446], [600.0, 0.464]]}], "sync_p50": 8.361, "pause_p50": 8.202}, "D": {"n": 3, "points": [{"t": 0.0, "mean": 0.2447, "lo": 0.244, "hi": 0.246, "sd": 0.0012}, {"t": 37.5, "mean": 0.2573, "lo": 0.252, "hi": 0.264, "sd": 0.0061}, {"t": 75.0, "mean": 0.2807, "lo": 0.244, "hi": 0.302, "sd": 0.0319}, {"t": 112.5, "mean": 0.3667, "lo": 0.31, "hi": 0.4, "sd": 0.0493}, {"t": 150.0, "mean": 0.466, "lo": 0.43, "hi": 0.486, "sd": 0.0312}, {"t": 187.5, "mean": 0.4933, "lo": 0.488, "hi": 0.496, "sd": 0.0046}, {"t": 225.0, "mean": 0.4847, "lo": 0.468, "hi": 0.496, "sd": 0.0147}, {"t": 262.5, "mean": 0.4833, "lo": 0.47, "hi": 0.506, "sd": 0.0197}, {"t": 300.0, "mean": 0.4793, "lo": 0.464, "hi": 0.49, "sd": 0.0136}, {"t": 337.5, "mean": 0.486, "lo": 0.474, "hi": 0.502, "sd": 0.0144}, {"t": 375.0, "mean": 0.4793, "lo": 0.466, "hi": 0.494, "sd": 0.014}, {"t": 412.5, "mean": 0.4827, "lo": 0.47, "hi": 0.492, "sd": 0.0114}, {"t": 450.0, "mean": 0.476, "lo": 0.464, "hi": 0.492, "sd": 0.0144}, {"t": 487.5, "mean": 0.48, "lo": 0.468, "hi": 0.49, "sd": 0.0111}, {"t": 525.0, "mean": 0.484, "lo": 0.476, "hi": 0.498, "sd": 0.0122}, {"t": 562.5, "mean": 0.4853, "lo": 0.462, "hi": 0.506, "sd": 0.0221}, {"t": 600.0, "mean": 0.4827, "lo": 0.468, "hi": 0.498, "sd": 0.015}], "steps_per_hour": [402, 438, 396], "steps": [67, 73, 66], "seeds": [{"seed": 0, "points": [[0.0, 0.244], [37.5, 0.252], [75.0, 0.296], [112.5, 0.39], [150.0, 0.482], [187.5, 0.488], [225.0, 0.49], [262.5, 0.474], [300.0, 0.464], [337.5, 0.474], [375.0, 0.478], [412.5, 0.492], [450.0, 0.472], [487.5, 0.49], [525.0, 0.498], [562.5, 0.506], [600.0, 0.482]]}, {"seed": 1, "points": [[0.0, 0.244], [37.5, 0.264], [75.0, 0.244], [112.5, 0.31], [150.0, 0.43], [187.5, 0.496], [225.0, 0.468], [262.5, 0.47], [300.0, 0.49], [337.5, 0.482], [375.0, 0.494], [412.5, 0.486], [450.0, 0.492], [487.5, 0.482], [525.0, 0.478], [562.5, 0.488], [600.0, 0.498]]}, {"seed": 2, "points": [[0.0, 0.246], [37.5, 0.256], [75.0, 0.302], [112.5, 0.4], [150.0, 0.486], [187.5, 0.496], [225.0, 0.496], [262.5, 0.506], [300.0, 0.484], [337.5, 0.502], [375.0, 0.466], [412.5, 0.47], [450.0, 0.464], [487.5, 0.468], [525.0, 0.476], [562.5, 0.462], [600.0, 0.468]]}], "sync_p50": 0.174, "pause_p50": 0.033}, "E": {"n": 3, "points": [{"t": 0.0, "mean": 0.2447, "lo": 0.244, "hi": 0.246, "sd": 0.0012}, {"t": 37.5, "mean": 0.2487, "lo": 0.24, "hi": 0.256, "sd": 0.0081}, {"t": 75.0, "mean": 0.3013, "lo": 0.296, "hi": 0.308, "sd": 0.0061}, {"t": 112.5, "mean": 0.4127, "lo": 0.364, "hi": 0.478, "sd": 0.0588}, {"t": 150.0, "mean": 0.4727, "lo": 0.464, "hi": 0.49, "sd": 0.015}, {"t": 187.5, "mean": 0.482, "lo": 0.462, "hi": 0.496, "sd": 0.0178}, {"t": 225.0, "mean": 0.486, "lo": 0.47, "hi": 0.494, "sd": 0.0139}, {"t": 262.5, "mean": 0.474, "lo": 0.464, "hi": 0.482, "sd": 0.0092}, {"t": 300.0, "mean": 0.4693, "lo": 0.466, "hi": 0.472, "sd": 0.0031}, {"t": 337.5, "mean": 0.464, "lo": 0.458, "hi": 0.47, "sd": 0.006}, {"t": 375.0, "mean": 0.4813, "lo": 0.464, "hi": 0.492, "sd": 0.0151}, {"t": 412.5, "mean": 0.474, "lo": 0.454, "hi": 0.498, "sd": 0.0223}, {"t": 450.0, "mean": 0.4773, "lo": 0.44, "hi": 0.506, "sd": 0.0338}, {"t": 487.5, "mean": 0.488, "lo": 0.474, "hi": 0.5, "sd": 0.0131}, {"t": 525.0, "mean": 0.482, "lo": 0.47, "hi": 0.49, "sd": 0.0106}, {"t": 562.5, "mean": 0.488, "lo": 0.472, "hi": 0.498, "sd": 0.014}, {"t": 600.0, "mean": 0.4853, "lo": 0.468, "hi": 0.506, "sd": 0.0192}], "steps_per_hour": [390, 396, 366], "steps": [65, 66, 61], "seeds": [{"seed": 0, "points": [[0.0, 0.244], [37.5, 0.25], [75.0, 0.308], [112.5, 0.478], [150.0, 0.464], [187.5, 0.496], [225.0, 0.494], [262.5, 0.476], [300.0, 0.472], [337.5, 0.464], [375.0, 0.492], [412.5, 0.498], [450.0, 0.486], [487.5, 0.5], [525.0, 0.49], [562.5, 0.494], [600.0, 0.506]]}, {"seed": 1, "points": [[0.0, 0.244], [37.5, 0.256], [75.0, 0.296], [112.5, 0.364], [150.0, 0.49], [187.5, 0.488], [225.0, 0.494], [262.5, 0.482], [300.0, 0.47], [337.5, 0.47], [375.0, 0.488], [412.5, 0.47], [450.0, 0.506], [487.5, 0.474], [525.0, 0.486], [562.5, 0.472], [600.0, 0.482]]}, {"seed": 2, "points": [[0.0, 0.246], [37.5, 0.24], [75.0, 0.3], [112.5, 0.396], [150.0, 0.464], [187.5, 0.462], [225.0, 0.47], [262.5, 0.464], [300.0, 0.466], [337.5, 0.458], [375.0, 0.464], [412.5, 0.454], [450.0, 0.44], [487.5, 0.49], [525.0, 0.47], [562.5, 0.498], [600.0, 0.468]]}], "sync_p50": 0.187, "pause_p50": 0.037}}, "family": [{"contrast": "D-E", "diff": -0.0011249600000027282, "ci95": [-0.030169632792994793, 0.027919712792989337], "p": 0.8829699794335628, "p_holm": 0.8829699794335628, "verdict": "interval only"}, {"contrast": "D-B", "diff": 0.023208461111108265, "ci95": [-0.009541341939053597, 0.05595826416127013], "p": 0.09282661692664304, "p_holm": 0.5569597015598582, "verdict": "interval only"}, {"contrast": "E-B", "diff": 0.024333421111110993, "ci95": [-0.03591911880598472, 0.08458596102820672], "p": 0.22440334127584086, "p_holm": 0.6719383161455897, "verdict": "interval only"}, {"contrast": "D-A", "diff": 0.05125003388886703, "ci95": [-0.023199284227566182, 0.12569935200530025], "p": 0.09758785908862327, "p_holm": 0.5569597015598582, "verdict": "interval only"}, {"contrast": "E-A", "diff": 0.05237499388886976, "ci95": [-0.02565533509800299, 0.1304053228757425], "p": 0.10189848611013505, "p_holm": 0.5569597015598582, "verdict": "interval only"}, {"contrast": "B-A", "diff": 0.02804157277775876, "ci95": [-0.041297576363141394, 0.09738072191865892], "p": 0.22397943871519657, "p_holm": 0.6719383161455897, "verdict": "interval only"}], "equivalence": [{"contrast": "D-E", "family": 1, "result": "interval only", "verdict": null, "ci90": [-0.020836061747823157, 0.0185861417478177], "share": 0.3782796564496776}], "arms": {"A": {"n": 3, "accuracy_T": 0.48466666666666663, "auc": 0.3892707755555735, "final_steps": 42.333333333333336, "ttt_median_s": 358.12499999999994}, "B": {"n": 3, "accuracy_T": 0.4766666666666666, "auc": 0.4173123483333323, "final_steps": 62.0, "ttt_median_s": 239.53125}, "D": {"n": 3, "accuracy_T": 0.48266666666666663, "auc": 0.44052080944444055, "final_steps": 68.66666666666667, "ttt_median_s": 141.2771739130435}, "E": {"n": 3, "accuracy_T": 0.48533333333333334, "auc": 0.4416457694444433, "final_steps": 64.0, "ttt_median_s": 141.25}}, "delta": 0.03, "threshold": 0.4606, "intervals_only": true}}, "math_sync_curve": [{"step": 0, "acc": 0.282, "tokens": 615, "n": 500}, {"step": 20, "acc": 0.422, "tokens": 719, "n": 500}, {"step": 40, "acc": 0.52, "tokens": 987, "n": 500}, {"step": 60, "acc": 0.512, "tokens": 1253, "n": 500}, {"step": 80, "acc": 0.5, "tokens": 1498, "n": 500}, {"step": 100, "acc": 0.494, "tokens": 1447, "n": 500}, {"step": 120, "acc": 0.49, "tokens": 1436, "n": 500}, {"step": 140, "acc": 0.484, "tokens": 1494, "n": 500}, {"step": 160, "acc": 0.502, "tokens": 1415, "n": 500}, {"step": 180, "acc": 0.526, "tokens": 1335, "n": 500}, {"step": 200, "acc": 0.508, "tokens": 1409, "n": 500}], "exposure": {"gsm8k": {"answers": 30518, "crossed": 413, "crossed_share": 0.0135, "stale_share": 0.0071, "mean_duration_s": 0.91, "p90_duration_s": 1.31, "sync_every_s": 2.03, "swap_position_hist": [0, 2, 1, 11, 17, 37, 44, 66, 108, 127], "mean_tokens": 131}, "math": {"answers": 6866, "crossed": 2638, "crossed_share": 0.3842, "stale_share": 0.3706, "mean_duration_s": 4.69, "p90_duration_s": 13.28, "sync_every_s": 8.96, "swap_position_hist": [229, 329, 263, 279, 310, 336, 261, 258, 197, 176], "mean_tokens": 1019}}, "phase1": {"gpu": "H100 NVL", "table": [{"lag": 0, "drift_mean": 0.0, "drift_median": 0.0, "R": null, "R_ci95": null, "R_0_8": null, "R_0_8_ci95": null, "R_8_32": null, "R_32_999": null, "R_32_999_ci95": null, "alpha_median": null, "removed_l14": null, "removed_l14_ci95": null, "removed_l21": null, "removed_l21_ci95": null}, {"lag": 1, "drift_mean": 4.848333499065445e-05, "drift_median": 4.391768015921116e-07, "R": 0.48181663553156734, "R_ci95": "0.43-0.57", "R_0_8": 0.8389553060546081, "R_0_8_ci95": "0.80-0.94", "R_8_32": 0.5414175775795694, "R_32_999": 0.46285800407232497, "R_32_999_ci95": "0.39-0.58", "alpha_median": 0.1625000238418579, "removed_l14": 0.16506962839386152, "removed_l14_ci95": "0.10-0.19", "removed_l21": 0.9215492031243497, "removed_l21_ci95": "0.83-0.95"}, {"lag": 2, "drift_mean": 0.00016331935651134184, "drift_median": 1.1469301171018742e-06, "R": 0.4722049456063855, "R_ci95": "0.43-0.57", "R_0_8": 0.8047632374946598, "R_0_8_ci95": "0.74-0.95", "R_8_32": 0.5201171849383115, "R_32_999": 0.4579178269657936, "R_32_999_ci95": "0.40-0.60", "alpha_median": 0.16750001907348633, "removed_l14": 0.15180937898296842, "removed_l14_ci95": "0.08-0.17", "removed_l21": 0.9296405858102836, "removed_l21_ci95": "0.84-0.96"}, {"lag": 4, "drift_mean": 0.0017642759598893217, "drift_median": 9.915987902786583e-06, "R": 0.3807778394530314, "R_ci95": "0.31-0.58", "R_0_8": 0.8186481414451001, "R_0_8_ci95": "0.75-0.95", "R_8_32": 0.4836788174742516, "R_32_999": 0.337122044891656, "R_32_999_ci95": "0.29-0.63", "alpha_median": 0.18250001966953278, "removed_l14": 0.16137936738029146, "removed_l14_ci95": "0.08-0.21", "removed_l21": 0.9288820623175135, "removed_l21_ci95": "0.86-0.95"}, {"lag": 8, "drift_mean": 0.004524738981594459, "drift_median": 3.9704664231976494e-05, "R": 0.3443006230661239, "R_ci95": "0.23-0.58", "R_0_8": 0.8170998039946747, "R_0_8_ci95": "0.74-0.93", "R_8_32": 0.42212924499216964, "R_32_999": 0.29582455951947545, "R_32_999_ci95": "0.18-0.61", "alpha_median": 0.2175000160932541, "removed_l14": 0.08212869282200519, "removed_l14_ci95": "-0.02-0.15", "removed_l21": 0.8908402235947909, "removed_l21_ci95": "0.83-0.93"}, {"lag": 16, "drift_mean": 0.012091457477231053, "drift_median": 0.00022226088913157582, "R": 0.49066503961244656, "R_ci95": "0.37-0.69", "R_0_8": 0.8674219729785394, "R_0_8_ci95": "0.75-0.95", "R_8_32": 0.516021007825972, "R_32_999": 0.45707380710009443, "R_32_999_ci95": "0.33-0.68", "alpha_median": 0.26750004291534424, "removed_l14": 0.06480474101447686, "removed_l14_ci95": "0.01-0.12", "removed_l21": 0.8326657889807473, "removed_l21_ci95": "0.78-0.88"}, {"lag": 32, "drift_mean": 0.023119054040188793, "drift_median": 0.0013551851734519005, "R": 0.5991086261602809, "R_ci95": "0.49-0.74", "R_0_8": 0.8015487872669265, "R_0_8_ci95": "0.72-0.86", "R_8_32": 0.6169154928317441, "R_32_999": 0.5707569481419807, "R_32_999_ci95": "0.46-0.72", "alpha_median": 0.33000001311302185, "removed_l14": 0.10083102575555414, "removed_l14_ci95": "0.06-0.14", "removed_l21": 0.8111118332114903, "removed_l21_ci95": "0.77-0.85"}]}, "phase1_story": {"fade": {"all": [{"x": 2.0, "y": 0.7916, "lo": 0.7126, "hi": 0.8714}, {"x": 6.0, "y": 0.8369, "lo": 0.7295, "hi": 0.9006}, {"x": 12.0, "y": 0.5546, "lo": 0.4101, "hi": 0.881}, {"x": 24.0, "y": 0.5689, "lo": 0.3776, "hi": 0.8133}, {"x": 48.0, "y": 0.5136, "lo": 0.371, "hi": 0.789}, {"x": 80.0, "y": 0.4545, "lo": 0.3156, "hi": 0.695}], "bins": [{"x": 2.0, "label": "0\u20134"}, {"x": 6.0, "label": "4\u20138"}, {"x": 12.0, "label": "8\u201316"}, {"x": 24.0, "label": "16\u201332"}, {"x": 48.0, "label": "32\u201364"}, {"x": 80.0, "label": "64\u201396"}]}, "bands": [{"label": "1 to 7", "share": 0.0182, "lo": 0.0054, "hi": 0.0329}, {"label": "8 to 14", "share": 0.0759, "lo": 0.0461, "hi": 0.108}, {"label": "15 to 21", "share": 0.7341, "lo": 0.684, "hi": 0.7778}, {"label": "22 to 27", "share": 0.1715, "lo": 0.1311, "hi": 0.2159}, {"label": "28", "share": 0.0003, "lo": 0.0002, "hi": 0.0005}]}, "canary": {"D": {"boundary": 28, "total": 400, "old": 0.717741935483871, "stale": 1.0, "fresh": 0.7553763440860215, "decisive": 80, "own_on_decisive": 1.0, "load": 127}, "E": {"boundary": 27, "total": 400, "old": 0.546916890080429, "stale": 0.5871313672922251, "fresh": 1.0, "decisive": 138, "own_on_decisive": 1.0, "load": 127}}};
+const $ = (id) => document.getElementById(id);
+const cssRoot = () => document.querySelector(".hw") || document.documentElement;  // the tokens' scope: the page's root, or the site's .hw
+const css = (v) => getComputedStyle(cssRoot()).getPropertyValue(v).trim();
+const fmt = (v, d = 3) => v === null || v === undefined || Number.isNaN(v) ? "" :
+  (Math.abs(v) >= 1000 ? Math.round(v).toLocaleString("en") : (Math.abs(v) < 0.01 && v !== 0 ? v.toExponential(1) : (+v).toPrecision(d)));
+const pct = (v, d = 0) => v === null || v === undefined ? "" : `${(100 * v).toFixed(d)}%`;
+const NAMES = { A: "A sync", B: "B drain", D: "D stale KV", E: "E fresh KV", F: "F versioned LoRA" };
+const COLOR = () => ({ A: css("--muted"), B: css("--good"), D: css("--new"), E: css("--old") });
+const ORDER = ["A", "B", "D", "E"];
+const mean = (v) => v.reduce((s, x) => s + x, 0) / v.length;
+
+function lineChart(el, opt) {
+  const W = 520, H = 300, m = { l: 58, r: 14, t: 12, b: 42 };
+  const pts = opt.series.flatMap(s => s.points.flatMap(p => [p, ...(p.lo !== undefined ? [{ x: p.x, y: p.lo }, { x: p.x, y: p.hi }] : [])]));
+  const tx = (v) => opt.xlog ? Math.log2(v) : v, ty = (v) => opt.ylog ? Math.log10(v) : v;
+  const xs = pts.map(p => tx(p.x)), ys = pts.filter(p => !opt.ylog || p.y > 0).map(p => ty(p.y));
+  const x0 = opt.xmin ?? Math.min(...xs), x1 = opt.xmax ?? Math.max(...xs);
+  const y0 = opt.ymin ?? Math.min(...ys), y1 = opt.ymax ?? Math.max(...ys);
+  const sx = (v) => m.l + (W - m.l - m.r) * (tx(v) - x0) / (x1 - x0 || 1);
+  const sy = (v) => H - m.b - (H - m.t - m.b) * (ty(v) - y0) / (y1 - y0 || 1);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.title}">`;
+  for (const v of opt.yticks) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${opt.yfmt ? opt.yfmt(v) : v}</text>`;
+  for (const v of opt.xticks) svg += `<text x="${sx(v)}" y="${H - m.b + 15}" text-anchor="middle">${opt.xfmt ? opt.xfmt(v) : v}</text>`;
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/>`;
+  svg += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">${opt.xlabel}</text>`;
+  svg += `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle">${opt.ylabel}</text>`;
+  const clip = `clip-${el.id}`;
+  svg += `<clipPath id="${clip}"><rect x="${m.l}" y="${m.t - 4}" width="${W - m.l - m.r}" height="${H - m.t - m.b + 8}"/></clipPath><g clip-path="url(#${clip})">`;
+  for (const s of opt.series) {
+    const P = s.points.filter(p => !opt.ylog || p.y > 0);
+    if (P.some(p => p.lo !== undefined)) {
+      const up = P.map((p, i) => `${i ? "L" : "M"}${sx(p.x).toFixed(1)},${sy(p.hi).toFixed(1)}`).join("");
+      const dn = P.slice().reverse().map(p => `L${sx(p.x).toFixed(1)},${sy(p.lo).toFixed(1)}`).join("");
+      svg += `<path d="${up}${dn}Z" fill="${s.color}" opacity="0.14"/>`;
+    }
+    svg += `<path d="${P.map((p, i) => `${i ? "L" : "M"}${sx(p.x).toFixed(1)},${sy(p.y).toFixed(1)}`).join("")}" fill="none" stroke="${s.color}" stroke-width="2" ${s.dash ? 'stroke-dasharray="5 4"' : ""}/>`;
+    for (const p of P) svg += `<circle cx="${sx(p.x).toFixed(1)}" cy="${sy(p.y).toFixed(1)}" r="2.8" fill="${s.color}"><title>${s.name}: ${p.x}, ${fmt(p.y)}</title></circle>`;
+  }
+  svg += `</g></svg>`;
+  el.innerHTML = `<h3>${opt.title}</h3>${svg}<div class="legend">${opt.series.map(s => `<span><i style="background:${s.dash ? `repeating-linear-gradient(90deg, ${s.color} 0 5px, transparent 5px 9px)` : s.color}"></i>${s.name}</span>`).join("")}</div>${opt.caption ? `<p class="cap">${opt.caption}</p>` : ""}`;
+}
+
+
+// -- accuracy by wall clock with a draggable T: the mean over seeds, the seeds' range as a band, the table at T
+const TQ95_TABLE = { 1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086 };
+const TQ95 = (df) => TQ95_TABLE[df] || 1.96;
+const pmSteps = (v) => { const n = v.length; if (n < 2) return ""; const mu = mean(v), h = TQ95(n - 1) * Math.sqrt(v.reduce((a, x) => a + (x - mu) ** 2, 0) / (n - 1)) / Math.sqrt(n); return ` <small>±${Math.round(h).toLocaleString("en")}</small>`; };
+function curvePanel(el, exp, key) {
+  const arms = ORDER.filter(a => exp.curves[a]); const Tmax = exp.T_s / 60;
+  el.innerHTML = `<h3>Held-out accuracy on ${exp.task}</h3><div class="pchart"></div>
+    <div class="tslider"><label for="${key}-T">T</label><input id="${key}-T" type="range" min="0" max="${Tmax}" step="0.25" value="${Tmax}">
+      <output id="${key}-T-out" for="${key}-T">${Tmax} min</output></div>
+    <div class="scroll"><table class="ptable"></table></div>`;
+  const input = el.querySelector("input"), out = el.querySelector("output");
+  const at = (pts, T) => { for (let i = 1; i < pts.length; i++) if (pts[i].t >= T) { const a = pts[i - 1], b = pts[i]; return a.mean + (b.mean - a.mean) * (T - a.t) / (b.t - a.t || 1); } return pts[pts.length - 1].mean; };
+  function draw() {
+    const T = +input.value, C = COLOR(); out.textContent = `${T.toFixed(2).replace(/\.?0+$/, "")} min`;
+    const W = 640, H = 210, m = { l: 46, r: 12, t: 12, b: 36 };
+    const all = arms.flatMap(a => exp.curves[a].points.map(p => p.mean));
+    const y0 = Math.floor((Math.min(...all) - 0.01) * 20) / 20, y1 = Math.ceil((Math.max(...all) + 0.01) * 20) / 20;
+    const sx = (v) => m.l + (W - m.l - m.r) * v / Tmax, sy = (v) => H - m.b - (H - m.t - m.b) * (v - y0) / (y1 - y0);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${exp.label}: accuracy against minutes, T at ${T} minutes">`;
+    svg += `<rect x="${m.l}" y="${m.t}" width="${(sx(T) - m.l).toFixed(1)}" height="${H - m.t - m.b}" fill="${css("--idle")}" opacity="0.45"/>`;
+    for (let v = y0; v <= y1 + 1e-9; v += 0.05) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${Math.round(v * 100)}%</text>`;
+    for (let v = 0; v <= Tmax; v += Tmax > 6 ? 2 : 1) svg += `<text x="${sx(v)}" y="${H - m.b + 15}" text-anchor="middle">${v}</text>`;
+    svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/><text x="${(m.l + W - m.r) / 2}" y="${H - 5}" text-anchor="middle">minutes of training</text>`;
+    for (const a of arms) {
+      const pts = exp.curves[a].points.map(p => ({ ...p, t: p.t / 60 }));
+      svg += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${sx(p.t).toFixed(1)},${sy(p.mean).toFixed(1)}`).join("")}" fill="none" stroke="${C[a]}" stroke-width="2"/>`;
+      svg += `<circle cx="${sx(T).toFixed(1)}" cy="${sy(at(pts, T)).toFixed(1)}" r="4" fill="${C[a]}"/>`;
+    }
+    svg += `<line x1="${sx(T)}" x2="${sx(T)}" y1="${m.t}" y2="${H - m.b}" stroke="${css("--ink")}" stroke-width="1.5"/></svg>`;
+    el.querySelector(".pchart").innerHTML = svg;
+    // per seed, accuracy at T; a 95% t-interval over seeds
+    const TQ = { 1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131, 16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086 };
+    const tq = (df) => TQ[df] || 1.96;
+    const seedPts = (sd) => sd.points.map(([t, acc]) => ({ t: t / 60, mean: acc }));
+    const perSeed = (a, f) => Object.fromEntries(exp.curves[a].seeds.map(sd => [sd.seed, f(seedPts(sd), T)]));
+    const interval = (xs) => { const n = xs.length; if (n < 2) return null; const mu = mean(xs), sd = Math.sqrt(xs.reduce((s, x) => s + (x - mu) ** 2, 0) / (n - 1)), h = tq(n - 1) * sd / Math.sqrt(n); return [mu - h, mu + h]; };
+    const pct = (v) => (100 * v).toFixed(1);
+    const pm = (c) => c ? ` <small>±${pct((c[1] - c[0]) / 2)}</small>` : "";
+    const cell = (xs) => `${pct(mean(xs))}%` + pm(interval(xs));
+    el.querySelector(".ptable").innerHTML = `<tr><th class="l">Regime</th><th>Steps / h</th><th>Accuracy at T</th></tr>` +
+      arms.map(a => { const c = exp.curves[a]; return `<tr><td class="l"><i style="display:inline-block;width:12px;height:3px;background:${C[a]};vertical-align:middle;margin-right:6px"></i>${NAMES[a]}</td><td>${fmt(mean(c.steps_per_hour))}${pmSteps(c.steps_per_hour)}</td><td>${cell(Object.values(perSeed(a, at)))}</td></tr>`; }).join("");
+  }
+  input.addEventListener("input", draw);
+  draw(); return draw;
+}
+
+// -- the contrasts as a forest plot: a dot at the difference, a line over the 95% interval, zero marked
+function forest(el, exp) {
+  const rows = exp.family; const W = 380, rh = 30, m = { l: 54, r: 92, t: 12, b: 44 }, H = m.t + rows.length * rh + m.b;
+  const lo = Math.min(0, ...rows.map(r => 100 * r.ci95[0])) - 1, hi = Math.max(0, ...rows.map(r => 100 * r.ci95[1])) + 1;
+  const sx = (v) => m.l + (W - m.l - m.r) * (v - lo) / (hi - lo);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${exp.label}: the contrasts with 95% intervals">`;
+  svg += `<line x1="${sx(0)}" x2="${sx(0)}" y1="${m.t - 8}" y2="${H - m.b + 4}" stroke="${css("--ink")}" stroke-width="1" opacity="0.6"/>`;
+  if (exp.delta) for (const d of [-100 * exp.delta, 100 * exp.delta]) svg += `<line class="grid" x1="${sx(d)}" x2="${sx(d)}" y1="${m.t - 8}" y2="${H - m.b + 4}"/>`;
+  rows.forEach((r, i) => { const y = m.t + i * rh + rh / 2, good = r.verdict === "superior";
+    const c = good ? css("--good") : (r.verdict === "interval only" ? css("--old") : css("--muted"));
+    svg += `<text x="${m.l - 8}" y="${y + 4}" text-anchor="end" style="fill:${css("--ink")}">${r.contrast}</text>`;
+    svg += `<line x1="${sx(100 * r.ci95[0]).toFixed(1)}" x2="${sx(100 * r.ci95[1]).toFixed(1)}" y1="${y}" y2="${y}" stroke="${c}" stroke-width="2.5"/>`;
+    svg += `<circle cx="${sx(100 * r.diff).toFixed(1)}" cy="${y}" r="4.5" fill="${c}"/>`;
+    svg += `<text x="${W - m.r + 8}" y="${y + 4}">${(100 * r.diff) >= 0 ? "+" : ""}${(100 * r.diff).toFixed(1)} ${r.verdict === "interval only" ? "" : (good ? "superior" : "n.s.")}</text>`; });
+  for (const v of [Math.ceil(lo), 0, Math.floor(hi)]) svg += `<text x="${sx(v)}" y="${H - 24}" text-anchor="middle">${v > 0 ? "+" : ""}${v}</text>`;
+  svg += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">difference in area to T, points</text></svg>`;
+  const eq = exp.equivalence.map(c => `${c.contrast} ${c.family === 2 ? "at matched steps" : "over wall clock"}: ${c.result}${c.verdict ? ", " + c.verdict : ""}${c.ci90 ? ` [${(100 * c.ci90[0]).toFixed(1)}, ${(100 * c.ci90[1]).toFixed(1)}]` : ""}`).join("; ");
+  el.innerHTML = `<h3>${exp.label}: the contrasts</h3>${svg}<p class="cap">${exp.delta ? `Dashed lines: ±${100 * exp.delta} points, the equivalence margin. ` : ""}Paired over seed blocks, 95% intervals${exp.intervals_only ? ", reported as intervals only (an exploratory tier)" : ", Holm-adjusted"}. Equivalence: ${eq}.</p>`;
+}
+
+// -- throughput: optimiser steps per hour, one dot per row, a bar at the mean, the sync's cost beside it
+function strip(el, exp) {
+  const arms = ORDER.filter(a => exp.curves[a]), C = COLOR(); const W = 380, H = 260, m = { l: 48, r: 8, t: 18, b: 40 }, step = (W - m.l - m.r) / arms.length;
+  const all = arms.flatMap(a => exp.curves[a].steps_per_hour); const y1 = Math.ceil(Math.max(...all) * 1.1 / 200) * 200; const sy = (v) => H - m.b - (H - m.t - m.b) * v / y1;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${exp.label}: optimiser steps per hour by regime">`;
+  for (let v = 0; v <= y1; v += y1 > 1200 ? 400 : 100) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${v.toLocaleString("en")}</text>`;
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/>`;
+  arms.forEach((a, i) => { const v = exp.curves[a].steps_per_hour, x = m.l + step * (i + 0.5), mu = mean(v);
+    svg += `<text x="${x}" y="${H - m.b + 15}" text-anchor="middle">${a}</text><line x1="${x - step * 0.3}" x2="${x + step * 0.3}" y1="${sy(mu).toFixed(1)}" y2="${sy(mu).toFixed(1)}" stroke="${C[a]}" stroke-width="3"/>`;
+    svg += `<text x="${x}" y="${(sy(mu) - 8).toFixed(1)}" text-anchor="middle" style="fill:${C[a]}">${Math.round(mu).toLocaleString("en")}</text>`;
+    v.forEach((s, j) => { const jx = x + (v.length > 1 ? (j / (v.length - 1) - 0.5) * step * 0.45 : 0); svg += `<circle cx="${jx.toFixed(1)}" cy="${sy(s).toFixed(1)}" r="3.2" fill="${C[a]}" opacity="0.75"/>`; }); });
+  svg += `</svg>`;
+  const tbl = `<div class="scroll"><table><tr><th class="l">Regime</th><th>Steps / h</th><th>Sync p50</th><th>Pause p50</th></tr>` + arms.map(a => { const c = exp.curves[a]; return `<tr><td class="l">${NAMES[a]}</td><td>${fmt(mean(c.steps_per_hour))}${pmSteps(c.steps_per_hour)}</td><td>${Math.round(1000 * c.sync_p50).toLocaleString("en")} ms</td><td>${Math.round(1000 * c.pause_p50)} ms</td></tr>`; }).join("") + "</table></div>";
+  el.innerHTML = `<h3>${exp.label}: optimiser steps per hour</h3>${svg}${tbl}<p class="cap">One dot per row. A sync is the engine's pause to its resume with the push inside it; the pause alone is the fence's wait for every counted token. The drain's pause is its wait for in-flight answers to finish.</p>`;
+}
+
+// -- the MATH synchronous curve by optimiser step, with answer length
+function syncCurve(el) {
+  const pts = DATA.math_sync_curve, band = (p) => 1.96 * Math.sqrt(p.acc * (1 - p.acc) / p.n);
+  lineChart(el, { title: "MATH, arm A from the base model: accuracy by optimiser step (500 development problems)", xticks: [0, 50, 100, 150, 200], yticks: [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55], ymin: 0.24, ymax: 0.56, xmin: 0, xmax: 200,
+    xlabel: "optimiser steps from the base model", ylabel: "greedy accuracy (95% interval)", yfmt: (v) => `${Math.round(100 * v)}%`,
+    series: [{ name: "accuracy", color: css("--new"), points: pts.map(p => ({ x: p.step, y: p.acc, lo: p.acc - band(p), hi: p.acc + band(p) })) }],
+    caption: `The whole gain comes by step 40. Mean answer length: ${pts[0].tokens} tokens at step 0, ${pts.find(p => p.step === 40).tokens} at step 40, ${pts.find(p => p.step === 80).tokens} at step 80, ${pts[pts.length - 1].tokens} at step 200: the next 160 steps add length and no accuracy. No settled snapshot leaves the warm-start rule its ten points of headroom, so the MATH tier starts at the base model.` });
+}
+
+// -- exposure: how many answers were in flight at a swap, where the swap landed, and the stale-token share
+function exposure(el) {
+  const E = DATA.exposure, C = { gsm8k: css("--old"), math: css("--new") }; const W = 520, H = 230, m = { l: 40, r: 12, t: 28, b: 36 };
+  const top = Math.max(...["gsm8k", "math"].map(t => { const h = E[t].swap_position_hist, n = h.reduce((s, x) => s + x, 0); return Math.max(...h) / n; }));
+  const ymax = Math.ceil(top * 20) / 20;
+  const sx = (i) => m.l + (W - m.l - m.r) * i / 10, sy = (v) => H - m.b - (H - m.t - m.b) * v / ymax;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Where the swap landed within the answers that crossed one">`;
+  for (let v = 0; v <= ymax + 1e-9; v += 0.1) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${Math.round(100 * v)}%</text>`;
+  for (const [task, off] of [["gsm8k", 0], ["math", 1]]) { const h = E[task].swap_position_hist, n = h.reduce((s, x) => s + x, 0);
+    h.forEach((c, i) => { const w = (W - m.l - m.r) / 10 * 0.42; svg += `<rect x="${(sx(i) + 2 + off * w).toFixed(1)}" y="${sy(c / n).toFixed(1)}" width="${w.toFixed(1)}" height="${(sy(0) - sy(c / n)).toFixed(1)}" fill="${C[task]}" opacity="0.85"/>`; }); }
+  for (let i = 0; i <= 10; i += 2) svg += `<text x="${sx(i)}" y="${H - m.b + 15}" text-anchor="middle">${i * 10}%</text>`;
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/><text x="${(m.l + W - m.r) / 2}" y="${H - 5}" text-anchor="middle">how far through the answer the swap landed</text></svg>`;
+  const row = (task, name) => { const e = E[task]; return `<tr><td class="l"><i style="display:inline-block;width:12px;height:3px;background:${C[task]};vertical-align:middle;margin-right:6px"></i>${name}</td><td>${e.mean_duration_s} s</td><td>${e.p90_duration_s} s</td><td>${e.sync_every_s} s</td><td>${pct(e.crossed_share, 1)}</td><td>${pct(e.stale_share, 1)}</td></tr>`; };
+  el.innerHTML = `<h3>Exposure: which answers were half-written at a swap (regime D, seed 0)</h3><div class="scroll"><table><tr><th class="l">Task</th><th>Mean answer</th><th>p90 answer</th><th>Sync every</th><th>Answers crossing a swap</th><th>Tokens over stale KV</th></tr>${row("gsm8k", "GSM8K")}${row("math", "MATH")}</table></div>${svg}
+    <div class="legend"><span><i style="background:${C.gsm8k}"></i>GSM8K, ${E.gsm8k.crossed} of ${E.gsm8k.answers.toLocaleString("en")} answers</span><span><i style="background:${C.math}"></i>MATH, ${E.math.crossed.toLocaleString("en")} of ${E.math.answers.toLocaleString("en")} answers</span></div>
+    <p class="cap">From the ledger: every answer's tokens are segmented by the weights that sampled them and the cache they read. On GSM8K an answer lasts under a second and the trainer step, the bottleneck, two seconds, so generation runs in a burst after each push and almost nothing is in flight at the next; the few answers that do cross a swap cross it near their end. On MATH answers last seconds against a nine-second step, so swaps land anywhere, and most of a long answer's tokens come after one. Exposure is a property of answer duration against the sync interval, not of the regime.</p>`;
+}
+
+// -- Phase 1: how wrong a stale cache is per token, from teacher forcing checkpoints k steps apart
+function phase1() {
+  const S = DATA.phase1_story; if (!S) return;
+  const pct = (v) => `${Math.round(100 * v)}%`;
+  const binLabel = Object.fromEntries(S.fade.bins.map(b => [b.x, b.label]));
+  lineChart($("p1-fade"), { title: "Share of the update undone, by distance from the swap", xlog: true, xmin: Math.log2(1.5), xmax: Math.log2(120), xticks: S.fade.bins.map(b => b.x), xfmt: (v) => binLabel[v], yticks: [0, 0.2, 0.4, 0.6, 0.8, 1], ymin: 0, ymax: 1, yfmt: pct,
+    xlabel: "tokens generated since the swap", ylabel: "share undone",
+    series: [{ name: "cache 1 to 32 optimiser steps older than the weights, pooled; band: 95% over prompts", color: css("--old"), points: S.fade.all }],
+    caption: "" });
+  barChart($("p1-bands"), { title: "Where the staleness lives, by layer", xlabel: "layers whose cache is recomputed (of 28)", ylabel: "share of the stale divergence removed", yfmt: pct,
+    bars: S.bands.map(b => ({ label: b.label, y: b.share, lo: b.lo, hi: b.hi })), color: css("--old") });
+}
+function barChart(el, opt) {
+  const W = 520, H = 300, m = { l: 58, r: 14, t: 16, b: 42 }, n = opt.bars.length, slot = (W - m.l - m.r) / n, bw = slot * 0.56;
+  const y1 = Math.max(1, ...opt.bars.map(b => b.hi ?? b.y)); const sy = (v) => H - m.b - (H - m.t - m.b) * v / y1;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.title}">`;
+  for (const v of [0, 0.2, 0.4, 0.6, 0.8, 1]) svg += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${m.l - 6}" y="${sy(v) + 3.5}" text-anchor="end">${opt.yfmt(v)}</text>`;
+  opt.bars.forEach((b, i) => { const x = m.l + slot * (i + 0.5);
+    svg += `<rect x="${(x - bw / 2).toFixed(1)}" y="${sy(b.y).toFixed(1)}" width="${bw.toFixed(1)}" height="${(sy(0) - sy(b.y)).toFixed(1)}" fill="${opt.color}" opacity="0.85"><title>layers ${b.label}: ${opt.yfmt(b.y)}</title></rect>`;
+    if (b.lo !== undefined) svg += `<line x1="${x}" x2="${x}" y1="${sy(b.lo)}" y2="${sy(b.hi)}" stroke="${css("--ink")}" stroke-width="1.5"/><line x1="${x - 5}" x2="${x + 5}" y1="${sy(b.lo)}" y2="${sy(b.lo)}" stroke="${css("--ink")}"/><line x1="${x - 5}" x2="${x + 5}" y1="${sy(b.hi)}" y2="${sy(b.hi)}" stroke="${css("--ink")}"/>`;
+    svg += `<text x="${x}" y="${Math.min(sy(b.hi ?? b.y) - 6, sy(b.y) - 6)}" text-anchor="middle" style="fill:${css("--ink")}">${opt.yfmt(b.y)}</text><text x="${x}" y="${H - m.b + 15}" text-anchor="middle">${b.label}</text>`; });
+  svg += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${H - m.b}" y2="${H - m.b}"/><text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">${opt.xlabel}</text>`;
+  svg += `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle">${opt.ylabel}</text></svg>`;
+  el.innerHTML = `<h3>${opt.title}</h3>${svg}`;
+}
+
+function canaryTable() {
+  const el = $("canary-table"); if (!el) return; const C = DATA.canary;
+  el.innerHTML = `<tr><th class="l">After the swap</th><th>Swap at token</th><th>Matches OLD</th><th>Matches STALE</th><th>Matches FRESH</th><th>Decisive positions</th><th class="l">Its own hypothesis there</th></tr>` +
+    [["D", "D: keep, cache kept", "STALE"], ["E", "E: keep, cache cleared", "FRESH"]].map(([k, name, own]) => { const c = C[k]; return `<tr><td class="l">${name}</td><td>${c.boundary} of ${c.total}</td><td>${pct(c.old)}</td><td>${pct(c.stale)}</td><td>${pct(c.fresh)}</td><td>${c.decisive}</td><td class="l"><span class="pill good">${own} ${pct(c.own_on_decisive)}</span></td></tr>`; }).join("");
+}
+
+const redraws = [];
+function renderAll() {
+  redraws.length = 0;
+  for (const [key, ids] of [["gsm8k", ["gsm8k-curves", "gsm8k-forest", "gsm8k-strip"]], ["math", ["math-curves", "math-forest", "math-strip"]]]) {
+    const exp = DATA.experiments[key];
+    if ($(ids[0])) redraws.push(curvePanel($(ids[0]), exp, key));
+    if ($(ids[1])) forest($(ids[1]), exp);
+    if ($(ids[2])) strip($(ids[2]), exp);
+  }
+  if ($("math-sync")) syncCurve($("math-sync"));
+  if ($("exposure")) exposure($("exposure"));
+  if ($("p1-fade")) phase1();
+  if ($("canary-table")) canaryTable();
+}
+renderAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
+<script>
+// -- the regimes explainer (a schematic; one answer per regime, driven by one scrubber)
+(() => {
+  const L = 14, SWAP = 8, TMAX = 24;
+  const words = ["Natalia", " sold", " 48", " clips", " in", " April", ".", " In", " May", " she", " sold", " half",
+                 ",", " 24"];
+  const words2 = ["April", ":", " 48", ".", " May", ":", " 24", ".", " Total", ":", " 48", "+", "24", "<|endoftext|>"];
+  // Each regime: when each token is sampled (tick), by which weights, over which KV; engine bar segments.
+  const R = {
+    A: { name: "Synchronous", call: "no pause: generate the whole batch, then train, then push", lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map((x, i) => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 14, "gen", "generating on v"], [14, 20, "idle", "idle, the trainer trains"], [20, 21, "push", "weight update"],
+              [21, 24, "gen2", "next batch on v+1"]],
+        note: "The engine generates a whole batch, then stops. The trainer trains on it and updates the weights. Then the next batch starts." }; } },
+    B: { name: "Drain", call: 'pause(mode="wait")', lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map(x => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 8, "gen", "generating"], [8, 14, "drain", "draining, no new answers"], [14, 15, "push", "weight update"],
+              [15, 24, "gen2", "new answers on v+1"]],
+        note: "When new weights are ready, the engine stops taking new prompts and lets the running answers finish on the old weights. Then it updates and starts new answers." }; } },
+    C1: { name: "Abort and resume", call: 'pause(mode="abort"), then resubmit prompt + partial tokens', lane() {
+      // abort frees the answer's KV at the push; token 12 was never fed back on v. The re-prefill on v+1 rebuilds
+      // prompt + 12 tokens and, like any prefill, samples the next token in the same pass.
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "n" });
+      const kv = t.map((x, i) => i < SWAP - 1 ? [{ at: x.at + 1, ver: "v" }, { at: SWAP + 1, ver: "" }, { at: SWAP + 2, ver: "n" }]
+                             : i === SWAP - 1 ? [{ at: SWAP + 2, ver: "n" }] : [{ at: x.at + 1, ver: "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "abort, weight update"], [9, 10, "rec", "re-prefill on v+1"],
+                            [10, 24, "gen2", "generating on v+1"]],
+        note: "The engine aborts the running answers and updates. Each one is resent with the tokens it already had and continues from there on the new weights." }; } },
+    C2: { name: "Abort and discard", call: 'pause(mode="abort"), then resubmit the prompt only', lane(time) {
+      const restarted = time >= SWAP + 1;
+      const t = restarted ? words2.map((w, i) => ({ w, at: i + SWAP + 2, ver: "n" }))
+                          : words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      const kv = t.map(x => [{ at: x.at + 1, ver: restarted ? "n" : "v" }]);
+      return { t, kv, waste: restarted ? SWAP : 0,
+        bar: [[0, 8, "gen", "generating"], [8, 9, "push", "abort, weight update"], [9, 24, "gen2", "new answers on v+1"]],
+        note: "The engine aborts the running answers and updates. Each one starts over from its prompt on the new weights." }; } },
+    D: { name: "In flight, stale KV", call: 'pause(mode="keep", clear_cache=False)', lane() {
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "mix" });
+      // the KV of the last token delivered before the pause is computed after it, by the new weights
+      const kv = t.map((x, i) => [{ at: i === SWAP - 1 ? SWAP + 2 : x.at + 1, ver: i < SWAP - 1 ? "v" : "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "pause, weight update"], [9, 24, "gen2", "generating on v+1"]],
+        note: "The engine pauses, updates, and continues the running answers on the new weights. Their cache, built by the old weights, is kept as it is." }; } },
+    E: { name: "In flight, fresh KV", call: 'pause(mode="keep", clear_cache=True)', lane() {
+      // token 12's KV was never computed on v (the pause came first); the recompute builds prompt + 12 on v+1 and
+      // samples token 13 in the same pass.
+      const t = words.map((w, i) => i < SWAP ? { w, at: i + 1, ver: "v" } : { w, at: i + 2, ver: "n" });
+      const kv = t.map((x, i) => i < SWAP - 1 ? [{ at: x.at + 1, ver: "v" }, { at: SWAP + 2, ver: "n" }]
+                             : i === SWAP - 1 ? [{ at: SWAP + 2, ver: "n" }] : [{ at: x.at + 1, ver: "n" }]);
+      return { t, kv, bar: [[0, 8, "gen", "generating"], [8, 9, "push", "pause, weight update"], [9, 10, "rec", "recompute the cache on v+1"],
+                            [10, 24, "gen2", "generating on v+1"]],
+        note: "The engine pauses, updates, and continues the running answers on the new weights. Their cache is rebuilt by the new weights first." }; } },
+    F: { name: "Versioned LoRA", call: "no pause: load adapter v+1 under a new name", lane() {
+      const t = words.map((w, i) => ({ w, at: i + 1, ver: "v" }));
+      return { t, kv: t.map(x => [{ at: x.at + 1, ver: "v" }]),
+        bar: [[0, 14, "gen", "this answer stays on adapter v"], [14, 24, "gen2", "new answers on adapter v+1"]],
+        note: "Both adapter versions stay loaded. An answer finishes on the adapter it started on, and nothing pauses." }; } },
+  };
+  // The final token is never fed back, so no step computes its KV.
+  for (const r of Object.values(R)) { const f = r.lane; r.lane = (time) => { const s = f(time); s.kv[s.kv.length - 1] = []; return s; }; }
+  // the trainer's schedule on the same clock: in the async regimes it trains on earlier answers throughout (in the
+  // drain it keeps training while the staged v+1 waits for the running answers: the traces put it at 97% busy on
+  // GSM8K, as D's); in the synchronous regime it waits for the batch, trains on it, and v+1 exists only after that
+  const ASYNC_TRAINER = [[0, 8, "train", "training on finished answers"], [8, 9, "push", "v+1 ready, weight update"], [9, 24, "train", "training on finished answers"]];
+  const TRAINER = {
+    A: [[0, 14, "tidle", "waiting for the batch"], [14, 20, "train", "training on this batch"], [20, 21, "push", "v+1 ready, weight update"], [21, 24, "tidle", "waiting for the next batch"]],
+    B: [[0, 8, "train", "training on finished answers"], [8, 14, "train", "training, v+1 staged"], [14, 15, "push", "weight update"], [15, 24, "train", "training on finished answers"]],
+    C1: ASYNC_TRAINER, C2: ASYNC_TRAINER, D: ASYNC_TRAINER, E: ASYNC_TRAINER, F: ASYNC_TRAINER,
+  };
+  const order = ["A", "B", "C2", "D", "E"];  // F (versioned LoRA) is the LoRA tier's
+  const lanes = document.getElementById("rx-lanes");
+  const els = {};
+  for (const key of order) {
+    const r = R[key];
+    const el = document.createElement("article");
+    el.className = "lane";
+    el.innerHTML = `<header><h3><em>${key === "C2" ? "C" : key}</em>${r.name}</h3></header>
+      <div class="strip"><span class="lab">token</span>${'<div class="tok"></div>'.repeat(L)}</div>
+      <div class="strip"><span class="lab">kv</span>${'<div class="kv"></div>'.repeat(L)}</div>
+      <div class="barrow"><span class="lab">engine</span><div class="bar"></div></div>
+      <div class="barrow"><span class="lab">trainer</span><div class="bar tbar"></div></div><div class="readout"></div><p class="note"></p>`;
+    lanes.appendChild(el);
+    els[key] = { toks: el.querySelectorAll(".tok"), kvs: el.querySelectorAll(".kv"), bar: el.querySelector(".bar:not(.tbar)"), tbar: el.querySelector(".tbar"),
+                 readout: el.querySelector(".readout"), note: el.querySelector(".note"), lastKv: [] };
+  }
+  const slider = document.getElementById("rx-t"), clock = document.getElementById("rx-clock");
+  function draw() {
+    const time = +slider.value;
+    if (clock) clock.textContent = `step ${time}`;
+    for (const key of order) {
+      const s = R[key].lane(time), e = els[key];
+      let nv = 0, nn = 0, nm = 0, stale = 0;
+      s.t.forEach((x, i) => {
+        const c = e.toks[i], on = x.at <= time;
+        c.className = "tok" + (on ? " " + (x.ver === "mix" ? "mix" : x.ver) : "");
+        c.textContent = on ? x.w : ""; c.title = on ? x.w : "";
+        if (on) { if (x.ver === "v") nv++; else if (x.ver === "n") nn++; else nm++; }
+      });
+      if (s.waste && time >= 13) {
+        for (let i = 0; i < L; i++) if (s.t[i].at > time && i < s.waste) {
+          e.toks[i].className = "tok waste"; e.toks[i].textContent = words[i]; e.toks[i].title = `${words[i]} (discarded)`;
+        }
+      }
+      s.kv.forEach((hist, i) => {
+        const cur = hist.filter(h => h.at <= time).pop();
+        const ver = cur ? cur.ver : "";
+        const k = e.kvs[i];
+        const rebuilt = ver === "n" && e.lastKv[i] !== "n" && hist.some(h => h.ver === "v" && h.at < cur.at);
+        k.className = "kv" + (ver ? " " + ver : "") + (rebuilt ? " flash" : "");
+        e.lastKv[i] = ver;
+        if (ver === "v" && s.t.some((x, j) => j > i && x.at <= time && x.ver !== "v")) stale++;
+      });
+      e.bar.innerHTML = s.bar.map(([a, b, kind, label]) =>
+        `<div class="seg ${kind}" style="left:${a / TMAX * 100}%;width:${(b - a) / TMAX * 100}%" title="${label}">${label}</div>`
+      ).join("") + `<div class="cursor" style="left:calc(${time / TMAX * 100}% - 1px)"></div>`;
+      const tr = TRAINER[key];
+      e.tbar.innerHTML = tr.map(([a, b, kind, label]) =>
+        `<div class="seg ${kind}" style="left:${a / TMAX * 100}%;width:${(b - a) / TMAX * 100}%" title="${label}"></div>`
+      ).join("") + `<div class="cursor" style="left:calc(${time / TMAX * 100}% - 1px)"></div>`;
+      const seg = s.bar.find(([a, b]) => time > a && time <= b) || s.bar[0];  // the step just taken, not the next
+      const tseg = tr.find(([a, b]) => time > a && time <= b) || tr[0];
+      e.readout.innerHTML = `engine: <b>${seg[3]}</b><br>trainer: <b>${tseg[3]}</b>`;
+      e.note.textContent = R[key].lane(time).note;
+    }
+  }
+  slider.addEventListener("input", draw);
+  let timer = null;
+  const play = document.getElementById("rx-play");
+  function stop() { clearInterval(timer); timer = null; play.textContent = "Play"; play.setAttribute("aria-label", "Play"); }
+  play.addEventListener("click", () => {
+    if (timer) return stop();
+    if (+slider.value >= TMAX) slider.value = 0;
+    play.textContent = "Pause"; play.setAttribute("aria-label", "Pause");
+    timer = setInterval(() => { slider.value = Math.min(TMAX, +slider.value + 1); draw(); if (+slider.value >= TMAX) stop(); }, 450);
+  });
+  draw();
+})();
+</script>

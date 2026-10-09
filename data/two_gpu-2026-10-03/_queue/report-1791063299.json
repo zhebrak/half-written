@@ -1,0 +1,248 @@
+[
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 0,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B16G8M16-K4-S1-math-base-s0",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=B",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 655.6198833426461,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 0,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B16G8M16-K4-S1-math-base-s0",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=D",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 655.6177595839836,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 0,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s0",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=A",
+   "seed=0",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 651.9472471331246,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 0,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B16G8M16-K4-S1-math-base-s0",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=E",
+   "seed=0"
+  ],
+  "status": "valid",
+  "seconds": 660.1980397026055,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 1,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B16G8M16-K4-S1-math-base-s1",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=D",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 656.6571811279282,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 1,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s1",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=A",
+   "seed=1",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 649.2667656862177,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 1,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B16G8M16-K4-S1-math-base-s1",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=B",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 655.7790020308457,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 1,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B16G8M16-K4-S1-math-base-s1",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=E",
+   "seed=1"
+  ],
+  "status": "valid",
+  "seconds": 658.1600171062164,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "A",
+  "variant": null,
+  "seed": 2,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-math-base-s2",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=A",
+   "seed=2",
+   "K=0",
+   "S=1"
+  ],
+  "status": "valid",
+  "seconds": 665.4526749737561,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "B",
+  "variant": null,
+  "seed": 2,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/B-B16G8M16-K4-S1-math-base-s2",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=B",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 658.5278091486543,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "D",
+  "variant": null,
+  "seed": 2,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B16G8M16-K4-S1-math-base-s2",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=D",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 655.6885705399327,
+  "evaluated": true,
+  "pruned": 15
+ },
+ {
+  "arm": "E",
+  "variant": null,
+  "seed": 2,
+  "row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/E-B16G8M16-K4-S1-math-base-s2",
+  "set": [
+   "init_from=null",
+   "prompt_filter=null",
+   "budget_s=600",
+   "snapshot_every_s=37.5",
+   "tag=math-base",
+   "eval_split=test",
+   "regime=E",
+   "seed=2"
+  ],
+  "status": "valid",
+  "seconds": 660.7736888048239,
+  "evaluated": true,
+  "pruned": 15
+ }
+]

@@ -1,0 +1,105 @@
+config:
+  regime: E
+  lora: false
+  task: gsm8k
+  model: Qwen/Qwen3-0.6B-Base
+  tag: ''
+  seed: 5
+  B: 32
+  G: 8
+  M: 32
+  K: 4
+  S: 1
+  max_tokens: 1024
+  max_model_len: 2048
+  forced_lengths: null
+  temperature: 1.0
+  budget_s: 300.0
+  max_steps: null
+  timeout_s: 900.0
+  publication: staged
+  eps_max: 5.0
+  lora_rank: 1
+  reward_timeout_s: 30.0
+  snapshot_every_s: 37.5
+  snapshot_every_steps: null
+  init_from: prep/gsm8k/w0
+  prompt_filter: prep/gsm8k/pass8.json
+  eval_split: test
+  sim:
+    prompt_len: 64
+    length_mean: 200.0
+    length_sigma: 0.8
+    empirical_lengths: null
+    max_num_seqs: 256
+    kv_tokens: 1048576
+    max_num_batched_tokens: 8192
+    delivery: immediate
+    submit_latency: 0.0
+    stats_lag: false
+    async_scheduling: false
+    silent_waiting_aborts: false
+    cost: {}
+    train_s_fixed: 0.2
+    train_s_per_token: 3.0e-05
+    push_s: 0.05
+    send_slowdown: 0.0
+    p_correct: 0.5
+  train:
+    lr: 1.0e-06
+    warmup_steps: 5
+    micro_tokens: 16384
+    gradient_checkpointing: false
+    staging_dtype: bfloat16
+    profile: false
+    device: cuda
+    model: null
+  launch:
+    engine: vllm
+    port: 8100
+    engine_gpu: '0'
+    trainer_gpu: '1'
+    weight_backend: nccl
+    gpu_memory_utilization: 0.9
+    async_scheduling: true
+    head_fp32: true
+    stream_interval: 1
+    api_servers: 4
+    fake_lengths: lognormal:200,0.8
+    fake_vocab: 151936
+    lora_inplace_fix: false
+environment:
+  versions:
+    python: 3.12.3
+    numpy: 2.3.5
+    pyarrow: 25.0.1
+    torch: 2.13.0
+    transformers: 5.17.0
+    vllm: 0.30.0
+    peft: 0.21.2
+    math-verify: 0.9.0
+  commit: prereg-v1
+  cpu: x86_64
+  gpus:
+  - NVIDIA H100 80GB HBM3
+  - NVIDIA H100 80GB HBM3
+  topology: "\e[4mGPU0\tGPU1\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\e[0m\nGPU0\t X \tNV18\t0-23,96-119\t0\t\tN/A\nGPU1\t\
+    NV18\t X \t48-71,144-167\t2\t\tN/A\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP\
+    \ interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between\
+    \ PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the\
+    \ CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection\
+    \ traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks"
+  gpu_details: 'index, name, driver_version, memory.total [MiB], power.limit [W], clocks.max.sm [MHz], clocks.max.memory [MHz]
+
+    0, NVIDIA H100 80GB HBM3, 595.71.05, 81559 MiB, 525.00 W, 1980 MHz, 2619 MHz
+
+    1, NVIDIA H100 80GB HBM3, 595.71.05, 81559 MiB, 525.00 W, 1980 MHz, 2619 MHz'
+  vllm_env:
+    VLLM_IMAGE_TAG: vllm/vllm-openai:v0.30.0
+identity:
+  dev_sha256: a0f38b015c7eac27a2878a281fbcbc381480f5d7df627c64d22e56b5996f0bff
+  revisions:
+    model: da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+    openai/gsm8k: 740312add88f781978c0658806c59bc2815b9866
+  init_from_sha256: 568716f7029a4be7f0f4e582b91ed0f450274a1d7a1ad29e40b243ff9b168ea8
+  prompt_filter_sha256: e545bf1b00dd9ef7381b6971cf10e5e3a2b0b0302e0420e4241d05dc0050ed09

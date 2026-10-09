@@ -1,0 +1,102 @@
+{
+ "marks": [
+  {
+   "tag": "t01",
+   "t": 37.5,
+   "staged": 17,
+   "engine": 17,
+   "steps": 17
+  },
+  {
+   "tag": "t02",
+   "t": 75.00100000016391,
+   "staged": 36,
+   "engine": 36,
+   "steps": 36
+  },
+  {
+   "tag": "t03",
+   "t": 112.5,
+   "staged": 56,
+   "engine": 56,
+   "steps": 56
+  },
+  {
+   "tag": "t04",
+   "t": 150.02900000009686,
+   "staged": 75,
+   "engine": 75,
+   "steps": 75
+  },
+  {
+   "tag": "t05",
+   "t": 187.5679999999702,
+   "staged": 94,
+   "engine": 94,
+   "steps": 94
+  },
+  {
+   "tag": "t06",
+   "t": 225.0,
+   "staged": 112,
+   "engine": 112,
+   "steps": 112
+  },
+  {
+   "tag": "t07",
+   "t": 262.5,
+   "staged": 129,
+   "engine": 129,
+   "steps": 129
+  },
+  {
+   "tag": "tend",
+   "t": 300.0010000001639,
+   "staged": 146,
+   "engine": 146,
+   "steps": 146
+  }
+ ],
+ "written": [
+  [
+   "t01",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t01-v17",
+   1.1347318491898477
+  ],
+  [
+   "t02",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t02-v36",
+   0.7447251579724252
+  ],
+  [
+   "t03",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t03-v56",
+   0.7996008819900453
+  ],
+  [
+   "t04",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t04-v75",
+   0.6403340646065772
+  ],
+  [
+   "t05",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t05-v94",
+   0.6005789069458842
+  ],
+  [
+   "t06",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t06-v112",
+   0.6363886683247983
+  ],
+  [
+   "t07",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/t07-v129",
+   0.5995391849428415
+  ],
+  [
+   "tend",
+   "results/gsm8k/Qwen3-0.6B-Base/H100-80GB-HBM3/D-B32G8M32-K4-S1-s8/work/tend-v146",
+   0.6468514329753816
+  ]
+ ]
+}

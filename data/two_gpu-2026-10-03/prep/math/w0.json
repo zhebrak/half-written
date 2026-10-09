@@ -1,0 +1,25 @@
+{
+ "plateau": 0.5047605045980974,
+ "fit": {
+  "start": 0.282,
+  "gain": 0.2227605045980974,
+  "plateau": 0.5047605045980974,
+  "tau_s": 15.71746945278061,
+  "t80_s": 25.29629122482997,
+  "rmse": 0.01613934758302872,
+  "points": 11
+ },
+ "settled_mean_tokens": 1417.8888,
+ "p0_judged_at_step": 200,
+ "p0_fitted_gain": 0.22275984150652603,
+ "start": 0.282,
+ "p0_keeps_0_6b": true,
+ "warnings": [
+  "no settled snapshot leaves 10% below the plateau 0.505: W0 is the earliest settled one, step 80, 0.005 below"
+ ],
+ "w0_step": 80,
+ "w0_snapshot": "step0080-v80",
+ "w0_accuracy": 0.5,
+ "from_row": "results/math/Qwen3-0.6B-Base/H100-80GB-HBM3/A-B16G8M16-K0-S1-sync-curve-s0",
+ "sha256": "c1ae44552ed24b318a1aca2391483be282636b4cefedc010f5d3c5eac41174b0"
+}

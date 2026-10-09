@@ -1,0 +1,29 @@
+# MATH (levels 3-5), two GPUs (engine GPU0, trainer GPU1, NCCL). The published tier ran from the base model with no
+# prompt filter (configs/matrix/math_base.yaml); its T and snapshot spacing come from its settings file.
+regime: D
+task: math
+model: Qwen/Qwen3-0.6B-Base
+B: 16
+G: 8
+M: 16
+K: 4
+S: 1
+max_tokens: 3000
+max_model_len: 4096
+budget_s: 7200.0
+snapshot_every_s: 900.0
+timeout_s: 900.0
+init_from: prep/math/w0
+prompt_filter: prep/math/pass8.json
+train:
+  lr: 1.0e-6
+  micro_tokens: 16384  # what the no-checkpointing rows ran (x2d, x2f); 32768 without checkpointing is unmeasured
+  gradient_checkpointing: false  # as GSM8K (x2d: D +37% steps/h); memory at 3,000 tokens unchecked
+launch:
+  engine: vllm
+  engine_gpu: "0"
+  trainer_gpu: "1"
+  weight_backend: nccl
+  gpu_memory_utilization: 0.9
+  head_fp32: true  # vLLM computes the LM head in fp32: about a fifth less engine-trainer mismatch
+  api_servers: 4  # one caps token-by-token streaming at ~8k tok/s (x2c), four reach 18k (x2d); LoRA arms need 1

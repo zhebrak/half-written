@@ -1,0 +1,115 @@
+{
+ "regime": "E",
+ "valid": true,
+ "error": null,
+ "violations": [],
+ "wall_s": 600.0030000000261,
+ "steps": 66,
+ "groups_submitted": 1092,
+ "samples": {
+  "consumed": 8576,
+  "unconsumed": 103,
+  "cancelled": 57,
+  "attempts": 8736,
+  "discarded_attempts": 0
+ },
+ "tokens": {
+  "delivered": 7626778,
+  "consumed": 7482641,
+  "discarded": 0,
+  "reprefilled": 3548263
+ },
+ "late_old_tokens": 0,
+ "versions_skipped": 0,
+ "inflight_mean": 59.855039058168394,
+ "events": {
+  "queued_at_abort": 0,
+  "late_zero_token_aborts": 0,
+  "finishless_aborts": 0,
+  "reward_timeouts": 0,
+  "chunks_while_resuming": 0,
+  "reset_preemptions_without_tokens": 0,
+  "count_lagged_syncs": 0
+ },
+ "lanes": {
+  "engine": {
+   "idle": 8.227635456897825e-06,
+   "generating": 0.9781325899963894,
+   "pausing": 0.004222422607971203,
+   "receiving": 0.017635114232784563,
+   "paused": 1.6455273978828774e-06
+  },
+  "batcher": {
+   "wait_data": 0.31395176630909843,
+   "training": 0.6860482336909016
+  },
+  "trainer": {
+   "stage": 0.0005969395338789907,
+   "idle": 0.32252652330550613,
+   "fwd_bwd": 0.6768765371606149
+  },
+  "sender": {
+   "idle": 0.9837990234763776,
+   "send": 0.01620097652362238
+  }
+ },
+ "engine": {
+  "running": 0,
+  "waiting": 0,
+  "preemptions_total": 3679,
+  "generated_tokens_total": 7626835,
+  "prefill_tokens_total": 871216,
+  "kv_usage": 0.0
+ },
+ "trainer": {
+  "steps": 67,
+  "pushed": 66
+ },
+ "host": {
+  "main_thread_cpu_frac": 0.4659158402715766,
+  "loop_lag_s": {
+   "p50": 2.79396769609086e-10,
+   "p90": 0.0009999999776482554,
+   "p99": 0.0029999998398125144,
+   "p100": 0.7390000003390014
+  },
+  "worst_stall_at_s": 548.9729999997653
+ },
+ "syncs": 66,
+ "sync_s": {
+  "p50": 0.20600000000558794,
+  "p90": 0.21600000001490116,
+  "p99": 0.22534999998752028,
+  "p100": 0.22599999979138374
+ },
+ "pause_s": {
+  "p50": 0.037999999942258,
+  "p90": 0.04550000000745058,
+  "p99": 0.04934999970719218,
+  "p100": 0.049999999813735485
+ },
+ "fence_s": {
+  "p50": 0.03799999970942736,
+  "p90": 0.04099999996833503,
+  "p99": 0.04399999992456287,
+  "p100": 0.04400000022724271
+ },
+ "ack_lag_s": {
+  "p50": 0.0,
+  "p90": 0.0,
+  "p99": 0.0,
+  "p100": 0.0
+ },
+ "undelivered": {
+  "syncs": 66,
+  "positive": 0,
+  "min": 0,
+  "max": 0
+ },
+ "steps_per_hour": 395.99802000988274,
+ "tokens_per_s": 12711.233110500561,
+ "goodput_tokens_per_s": 12471.0059783029,
+ "lag_mean": 1.4456720583434266,
+ "lag_max": 4,
+ "depth_max": 0
+}

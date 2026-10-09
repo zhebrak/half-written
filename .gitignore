@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+results/
+runs/
+ckpt/
+wandb/
+REVISION
+# fetch restores the warm start and the prompt filter here on a box
+/prep/
+# setup_box.sh writes these on a box
+/setup.log
+/gpu-environment.json
+/requirements-gpu.lock
+# what the harness and the tools write into a clone
+/probe/
+/phase1/
+docs/index.html
+docs/figures/
+docs/.post-render.md
+node_modules/
+package.json
+package-lock.json
